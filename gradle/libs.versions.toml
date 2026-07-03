@@ -1,13 +1,59 @@
 [versions]
-agp = "9.3.0-rc01"
+# Build toolchain
+agp = "9.2.1"
+kotlin = "2.2.21"
+ksp = "2.2.21-2.0.5"
+
+# AndroidX core / Compose
 coreKtx = "1.19.0"
+lifecycleRuntimeKtx = "2.11.0"
+activityCompose = "1.13.0"
+composeBom = "2026.06.01"
+navigationCompose = "2.9.8"
+
+# DI
+koinBom = "4.2.2"
+
+# Networking + serialization
+ktor = "3.5.1"
+kotlinxSerialization = "1.11.0"
+
+# Local storage
+room = "2.8.4"
+datastorePreferences = "1.2.1"
+
+# Async
+kotlinxCoroutines = "1.11.0"
+
+# Images
+coil = "3.5.0"
+
+# Logging
+kermit = "2.1.0"
+
+# Capture / OCR
+cameraX = "1.6.1"
+mlkitTextRecognition = "16.0.1"
+
+# Background work
+workManager = "2.11.2"
+
+# Charts
+vico = "2.5.2"
+
+# Testing
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-lifecycleRuntimeKtx = "2.11.0"
-activityCompose = "1.13.0"
-kotlin = "2.2.10"
-composeBom = "2026.02.01"
+junit5 = "5.14.4"
+androidJunit5Plugin = "2.0.1"
+assertk = "0.28.1"
+turbine = "1.2.1"
+
+# Lint
+ktlintPlugin = "14.2.0"
+detektPlugin = "1.23.8"
+composeRulesDetekt = "0.6.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,8 +70,60 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinBom" }
+koin-core = { group = "io.insert-koin", name = "koin-core" }
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+koin-androidx-compose-viewmodel-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation" }
+
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
+
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+
+kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
+
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraX" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraX" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraX" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraX" }
+mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitTextRecognition" }
+
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
+
+vico-multiplatform = { group = "com.patrykandpatrick.vico", name = "multiplatform", version.ref = "vico" }
+
+junit5-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit5" }
+junit5-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter" }
+junit5-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine" }
+assertk = { group = "com.willowtreeapps.assertk", name = "assertk", version.ref = "assertk" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+
+compose-rules-detekt = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "composeRulesDetekt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+android-junit5 = { id = "de.mannodermaus.android-junit", version.ref = "androidJunit5Plugin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintPlugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
