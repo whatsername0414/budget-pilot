@@ -25,4 +25,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "BudgetPilot"
 include(":app")
+include(":core:domain")
+include(":core:data")
+include(":core:presentation")
+include(":core:design-system")
+include(":core:database")
  

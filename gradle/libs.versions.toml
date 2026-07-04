@@ -112,6 +112,7 @@ vico-multiplatform = { group = "com.patrykandpatrick.vico", name = "multiplatfor
 junit5-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit5" }
 junit5-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter" }
 junit5-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine" }
+junit5-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
 assertk = { group = "com.willowtreeapps.assertk", name = "assertk", version.ref = "assertk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
