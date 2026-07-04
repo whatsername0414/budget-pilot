@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_retry">Retry</string>
+    <string name="cd_error_icon">Error</string>
+    <string name="cd_loading">Loading</string>
+    <string name="budget_status_on_track">On track</string>
+    <string name="budget_status_warning">Nearing budget limit</string>
+    <string name="budget_status_over">Over budget</string>
+    <string name="budget_of">of</string>
+</resources>
