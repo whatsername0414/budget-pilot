@@ -25,6 +25,7 @@ android {
 
 dependencies {
     implementation(project(":core:design-system"))
+    implementation(project(":core:database"))
     implementation(project(":feature:expenses:presentation"))
     implementation(project(":feature:budgets:presentation"))
     implementation(project(":feature:dashboard:presentation"))

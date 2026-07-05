@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.budgetpilot.android.feature)
+    alias(libs.plugins.budgetpilot.serialization)
 }
 
 android {
@@ -14,4 +15,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.androidx.navigation.compose)
+
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.assertk)
 }

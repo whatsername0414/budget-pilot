@@ -30,11 +30,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.budgetpilot.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
+import com.budgetpilot.feature.budgets.presentation.navigation.budgetsGraph
+import com.budgetpilot.feature.dashboard.presentation.navigation.HomeRoute
+import com.budgetpilot.feature.dashboard.presentation.navigation.dashboardGraph
+import com.budgetpilot.feature.expenses.presentation.navigation.ExpenseEditorRoute
+import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
+import com.budgetpilot.feature.expenses.presentation.navigation.expensesGraph
 import com.budgetpilot.navigation.AskRoute
-import com.budgetpilot.navigation.BudgetsRoute
 import com.budgetpilot.navigation.CaptureRoute
-import com.budgetpilot.navigation.HistoryRoute
-import com.budgetpilot.navigation.HomeRoute
 import com.budgetpilot.navigation.TopLevelDestination
 
 // Scaffold keeps 16dp between the FAB and the bottom bar; shifting the 56dp FAB
@@ -75,28 +79,21 @@ fun AppShell(modifier: Modifier = Modifier) {
                     .fillMaxSize()
                     .padding(innerPadding),
         ) {
-            composable<HomeRoute> {
-                PlaceholderScreen(
-                    screenName = stringResource(TopLevelDestination.HOME.labelRes),
-                    icon = TopLevelDestination.HOME.unselectedIcon,
-                )
-            }
-            composable<HistoryRoute> {
-                PlaceholderScreen(
-                    screenName = stringResource(TopLevelDestination.HISTORY.labelRes),
-                    icon = TopLevelDestination.HISTORY.unselectedIcon,
-                )
-            }
+            dashboardGraph(
+                onSeeAllExpenses = {
+                    navController.navigate(HistoryRoute) { launchSingleTop = true }
+                },
+                onSeeBudgets = {
+                    navController.navigate(BudgetsRoute) { launchSingleTop = true }
+                },
+                onAddExpense = { navController.navigate(ExpenseEditorRoute()) },
+            )
+            expensesGraph(navController)
+            budgetsGraph()
             composable<AskRoute> {
                 PlaceholderScreen(
                     screenName = stringResource(TopLevelDestination.ASK.labelRes),
                     icon = TopLevelDestination.ASK.unselectedIcon,
-                )
-            }
-            composable<BudgetsRoute> {
-                PlaceholderScreen(
-                    screenName = stringResource(TopLevelDestination.BUDGETS.labelRes),
-                    icon = TopLevelDestination.BUDGETS.unselectedIcon,
                 )
             }
             composable<CaptureRoute> {
