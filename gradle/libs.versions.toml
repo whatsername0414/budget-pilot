@@ -39,7 +39,7 @@ mlkitTextRecognition = "16.0.1"
 workManager = "2.11.2"
 
 # Charts
-vico = "2.5.2"
+vico = "2.5.1"
 
 # Testing
 junit = "4.13.2"
