@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="history_top_bar_title">History</string>
+    <string name="expense_deleted_message">%1$s deleted</string>
+    <string name="action_undo">Undo</string>
+    <string name="expense_empty_no_matches_title">No matches for that</string>
+    <string name="expense_empty_no_expenses_title">No expenses yet</string>
+    <string name="expense_empty_no_expenses_description">Add your first expense to start tracking your budget.</string>
+    <string name="action_add_expense">Add expense</string>
+    <string name="cd_delete_expense">Delete expense</string>
+    <string name="search_placeholder_merchant_note">Search merchant or note</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="action_filters">Filters</string>
+    <string name="date_range_sheet_title">Date range</string>
+    <string name="label_merchant">Merchant</string>
+    <string name="label_note_optional">Note (optional)</string>
+    <string name="label_date">Date</string>
+    <string name="label_amount">AMOUNT</string>
+    <string name="expense_editor_title_add">Add expense</string>
+    <string name="expense_editor_title_edit">Edit expense</string>
+    <string name="cd_dismiss">Dismiss</string>
+    <string name="action_save">Save</string>
+    <string name="discard_dialog_title">Discard changes?</string>
+    <string name="discard_dialog_text">Your edits haven\'t been saved yet.</string>
+    <string name="action_discard">Discard</string>
+    <string name="action_keep_editing">Keep editing</string>
+    <string name="delete_dialog_title">Delete expense?</string>
+    <string name="delete_dialog_text">This can\'t be undone.</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+</resources>

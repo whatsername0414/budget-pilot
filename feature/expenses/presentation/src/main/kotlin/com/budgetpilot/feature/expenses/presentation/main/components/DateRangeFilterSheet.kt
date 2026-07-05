@@ -15,10 +15,12 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
+import com.budgetpilot.feature.expenses.presentation.R
 import com.budgetpilot.feature.expenses.presentation.main.model.DateRangePreset
 
 /** Bottom sheet content for the "Filters" chip — date-range presets only (DESIGN-SPEC.md §4). */
@@ -38,7 +40,7 @@ fun DateRangeFilterSheet(
     ) {
         Column(modifier = Modifier.padding(bottom = Spacing.large)) {
             Text(
-                text = "Date range",
+                text = stringResource(R.string.date_range_sheet_title),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = Spacing.medium, vertical = Spacing.small),
             )

@@ -22,6 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.components.CategoryChip
@@ -30,6 +31,7 @@ import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.model.Category
+import com.budgetpilot.feature.expenses.presentation.R
 
 /** DESIGN-SPEC.md §4: search pill → "Filters" chip (opens date-range sheet) → per-category chips. */
 @Composable
@@ -42,12 +44,12 @@ fun ExpenseSearchField(
         value = query,
         onValueChange = onQueryChange,
         modifier = modifier.fillMaxWidth(),
-        placeholder = { Text("Search merchant or note") },
+        placeholder = { Text(stringResource(R.string.search_placeholder_merchant_note)) },
         leadingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = null) },
         trailingIcon = {
             if (query.isNotEmpty()) {
                 IconButton(onClick = { onQueryChange("") }) {
-                    Icon(imageVector = Icons.Filled.Close, contentDescription = "Clear search")
+                    Icon(imageVector = Icons.Filled.Close, contentDescription = stringResource(R.string.cd_clear_search))
                 }
             }
         },
@@ -74,7 +76,7 @@ fun ExpenseFilterChipRow(
         item {
             AssistChip(
                 onClick = onFiltersClick,
-                label = { Text("Filters") },
+                label = { Text(stringResource(R.string.action_filters)) },
                 leadingIcon = {
                     Icon(imageVector = FilterIcons.Tune, contentDescription = null)
                 },

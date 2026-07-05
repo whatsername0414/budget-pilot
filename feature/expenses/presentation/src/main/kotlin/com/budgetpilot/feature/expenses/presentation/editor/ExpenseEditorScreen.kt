@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AmountText
@@ -50,6 +51,7 @@ import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.model.Category
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
+import com.budgetpilot.feature.expenses.presentation.R
 import com.budgetpilot.feature.expenses.presentation.editor.components.AmountKeypad
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -176,7 +178,7 @@ private fun ExpenseEditorForm(
                             onAction(ExpenseEditorAction.OnMerchantFieldBlur)
                         }
                     },
-            label = { Text("Merchant") },
+            label = { Text(stringResource(R.string.label_merchant)) },
             isError = state.merchantError != null,
             supportingText = { state.merchantError?.let { Text(it.asString()) } },
             singleLine = true,
@@ -192,7 +194,7 @@ private fun ExpenseEditorForm(
             value = state.note,
             onValueChange = { onAction(ExpenseEditorAction.OnNoteChange(it)) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Note (optional)") },
+            label = { Text(stringResource(R.string.label_note_optional)) },
             singleLine = true,
         )
     }
@@ -219,13 +221,17 @@ private fun ExpenseEditorDialogs(
     if (state.isDiscardConfirmVisible) {
         AlertDialog(
             onDismissRequest = { onAction(ExpenseEditorAction.OnDismissDiscardDialog) },
-            title = { Text("Discard changes?") },
-            text = { Text("Your edits haven't been saved yet.") },
+            title = { Text(stringResource(R.string.discard_dialog_title)) },
+            text = { Text(stringResource(R.string.discard_dialog_text)) },
             confirmButton = {
-                TextButton(onClick = { onAction(ExpenseEditorAction.OnConfirmDiscardClick) }) { Text("Discard") }
+                TextButton(onClick = { onAction(ExpenseEditorAction.OnConfirmDiscardClick) }) {
+                    Text(stringResource(R.string.action_discard))
+                }
             },
             dismissButton = {
-                TextButton(onClick = { onAction(ExpenseEditorAction.OnDismissDiscardDialog) }) { Text("Keep editing") }
+                TextButton(onClick = { onAction(ExpenseEditorAction.OnDismissDiscardDialog) }) {
+                    Text(stringResource(R.string.action_keep_editing))
+                }
             },
         )
     }
@@ -233,13 +239,17 @@ private fun ExpenseEditorDialogs(
     if (state.isDeleteConfirmVisible) {
         AlertDialog(
             onDismissRequest = { onAction(ExpenseEditorAction.OnDismissDeleteDialog) },
-            title = { Text("Delete expense?") },
-            text = { Text("This can't be undone.") },
+            title = { Text(stringResource(R.string.delete_dialog_title)) },
+            text = { Text(stringResource(R.string.delete_dialog_text)) },
             confirmButton = {
-                TextButton(onClick = { onAction(ExpenseEditorAction.OnConfirmDeleteClick) }) { Text("Delete") }
+                TextButton(onClick = { onAction(ExpenseEditorAction.OnConfirmDeleteClick) }) {
+                    Text(stringResource(R.string.action_delete))
+                }
             },
             dismissButton = {
-                TextButton(onClick = { onAction(ExpenseEditorAction.OnDismissDeleteDialog) }) { Text("Cancel") }
+                TextButton(onClick = { onAction(ExpenseEditorAction.OnDismissDeleteDialog) }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
             },
         )
     }
@@ -256,10 +266,18 @@ private fun ExpenseEditorTopBar(
     onDelete: () -> Unit,
 ) {
     TopAppBar(
-        title = { Text(if (mode == ExpenseEditorMode.ADD) "Add expense" else "Edit expense") },
+        title = {
+            Text(
+                if (mode == ExpenseEditorMode.ADD) {
+                    stringResource(R.string.expense_editor_title_add)
+                } else {
+                    stringResource(R.string.expense_editor_title_edit)
+                },
+            )
+        },
         navigationIcon = {
             IconButton(onClick = onDismiss) {
-                Icon(imageVector = Icons.Filled.Close, contentDescription = "Dismiss")
+                Icon(imageVector = Icons.Filled.Close, contentDescription = stringResource(R.string.cd_dismiss))
             }
         },
         actions = {
@@ -267,13 +285,13 @@ private fun ExpenseEditorTopBar(
                 IconButton(onClick = onDelete) {
                     Icon(
                         imageVector = Icons.Filled.Delete,
-                        contentDescription = "Delete expense",
+                        contentDescription = stringResource(R.string.cd_delete_expense),
                         tint = MaterialTheme.colorScheme.error,
                     )
                 }
             }
             TextButton(onClick = onSave, enabled = isValid && !isSaving) {
-                Text("Save")
+                Text(stringResource(R.string.action_save))
             }
         },
     )
@@ -290,7 +308,7 @@ private fun AmountHero(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "AMOUNT",
+            text = stringResource(R.string.label_amount),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -353,7 +371,7 @@ private fun DateField(
         value = date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
         onValueChange = {},
         modifier = modifier.fillMaxWidth(),
-        label = { Text("Date") },
+        label = { Text(stringResource(R.string.label_date)) },
         isError = error != null,
         supportingText = { error?.let { Text(it) } },
         readOnly = true,
@@ -385,9 +403,9 @@ private fun ExpenseDatePickerDialog(
                         onDismiss()
                     }
                 },
-            ) { Text("OK") }
+            ) { Text(stringResource(R.string.action_ok)) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
     ) {
         DatePicker(state = datePickerState)
     }

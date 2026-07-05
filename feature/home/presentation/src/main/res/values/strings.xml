@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_top_bar_title">Budget Pilot</string>
+    <string name="home_empty_title">No expenses yet</string>
+    <string name="home_empty_description">Start tracking your spending by adding your first expense.</string>
+    <string name="action_add_expense">Add expense</string>
+    <string name="home_section_top_categories">Top categories</string>
+    <string name="action_charts">Charts</string>
+    <string name="home_section_budgets">Budgets</string>
+    <string name="action_see_all">See all</string>
+    <string name="home_section_recent_expenses">Recent expenses</string>
+    <string name="home_hero_of">of </string>
+    <string name="home_hero_budgeted_days_left"> budgeted · %1$d days left</string>
+</resources>

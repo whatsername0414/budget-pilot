@@ -36,6 +36,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,12 +45,14 @@ import com.budgetpilot.core.designsystem.components.AppCard
 import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.components.EmptyState
 import com.budgetpilot.core.designsystem.components.LoadingSkeleton
+import com.budgetpilot.core.designsystem.icons.StateIcons
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.domain.model.Category
 import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
+import com.budgetpilot.feature.expenses.presentation.R
 import com.budgetpilot.feature.expenses.presentation.main.components.DateRangeFilterSheet
 import com.budgetpilot.feature.expenses.presentation.main.components.ExpenseFilterChipRow
 import com.budgetpilot.feature.expenses.presentation.main.components.ExpenseRow
@@ -87,8 +90,8 @@ fun ExpenseListScreen(
                 scope.launch {
                     val result =
                         snackbarHostState.showSnackbar(
-                            message = "${event.merchant} deleted",
-                            actionLabel = "Undo",
+                            message = context.getString(R.string.expense_deleted_message, event.merchant),
+                            actionLabel = context.getString(R.string.action_undo),
                             duration = SnackbarDuration.Short,
                         )
                     if (result == SnackbarResult.ActionPerformed) {
@@ -124,7 +127,7 @@ fun ExpenseListContent(
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = { AppTopBar(title = "History") },
+        topBar = { AppTopBar(title = stringResource(R.string.history_top_bar_title)) },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
         Column(
@@ -153,16 +156,16 @@ fun ExpenseListContent(
                     state.isEmpty && state.hasActiveFilter ->
                         EmptyState(
                             icon = Icons.Filled.Info,
-                            title = "No matches for that",
+                            title = stringResource(R.string.expense_empty_no_matches_title),
                             description = "",
                             modifier = Modifier.align(Alignment.Center),
                         )
                     state.isEmpty ->
                         EmptyState(
-                            icon = Icons.Filled.Info,
-                            title = "No expenses yet",
-                            description = "Add your first expense to start tracking your budget.",
-                            actionLabel = "Add expense",
+                            icon = StateIcons.Receipt,
+                            title = stringResource(R.string.expense_empty_no_expenses_title),
+                            description = stringResource(R.string.expense_empty_no_expenses_description),
+                            actionLabel = stringResource(R.string.action_add_expense),
                             onAction = { onAction(ExpenseListAction.OnAddExpenseClick) },
                             modifier = Modifier.align(Alignment.Center),
                         )
@@ -292,7 +295,7 @@ private fun SwipeableExpenseRow(
             ) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Delete expense",
+                    contentDescription = stringResource(R.string.cd_delete_expense),
                     tint = MaterialTheme.colorScheme.onError,
                 )
             }

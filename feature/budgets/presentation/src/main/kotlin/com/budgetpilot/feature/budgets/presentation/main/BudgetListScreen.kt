@@ -1,6 +1,7 @@
 package com.budgetpilot.feature.budgets.presentation.main
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,11 +16,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -32,11 +31,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.components.AppCard
-import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.components.BudgetProgressBar
 import com.budgetpilot.core.designsystem.components.EmptyState
 import com.budgetpilot.core.designsystem.components.ErrorState
@@ -46,6 +45,7 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
+import com.budgetpilot.feature.budgets.presentation.R
 import com.budgetpilot.feature.budgets.presentation.editor.BudgetEditorSheet
 import com.budgetpilot.feature.budgets.presentation.main.components.MonthSelector
 import com.budgetpilot.feature.budgets.presentation.main.components.dashedBorder
@@ -95,7 +95,6 @@ fun BudgetListScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetListContent(
     state: BudgetListState,
@@ -103,17 +102,8 @@ fun BudgetListContent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    Scaffold(
-        modifier = modifier,
-        topBar = { AppTopBar(title = "Budgets") },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) { innerPadding ->
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-        ) {
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
             MonthSelector(
                 monthLabel = state.monthLabel,
                 onPreviousClick = { onAction(BudgetListAction.OnPreviousMonthClick) },
@@ -136,6 +126,7 @@ fun BudgetListContent(
                     )
             }
         }
+        SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
 
@@ -181,8 +172,8 @@ private fun BudgetListLoadedContent(
                 item {
                     EmptyState(
                         icon = Icons.Filled.Info,
-                        title = "Set your first budget",
-                        description = "Tap a category below to add one.",
+                        title = stringResource(R.string.budgets_empty_title),
+                        description = stringResource(R.string.budgets_empty_description),
                     )
                 }
             } else {
@@ -214,10 +205,10 @@ private fun BudgetSummaryCard(
 ) {
     AppCard(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            SummaryColumn(label = "Budgeted", amount = budgeted)
-            SummaryColumn(label = "Spent", amount = spent)
+            SummaryColumn(label = stringResource(R.string.summary_budgeted), amount = budgeted)
+            SummaryColumn(label = stringResource(R.string.summary_spent), amount = spent)
             SummaryColumn(
-                label = "Left",
+                label = stringResource(R.string.summary_left),
                 amount = remaining,
                 color =
                     if (remaining < Money.ZERO) {
@@ -269,7 +260,10 @@ private fun BudgetCategoryCard(
             )
             if (!isReadOnly) {
                 IconButton(onClick = onEditClick) {
-                    Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit ${category.name} budget")
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = stringResource(R.string.cd_edit_budget, category.name),
+                    )
                 }
             }
         }
@@ -300,14 +294,14 @@ private fun UnbudgetedCategoryRow(
         )
         Spacer(Modifier.width(Spacing.small))
         Text(
-            text = "${category.name} — no budget yet",
+            text = stringResource(R.string.unbudgeted_category_label, category.name),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f),
         )
         if (!isReadOnly) {
             TextButton(onClick = onSetBudgetClick) {
-                Text("Set budget")
+                Text(stringResource(R.string.action_set_budget))
             }
         }
     }

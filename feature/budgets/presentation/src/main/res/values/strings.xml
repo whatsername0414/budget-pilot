@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_budgets">Budgets</string>
+    <string name="tab_charts">Charts</string>
+    <string name="charts_top_bar_title">Charts</string>
+    <string name="budgets_top_bar_title">Budgets</string>
+    <string name="charts_section_spending_by_category">Spending by category</string>
+    <string name="charts_section_six_month_trend">6-month trend</string>
+    <string name="charts_empty_no_expenses_title">No expenses yet</string>
+    <string name="charts_empty_no_expenses_description">Add your first expense to start tracking your budget.</string>
+    <string name="charts_empty_not_enough_data_title">Not enough data yet</string>
+    <string name="charts_empty_not_enough_data_description">The trend chart needs at least two months of expenses.</string>
+    <string name="budgets_empty_title">Set your first budget</string>
+    <string name="budgets_empty_description">Tap a category below to add one.</string>
+    <string name="summary_budgeted">Budgeted</string>
+    <string name="summary_spent">Spent</string>
+    <string name="summary_left">Left</string>
+    <string name="cd_edit_budget">Edit %1$s budget</string>
+    <string name="unbudgeted_category_label">%1$s — no budget yet</string>
+    <string name="action_set_budget">Set budget</string>
+    <string name="cd_previous_month">Previous month</string>
+    <string name="cd_next_month">Next month</string>
+    <string name="budget_editor_title">%1$s budget / %2$s</string>
+    <string name="budget_editor_last_month_spent">You spent %1$s on %2$s last month.</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="remove_budget_dialog_title">Remove budget?</string>
+    <string name="remove_budget_dialog_text">This removes the %1$s budget for %2$s.</string>
+</resources>

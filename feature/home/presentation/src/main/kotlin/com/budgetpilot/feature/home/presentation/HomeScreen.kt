@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +38,7 @@ import com.budgetpilot.core.designsystem.components.EmptyState
 import com.budgetpilot.core.designsystem.components.ErrorState
 import com.budgetpilot.core.designsystem.components.LoadingSkeleton
 import com.budgetpilot.core.designsystem.components.SectionHeader
+import com.budgetpilot.core.designsystem.icons.StateIcons
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
@@ -82,7 +81,7 @@ fun HomeContent(
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = { AppTopBar(title = "Budget Pilot") },
+        topBar = { AppTopBar(title = stringResource(R.string.home_top_bar_title)) },
     ) { innerPadding ->
         when {
             state.isLoading -> HomeLoadingSkeleton(modifier = Modifier.padding(innerPadding))
@@ -132,16 +131,20 @@ private fun HomeLoadedContent(
 
         if (state.isEmpty) {
             EmptyState(
-                icon = Icons.Filled.Info,
-                title = "No expenses yet",
-                description = "Start tracking your spending by adding your first expense.",
-                actionLabel = "Add expense",
+                icon = StateIcons.Receipt,
+                title = stringResource(R.string.home_empty_title),
+                description = stringResource(R.string.home_empty_description),
+                actionLabel = stringResource(R.string.action_add_expense),
                 onAction = { onAction(HomeAction.OnAddExpenseClick) },
             )
         } else {
             SectionHeader(
-                title = "Top categories",
-                action = { TextButton(onClick = { onAction(HomeAction.OnSeeBudgetsClick) }) { Text("Charts") } },
+                title = stringResource(R.string.home_section_top_categories),
+                action = {
+                    TextButton(onClick = { onAction(HomeAction.OnSeeBudgetsClick) }) {
+                        Text(stringResource(R.string.action_charts))
+                    }
+                },
             )
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 state.topCategories.forEach { category -> TopCategoryRow(category) }
@@ -149,8 +152,12 @@ private fun HomeLoadedContent(
 
             if (state.worstBudgets.isNotEmpty()) {
                 SectionHeader(
-                    title = "Budgets",
-                    action = { TextButton(onClick = { onAction(HomeAction.OnSeeBudgetsClick) }) { Text("See all") } },
+                    title = stringResource(R.string.home_section_budgets),
+                    action = {
+                        TextButton(onClick = { onAction(HomeAction.OnSeeBudgetsClick) }) {
+                            Text(stringResource(R.string.action_see_all))
+                        }
+                    },
                 )
                 AppCard(modifier = Modifier.fillMaxWidth()) {
                     state.worstBudgets.forEachIndexed { index, budget ->
@@ -161,8 +168,12 @@ private fun HomeLoadedContent(
             }
 
             SectionHeader(
-                title = "Recent expenses",
-                action = { TextButton(onClick = { onAction(HomeAction.OnSeeAllExpensesClick) }) { Text("See all") } },
+                title = stringResource(R.string.home_section_recent_expenses),
+                action = {
+                    TextButton(onClick = { onAction(HomeAction.OnSeeAllExpensesClick) }) {
+                        Text(stringResource(R.string.action_see_all))
+                    }
+                },
             )
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 state.recentExpenses.forEachIndexed { index, expense ->
@@ -192,7 +203,7 @@ private fun HomeHeroCard(
         Spacer(Modifier.height(Spacing.extraSmall))
         Row {
             Text(
-                text = "of ",
+                text = stringResource(R.string.home_hero_of),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -202,7 +213,7 @@ private fun HomeHeroCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = " budgeted · ${state.daysLeftInMonth} days left",
+                text = stringResource(R.string.home_hero_budgeted_days_left, state.daysLeftInMonth),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

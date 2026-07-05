@@ -14,8 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.feature.budgets.presentation.R
 
 /** DESIGN-SPEC.md §6: chevrons + month label; forward chevron disabled beyond the current month. */
 @Composable
@@ -32,11 +34,17 @@ fun MonthSelector(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onPreviousClick) {
-            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Previous month")
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = stringResource(R.string.cd_previous_month),
+            )
         }
         Text(text = monthLabel, style = MaterialTheme.typography.titleMedium)
         IconButton(onClick = onNextClick, enabled = isNextEnabled) {
-            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Next month")
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = stringResource(R.string.cd_next_month),
+            )
         }
     }
 }

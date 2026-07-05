@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AmountText
@@ -34,6 +35,7 @@ import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
 import com.budgetpilot.core.presentation.UiText
 import com.budgetpilot.core.presentation.money.PesoFormatter
+import com.budgetpilot.feature.budgets.presentation.R
 import com.budgetpilot.feature.budgets.presentation.editor.components.AmountKeypad
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -100,7 +102,7 @@ private fun BudgetEditorContent(
             )
             Spacer(Modifier.width(Spacing.small))
             Text(
-                text = "${state.categoryName} budget / ${state.monthLabel}",
+                text = stringResource(R.string.budget_editor_title, state.categoryName, state.monthLabel),
                 style = MaterialTheme.typography.titleMedium,
             )
         }
@@ -143,7 +145,12 @@ private fun BudgetAmountSection(
         state.lastMonthSpent?.let { spent ->
             Spacer(Modifier.height(Spacing.extraSmall))
             Text(
-                text = "You spent ${PesoFormatter.format(spent)} on ${state.categoryName} last month.",
+                text =
+                    stringResource(
+                        R.string.budget_editor_last_month_spent,
+                        PesoFormatter.format(spent),
+                        state.categoryName,
+                    ),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -164,15 +171,15 @@ private fun BudgetEditorActionsRow(
     ) {
         if (state.isEditing) {
             TextButton(onClick = { onAction(BudgetEditorAction.OnRemoveClick) }) {
-                Text(text = "Remove", color = MaterialTheme.colorScheme.error)
+                Text(text = stringResource(R.string.action_remove), color = MaterialTheme.colorScheme.error)
             }
         }
         Spacer(Modifier.weight(1f))
         TextButton(onClick = { onAction(BudgetEditorAction.OnDismissClick) }) {
-            Text("Cancel")
+            Text(stringResource(R.string.action_cancel))
         }
         Button(onClick = { onAction(BudgetEditorAction.OnSaveClick) }, enabled = !state.isSaving) {
-            Text("Save")
+            Text(stringResource(R.string.action_save))
         }
     }
 }
@@ -187,16 +194,16 @@ private fun RemoveBudgetDialog(
         onDismissRequest = { onAction(BudgetEditorAction.OnDismissRemoveDialog) },
         confirmButton = {
             TextButton(onClick = { onAction(BudgetEditorAction.OnConfirmRemoveClick) }) {
-                Text("Remove")
+                Text(stringResource(R.string.action_remove))
             }
         },
         dismissButton = {
             TextButton(onClick = { onAction(BudgetEditorAction.OnDismissRemoveDialog) }) {
-                Text("Cancel")
+                Text(stringResource(R.string.action_cancel))
             }
         },
-        title = { Text("Remove budget?") },
-        text = { Text("This removes the $categoryName budget for $monthLabel.") },
+        title = { Text(stringResource(R.string.remove_budget_dialog_title)) },
+        text = { Text(stringResource(R.string.remove_budget_dialog_text, categoryName, monthLabel)) },
     )
 }
 

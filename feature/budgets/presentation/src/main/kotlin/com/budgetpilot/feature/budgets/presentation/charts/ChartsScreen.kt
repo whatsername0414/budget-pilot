@@ -8,27 +8,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AppCard
-import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.components.EmptyState
 import com.budgetpilot.core.designsystem.components.ErrorState
 import com.budgetpilot.core.designsystem.components.LoadingSkeleton
 import com.budgetpilot.core.designsystem.components.SectionHeader
+import com.budgetpilot.core.designsystem.icons.StateIcons
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.domain.money.Money
+import com.budgetpilot.feature.budgets.presentation.R
 import com.budgetpilot.feature.budgets.presentation.charts.components.CategorySpendChart
 import com.budgetpilot.feature.budgets.presentation.charts.components.MonthlyTrendChart
 import com.budgetpilot.feature.budgets.presentation.charts.model.CategorySpendUi
@@ -46,40 +44,29 @@ fun ChartsScreen(
     ChartsContent(state = state, onAction = viewModel::onAction, modifier = modifier)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChartsContent(
     state: ChartsState,
     onAction: (ChartsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier,
-        topBar = { AppTopBar(title = "Charts") },
-    ) { innerPadding ->
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-        ) {
-            MonthSelector(
-                monthLabel = state.monthLabel,
-                onPreviousClick = { onAction(ChartsAction.OnPreviousMonthClick) },
-                onNextClick = { onAction(ChartsAction.OnNextMonthClick) },
-                isNextEnabled = state.canGoToNextMonth,
-                modifier = Modifier.padding(horizontal = Spacing.medium, vertical = Spacing.small),
-            )
+    Column(modifier = modifier.fillMaxSize()) {
+        MonthSelector(
+            monthLabel = state.monthLabel,
+            onPreviousClick = { onAction(ChartsAction.OnPreviousMonthClick) },
+            onNextClick = { onAction(ChartsAction.OnNextMonthClick) },
+            isNextEnabled = state.canGoToNextMonth,
+            modifier = Modifier.padding(horizontal = Spacing.medium, vertical = Spacing.small),
+        )
 
-            when {
-                state.isLoading -> LoadingChartsSkeleton()
-                state.error != null ->
-                    ErrorState(
-                        message = state.error.asString(),
-                        onRetry = { onAction(ChartsAction.OnRetryClick) },
-                    )
-                else -> ChartsLoadedContent(state = state)
-            }
+        when {
+            state.isLoading -> LoadingChartsSkeleton()
+            state.error != null ->
+                ErrorState(
+                    message = state.error.asString(),
+                    onRetry = { onAction(ChartsAction.OnRetryClick) },
+                )
+            else -> ChartsLoadedContent(state = state)
         }
     }
 }
@@ -112,7 +99,7 @@ private fun ChartsLoadedContent(
         verticalArrangement = Arrangement.spacedBy(Spacing.medium),
     ) {
         AppCard(modifier = Modifier.fillMaxWidth()) {
-            SectionHeader(title = "Spending by category")
+            SectionHeader(title = stringResource(R.string.charts_section_spending_by_category))
             if (state.hasCategorySpend) {
                 CategorySpendChart(
                     categorySpend = state.categorySpend,
@@ -120,15 +107,15 @@ private fun ChartsLoadedContent(
                 )
             } else {
                 EmptyState(
-                    icon = Icons.Filled.Info,
-                    title = "No expenses yet",
-                    description = "Add your first expense to start tracking your budget.",
+                    icon = StateIcons.Receipt,
+                    title = stringResource(R.string.charts_empty_no_expenses_title),
+                    description = stringResource(R.string.charts_empty_no_expenses_description),
                 )
             }
         }
 
         AppCard(modifier = Modifier.fillMaxWidth()) {
-            SectionHeader(title = "6-month trend")
+            SectionHeader(title = stringResource(R.string.charts_section_six_month_trend))
             if (state.hasEnoughTrendData) {
                 MonthlyTrendChart(
                     points = state.monthlyTrend,
@@ -142,9 +129,9 @@ private fun ChartsLoadedContent(
                 )
             } else {
                 EmptyState(
-                    icon = Icons.Filled.Info,
-                    title = "Not enough data yet",
-                    description = "The trend chart needs at least two months of expenses.",
+                    icon = StateIcons.Calendar,
+                    title = stringResource(R.string.charts_empty_not_enough_data_title),
+                    description = stringResource(R.string.charts_empty_not_enough_data_description),
                 )
             }
         }
