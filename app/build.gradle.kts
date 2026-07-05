@@ -26,6 +26,7 @@ android {
 dependencies {
     implementation(project(":core:design-system"))
     implementation(project(":feature:expenses:presentation"))
+    implementation(project(":feature:budgets:presentation"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
