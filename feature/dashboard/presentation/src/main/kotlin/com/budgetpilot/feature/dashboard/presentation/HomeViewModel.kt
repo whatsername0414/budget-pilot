@@ -13,9 +13,9 @@ import com.budgetpilot.core.domain.repository.BudgetRepository
 import com.budgetpilot.core.domain.repository.CategoryRepository
 import com.budgetpilot.core.domain.repository.ExpenseRepository
 import com.budgetpilot.core.presentation.toUiText
-import com.budgetpilot.feature.dashboard.presentation.model.DashboardBudgetUi
-import com.budgetpilot.feature.dashboard.presentation.model.DashboardCategoryUi
-import com.budgetpilot.feature.dashboard.presentation.model.toDashboardExpenseUi
+import com.budgetpilot.feature.dashboard.presentation.model.HomeBudgetUi
+import com.budgetpilot.feature.dashboard.presentation.model.HomeCategoryUi
+import com.budgetpilot.feature.dashboard.presentation.model.toHomeExpenseUi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,38 +32,38 @@ private const val TOP_CATEGORY_COUNT = 3
 private const val WORST_BUDGET_COUNT = 2
 private const val RECENT_EXPENSE_COUNT = 3
 
-class DashboardViewModel(
+class HomeViewModel(
     private val expenseRepository: ExpenseRepository,
     private val categoryRepository: CategoryRepository,
     private val budgetRepository: BudgetRepository,
 ) : ViewModel() {
-    private val _state = MutableStateFlow(DashboardState())
+    private val _state = MutableStateFlow(HomeState())
     val state = _state.asStateFlow()
 
-    private val _events = Channel<DashboardEvent>(Channel.BUFFERED)
+    private val _events = Channel<HomeEvent>(Channel.BUFFERED)
     val events = _events.receiveAsFlow()
 
     private val retryTick = MutableStateFlow(0)
 
     init {
-        observeDashboard()
+        observeHome()
     }
 
-    fun onAction(action: DashboardAction) {
+    fun onAction(action: HomeAction) {
         when (action) {
-            DashboardAction.OnSeeAllExpensesClick -> sendEvent(DashboardEvent.NavigateToExpenseList)
-            DashboardAction.OnSeeBudgetsClick -> sendEvent(DashboardEvent.NavigateToBudgets)
-            DashboardAction.OnAddExpenseClick -> sendEvent(DashboardEvent.NavigateToAddExpense)
-            DashboardAction.OnRetryClick -> retryTick.update { it + 1 }
+            HomeAction.OnSeeAllExpensesClick -> sendEvent(HomeEvent.NavigateToExpenseList)
+            HomeAction.OnSeeBudgetsClick -> sendEvent(HomeEvent.NavigateToBudgets)
+            HomeAction.OnAddExpenseClick -> sendEvent(HomeEvent.NavigateToAddExpense)
+            HomeAction.OnRetryClick -> retryTick.update { it + 1 }
         }
     }
 
-    private fun sendEvent(event: DashboardEvent) {
+    private fun sendEvent(event: HomeEvent) {
         viewModelScope.launch { _events.send(event) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun observeDashboard() {
+    private fun observeHome() {
         viewModelScope.launch {
             retryTick
                 .flatMapLatest {
@@ -111,12 +111,12 @@ class DashboardViewModel(
     private fun buildTopCategories(
         categoriesById: Map<Long, Category>,
         spentByCategory: Map<Long, Money>,
-    ): List<DashboardCategoryUi> {
+    ): List<HomeCategoryUi> {
         val topAmounts = spentByCategory.entries.sortedByDescending { it.value }.take(TOP_CATEGORY_COUNT)
         val maxAmount = topAmounts.maxOfOrNull { it.value } ?: Money.ZERO
         return topAmounts.mapNotNull { (categoryId, amount) ->
             val category = categoriesById[categoryId] ?: return@mapNotNull null
-            DashboardCategoryUi(
+            HomeCategoryUi(
                 categoryId = categoryId,
                 name = category.name,
                 colorKey = category.colorKey,
@@ -130,11 +130,11 @@ class DashboardViewModel(
         categoriesById: Map<Long, Category>,
         budgets: List<Budget>,
         spentByCategory: Map<Long, Money>,
-    ): List<DashboardBudgetUi> =
+    ): List<HomeBudgetUi> =
         budgets
             .mapNotNull { budget ->
                 val category = categoriesById[budget.categoryId] ?: return@mapNotNull null
-                DashboardBudgetUi(
+                HomeBudgetUi(
                     categoryId = category.id,
                     name = category.name,
                     spent = spentByCategory[category.id] ?: Money.ZERO,
@@ -149,7 +149,7 @@ class DashboardViewModel(
     ) = expenses
         .sortedWith(compareByDescending<Expense> { it.date }.thenByDescending { it.createdAt })
         .take(RECENT_EXPENSE_COUNT)
-        .map { it.toDashboardExpenseUi(categoriesById[it.categoryId]) }
+        .map { it.toHomeExpenseUi(categoriesById[it.categoryId]) }
 
     private suspend fun emitLoadError() {
         _state.update { it.copy(isLoading = false, error = DataError.Local.UNKNOWN.toUiText()) }

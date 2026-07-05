@@ -27,7 +27,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class DashboardViewModelTest {
+class HomeViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
     private val currentMonth: YearMonth = YearMonth.now()
     private val today: LocalDate = LocalDate.now()
@@ -65,7 +65,7 @@ class DashboardViewModelTest {
                         ),
                 )
 
-            val viewModel = DashboardViewModel(expenseRepository, FakeCategoryRepository(), budgetRepository)
+            val viewModel = HomeViewModel(expenseRepository, FakeCategoryRepository(), budgetRepository)
 
             val state = viewModel.state.value
             assertThat(state.isLoading).isFalse()
@@ -87,7 +87,7 @@ class DashboardViewModelTest {
     @Test
     fun `no expenses this month yields the empty state with zero totals`() =
         runTest {
-            val viewModel = DashboardViewModel(FakeExpenseRepository(), FakeCategoryRepository(), FakeBudgetRepository())
+            val viewModel = HomeViewModel(FakeExpenseRepository(), FakeCategoryRepository(), FakeBudgetRepository())
 
             val state = viewModel.state.value
             assertThat(state.isEmpty).isTrue()
@@ -117,7 +117,7 @@ class DashboardViewModelTest {
                         ),
                 )
 
-            val viewModel = DashboardViewModel(expenseRepository, FakeCategoryRepository(), budgetRepository)
+            val viewModel = HomeViewModel(expenseRepository, FakeCategoryRepository(), budgetRepository)
 
             val state = viewModel.state.value
             assertThat(state.month).isEqualTo(currentMonth)

@@ -44,38 +44,38 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
-import com.budgetpilot.feature.dashboard.presentation.components.DashboardExpenseRow
-import com.budgetpilot.feature.dashboard.presentation.model.DashboardBudgetUi
-import com.budgetpilot.feature.dashboard.presentation.model.DashboardCategoryUi
-import com.budgetpilot.feature.dashboard.presentation.model.DashboardExpenseUi
+import com.budgetpilot.feature.dashboard.presentation.components.HomeExpenseRow
+import com.budgetpilot.feature.dashboard.presentation.model.HomeBudgetUi
+import com.budgetpilot.feature.dashboard.presentation.model.HomeCategoryUi
+import com.budgetpilot.feature.dashboard.presentation.model.HomeExpenseUi
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun DashboardRoot(
+fun HomeRoot(
     onSeeAllExpenses: () -> Unit,
     onSeeBudgets: () -> Unit,
     onAddExpense: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = koinViewModel(),
+    viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            DashboardEvent.NavigateToExpenseList -> onSeeAllExpenses()
-            DashboardEvent.NavigateToBudgets -> onSeeBudgets()
-            DashboardEvent.NavigateToAddExpense -> onAddExpense()
+            HomeEvent.NavigateToExpenseList -> onSeeAllExpenses()
+            HomeEvent.NavigateToBudgets -> onSeeBudgets()
+            HomeEvent.NavigateToAddExpense -> onAddExpense()
         }
     }
 
-    DashboardScreen(state = state, onAction = viewModel::onAction, modifier = modifier)
+    HomeScreen(state = state, onAction = viewModel::onAction, modifier = modifier)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(
-    state: DashboardState,
-    onAction: (DashboardAction) -> Unit,
+fun HomeScreen(
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -83,20 +83,20 @@ fun DashboardScreen(
         topBar = { AppTopBar(title = "Budget Pilot") },
     ) { innerPadding ->
         when {
-            state.isLoading -> DashboardLoadingSkeleton(modifier = Modifier.padding(innerPadding))
+            state.isLoading -> HomeLoadingSkeleton(modifier = Modifier.padding(innerPadding))
             state.error != null ->
                 ErrorState(
                     message = state.error.asString(),
-                    onRetry = { onAction(DashboardAction.OnRetryClick) },
+                    onRetry = { onAction(HomeAction.OnRetryClick) },
                     modifier = Modifier.padding(innerPadding),
                 )
-            else -> DashboardContent(state = state, onAction = onAction, modifier = Modifier.padding(innerPadding))
+            else -> HomeContent(state = state, onAction = onAction, modifier = Modifier.padding(innerPadding))
         }
     }
 }
 
 @Composable
-private fun DashboardLoadingSkeleton(modifier: Modifier = Modifier) {
+private fun HomeLoadingSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier =
             modifier
@@ -111,9 +111,9 @@ private fun DashboardLoadingSkeleton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun DashboardContent(
-    state: DashboardState,
-    onAction: (DashboardAction) -> Unit,
+private fun HomeContent(
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -124,9 +124,9 @@ private fun DashboardContent(
                 .padding(Spacing.medium),
         verticalArrangement = Arrangement.spacedBy(Spacing.medium),
     ) {
-        DashboardHeroCard(state = state)
+        HomeHeroCard(state = state)
 
-        DashboardInsightSlot()
+        HomeInsightSlot()
 
         if (state.isEmpty) {
             EmptyState(
@@ -134,12 +134,12 @@ private fun DashboardContent(
                 title = "No expenses yet",
                 description = "Start tracking your spending by adding your first expense.",
                 actionLabel = "Add expense",
-                onAction = { onAction(DashboardAction.OnAddExpenseClick) },
+                onAction = { onAction(HomeAction.OnAddExpenseClick) },
             )
         } else {
             SectionHeader(
                 title = "Top categories",
-                action = { TextButton(onClick = { onAction(DashboardAction.OnSeeBudgetsClick) }) { Text("Charts") } },
+                action = { TextButton(onClick = { onAction(HomeAction.OnSeeBudgetsClick) }) { Text("Charts") } },
             )
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 state.topCategories.forEach { category -> TopCategoryRow(category) }
@@ -148,7 +148,7 @@ private fun DashboardContent(
             if (state.worstBudgets.isNotEmpty()) {
                 SectionHeader(
                     title = "Budgets",
-                    action = { TextButton(onClick = { onAction(DashboardAction.OnSeeBudgetsClick) }) { Text("See all") } },
+                    action = { TextButton(onClick = { onAction(HomeAction.OnSeeBudgetsClick) }) { Text("See all") } },
                 )
                 AppCard(modifier = Modifier.fillMaxWidth()) {
                     state.worstBudgets.forEachIndexed { index, budget ->
@@ -160,11 +160,11 @@ private fun DashboardContent(
 
             SectionHeader(
                 title = "Recent expenses",
-                action = { TextButton(onClick = { onAction(DashboardAction.OnSeeAllExpensesClick) }) { Text("See all") } },
+                action = { TextButton(onClick = { onAction(HomeAction.OnSeeAllExpensesClick) }) { Text("See all") } },
             )
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 state.recentExpenses.forEachIndexed { index, expense ->
-                    DashboardExpenseRow(expense = expense)
+                    HomeExpenseRow(expense = expense)
                     if (index != state.recentExpenses.lastIndex) {
                         HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
                     }
@@ -175,8 +175,8 @@ private fun DashboardContent(
 }
 
 @Composable
-private fun DashboardHeroCard(
-    state: DashboardState,
+private fun HomeHeroCard(
+    state: HomeState,
     modifier: Modifier = Modifier,
 ) {
     AppCard(modifier = modifier.fillMaxWidth()) {
@@ -200,7 +200,7 @@ private fun DashboardHeroCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = " budgeted · ${state.daysLeftInMonth} days left",
+                text = " budgeted Â· ${state.daysLeftInMonth} days left",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -210,15 +210,15 @@ private fun DashboardHeroCard(
     }
 }
 
-/** Reserved for the Phase-5 proactive-insight card (PLAN.md §6 Phase 5); intentionally empty until then. */
+/** Reserved for the Phase-5 proactive-insight card (PLAN.md Â§6 Phase 5); intentionally empty until then. */
 @Composable
-private fun DashboardInsightSlot(modifier: Modifier = Modifier) {
+private fun HomeInsightSlot(modifier: Modifier = Modifier) {
     Box(modifier = modifier)
 }
 
 @Composable
 private fun TopCategoryRow(
-    category: DashboardCategoryUi,
+    category: HomeCategoryUi,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -249,28 +249,28 @@ private fun TopCategoryRow(
 
 @PreviewLightDark
 @Composable
-private fun DashboardScreenPreview() {
+private fun HomeScreenPreview() {
     BudgetPilotTheme {
-        DashboardScreen(
+        HomeScreen(
             state =
-                DashboardState(
+                HomeState(
                     totalSpent = Money.fromPesos("18437.50"),
                     totalBudgeted = Money.fromPesos("30000.00"),
                     daysLeftInMonth = 17,
                     topCategories =
                         listOf(
-                            DashboardCategoryUi(1, "Food", "food", Money.fromPesos("8200.00"), 1f),
-                            DashboardCategoryUi(2, "Transport", "transport", Money.fromPesos("4100.00"), 0.5f),
-                            DashboardCategoryUi(3, "Bills", "bills", Money.fromPesos("2050.00"), 0.25f),
+                            HomeCategoryUi(1, "Food", "food", Money.fromPesos("8200.00"), 1f),
+                            HomeCategoryUi(2, "Transport", "transport", Money.fromPesos("4100.00"), 0.5f),
+                            HomeCategoryUi(3, "Bills", "bills", Money.fromPesos("2050.00"), 0.25f),
                         ),
                     worstBudgets =
                         listOf(
-                            DashboardBudgetUi(1, "Food", Money.fromPesos("8200.00"), Money.fromPesos("9000.00")),
-                            DashboardBudgetUi(2, "Transport", Money.fromPesos("4100.00"), Money.fromPesos("6000.00")),
+                            HomeBudgetUi(1, "Food", Money.fromPesos("8200.00"), Money.fromPesos("9000.00")),
+                            HomeBudgetUi(2, "Transport", Money.fromPesos("4100.00"), Money.fromPesos("6000.00")),
                         ),
                     recentExpenses =
                         listOf(
-                            DashboardExpenseUi(
+                            HomeExpenseUi(
                                 id = 1,
                                 merchant = "Jollibee SM North",
                                 categoryName = "Food",
@@ -291,10 +291,10 @@ private fun DashboardScreenPreview() {
 
 @PreviewLightDark
 @Composable
-private fun DashboardScreenEmptyPreview() {
+private fun HomeScreenEmptyPreview() {
     BudgetPilotTheme {
-        DashboardScreen(
-            state = DashboardState(isLoading = false, isEmpty = true),
+        HomeScreen(
+            state = HomeState(isLoading = false, isEmpty = true),
             onAction = {},
         )
     }

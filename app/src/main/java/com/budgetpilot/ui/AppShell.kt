@@ -33,7 +33,7 @@ import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.budgetsGraph
 import com.budgetpilot.feature.dashboard.presentation.navigation.HomeRoute
-import com.budgetpilot.feature.dashboard.presentation.navigation.dashboardGraph
+import com.budgetpilot.feature.dashboard.presentation.navigation.homeGraph
 import com.budgetpilot.feature.expenses.presentation.navigation.ExpenseEditorRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.expensesGraph
@@ -58,7 +58,7 @@ fun AppShell(modifier: Modifier = Modifier) {
                     navController.navigate(CaptureRoute) { launchSingleTop = true }
                 },
                 modifier = Modifier.offset(y = FabDockOffset),
-                // PLAN.md §4.1 assigns the FAB to the primary role, not M3's
+                // PLAN.md Â§4.1 assigns the FAB to the primary role, not M3's
                 // default primaryContainer.
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -79,7 +79,7 @@ fun AppShell(modifier: Modifier = Modifier) {
                     .fillMaxSize()
                     .padding(innerPadding),
         ) {
-            dashboardGraph(
+            homeGraph(
                 onSeeAllExpenses = {
                     navController.navigate(HistoryRoute) { launchSingleTop = true }
                 },

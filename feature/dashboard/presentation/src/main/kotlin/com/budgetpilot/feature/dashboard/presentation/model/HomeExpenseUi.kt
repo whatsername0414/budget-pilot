@@ -8,7 +8,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-data class DashboardExpenseUi(
+data class HomeExpenseUi(
     val id: Long,
     val merchant: String,
     val categoryName: String,
@@ -21,8 +21,8 @@ data class DashboardExpenseUi(
 
 private val TimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.US)
 
-fun Expense.toDashboardExpenseUi(category: Category?): DashboardExpenseUi =
-    DashboardExpenseUi(
+fun Expense.toHomeExpenseUi(category: Category?): HomeExpenseUi =
+    HomeExpenseUi(
         id = id,
         merchant = merchant,
         categoryName = category?.name ?: "Other",

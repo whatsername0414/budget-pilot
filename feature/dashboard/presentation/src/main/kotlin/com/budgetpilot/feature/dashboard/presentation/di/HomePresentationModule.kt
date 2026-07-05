@@ -1,10 +1,10 @@
 package com.budgetpilot.feature.dashboard.presentation.di
 
-import com.budgetpilot.feature.dashboard.presentation.DashboardViewModel
+import com.budgetpilot.feature.dashboard.presentation.HomeViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-val dashboardPresentationModule =
+val homePresentationModule =
     module {
-        viewModelOf(::DashboardViewModel)
+        viewModelOf(::HomeViewModel)
     }

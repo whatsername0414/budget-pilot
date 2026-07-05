@@ -28,12 +28,12 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
-import com.budgetpilot.feature.dashboard.presentation.model.DashboardExpenseUi
+import com.budgetpilot.feature.dashboard.presentation.model.HomeExpenseUi
 
-/** DESIGN-SPEC.md §1.4 anatomy, duplicated from :feature:expenses (features never depend on each other). */
+/** DESIGN-SPEC.md Â§1.4 anatomy, duplicated from :feature:expenses (features never depend on each other). */
 @Composable
-fun DashboardExpenseRow(
-    expense: DashboardExpenseUi,
+fun HomeExpenseRow(
+    expense: HomeExpenseUi,
     modifier: Modifier = Modifier,
 ) {
     val color = categoryColor(expense.categoryColorKey)
@@ -82,7 +82,7 @@ fun DashboardExpenseRow(
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (expense.source != ExpenseSource.MANUAL) {
-                    DashboardSourceBadge(source = expense.source, modifier = Modifier.padding(start = Spacing.extraSmall))
+                    HomeSourceBadge(source = expense.source, modifier = Modifier.padding(start = Spacing.extraSmall))
                 }
             }
         }
@@ -102,7 +102,7 @@ fun DashboardExpenseRow(
 }
 
 @Composable
-private fun DashboardSourceBadge(
+private fun HomeSourceBadge(
     source: ExpenseSource,
     modifier: Modifier = Modifier,
 ) {
@@ -122,13 +122,13 @@ private fun DashboardSourceBadge(
 
 @PreviewLightDark
 @Composable
-private fun DashboardExpenseRowPreview() {
+private fun HomeExpenseRowPreview() {
     BudgetPilotTheme {
         Surface {
             Column {
-                DashboardExpenseRow(
+                HomeExpenseRow(
                     expense =
-                        DashboardExpenseUi(
+                        HomeExpenseUi(
                             id = 1,
                             merchant = "Jollibee SM North",
                             categoryName = "Food",
@@ -139,11 +139,11 @@ private fun DashboardExpenseRowPreview() {
                             source = ExpenseSource.RECEIPT,
                         ),
                 )
-                DashboardExpenseRow(
+                HomeExpenseRow(
                     expense =
-                        DashboardExpenseUi(
+                        HomeExpenseUi(
                             id = 2,
-                            merchant = "Cash — parking",
+                            merchant = "Cash â€” parking",
                             categoryName = "Transport",
                             categoryIconKey = "directions_bus",
                             categoryColorKey = "transport",
