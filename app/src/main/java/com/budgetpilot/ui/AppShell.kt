@@ -1,6 +1,7 @@
 package com.budgetpilot.ui
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -32,11 +33,11 @@ import com.budgetpilot.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.budgetsGraph
-import com.budgetpilot.feature.dashboard.presentation.navigation.HomeRoute
-import com.budgetpilot.feature.dashboard.presentation.navigation.homeGraph
 import com.budgetpilot.feature.expenses.presentation.navigation.ExpenseEditorRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.expensesGraph
+import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
+import com.budgetpilot.feature.home.presentation.navigation.homeGraph
 import com.budgetpilot.navigation.AskRoute
 import com.budgetpilot.navigation.CaptureRoute
 import com.budgetpilot.navigation.TopLevelDestination
@@ -51,6 +52,10 @@ fun AppShell(modifier: Modifier = Modifier) {
 
     Scaffold(
         modifier = modifier,
+        // Each screen owns its own Scaffold + AppTopBar, which already consumes the
+        // status-bar inset. Without this, Scaffold's default safeDrawing contentWindowInsets
+        // (unconsumed here since there's no topBar) doubles that inset on top of AppTopBar's own.
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         bottomBar = { AppBottomBar(navController) },
         floatingActionButton = {
             FloatingActionButton(

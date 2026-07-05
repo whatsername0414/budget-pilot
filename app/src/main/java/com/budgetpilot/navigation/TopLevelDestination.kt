@@ -5,8 +5,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.budgetpilot.R
 import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
-import com.budgetpilot.feature.dashboard.presentation.navigation.HomeRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
+import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
 import androidx.compose.material.icons.automirrored.filled.List as FilledList
 import androidx.compose.material.icons.automirrored.filled.Send as FilledSend
 import androidx.compose.material.icons.automirrored.outlined.List as OutlinedList

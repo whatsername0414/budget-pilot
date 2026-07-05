@@ -28,7 +28,7 @@ dependencies {
     implementation(project(":core:database"))
     implementation(project(":feature:expenses:presentation"))
     implementation(project(":feature:budgets:presentation"))
-    implementation(project(":feature:dashboard:presentation"))
+    implementation(project(":feature:home:presentation"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
