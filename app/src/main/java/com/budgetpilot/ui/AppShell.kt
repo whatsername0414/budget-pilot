@@ -58,7 +58,7 @@ fun AppShell(modifier: Modifier = Modifier) {
                     navController.navigate(CaptureRoute) { launchSingleTop = true }
                 },
                 modifier = Modifier.offset(y = FabDockOffset),
-                // PLAN.md Â§4.1 assigns the FAB to the primary role, not M3's
+                // PLAN.md §4.1 assigns the FAB to the primary role, not M3's
                 // default primaryContainer.
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,

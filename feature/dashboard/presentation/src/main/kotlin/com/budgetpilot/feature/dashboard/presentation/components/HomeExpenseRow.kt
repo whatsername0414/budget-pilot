@@ -30,7 +30,7 @@ import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.feature.dashboard.presentation.model.HomeExpenseUi
 
-/** DESIGN-SPEC.md Â§1.4 anatomy, duplicated from :feature:expenses (features never depend on each other). */
+/** DESIGN-SPEC.md §1.4 anatomy, duplicated from :feature:expenses (features never depend on each other). */
 @Composable
 fun HomeExpenseRow(
     expense: HomeExpenseUi,
@@ -143,7 +143,7 @@ private fun HomeExpenseRowPreview() {
                     expense =
                         HomeExpenseUi(
                             id = 2,
-                            merchant = "Cash â€” parking",
+                            merchant = "Cash — parking",
                             categoryName = "Transport",
                             categoryIconKey = "directions_bus",
                             categoryColorKey = "transport",

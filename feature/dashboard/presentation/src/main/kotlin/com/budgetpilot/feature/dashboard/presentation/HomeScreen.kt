@@ -51,7 +51,7 @@ import com.budgetpilot.feature.dashboard.presentation.model.HomeExpenseUi
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeRoot(
+fun HomeScreen(
     onSeeAllExpenses: () -> Unit,
     onSeeBudgets: () -> Unit,
     onAddExpense: () -> Unit,
@@ -68,12 +68,12 @@ fun HomeRoot(
         }
     }
 
-    HomeScreen(state = state, onAction = viewModel::onAction, modifier = modifier)
+    HomeContent(state = state, onAction = viewModel::onAction, modifier = modifier)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun HomeContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -90,7 +90,7 @@ fun HomeScreen(
                     onRetry = { onAction(HomeAction.OnRetryClick) },
                     modifier = Modifier.padding(innerPadding),
                 )
-            else -> HomeContent(state = state, onAction = onAction, modifier = Modifier.padding(innerPadding))
+            else -> HomeLoadedContent(state = state, onAction = onAction, modifier = Modifier.padding(innerPadding))
         }
     }
 }
@@ -111,7 +111,7 @@ private fun HomeLoadingSkeleton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun HomeContent(
+private fun HomeLoadedContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -200,7 +200,7 @@ private fun HomeHeroCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = " budgeted Â· ${state.daysLeftInMonth} days left",
+                text = " budgeted · ${state.daysLeftInMonth} days left",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -210,7 +210,7 @@ private fun HomeHeroCard(
     }
 }
 
-/** Reserved for the Phase-5 proactive-insight card (PLAN.md Â§6 Phase 5); intentionally empty until then. */
+/** Reserved for the Phase-5 proactive-insight card (PLAN.md §6 Phase 5); intentionally empty until then. */
 @Composable
 private fun HomeInsightSlot(modifier: Modifier = Modifier) {
     Box(modifier = modifier)
@@ -251,7 +251,7 @@ private fun TopCategoryRow(
 @Composable
 private fun HomeScreenPreview() {
     BudgetPilotTheme {
-        HomeScreen(
+        HomeContent(
             state =
                 HomeState(
                     totalSpent = Money.fromPesos("18437.50"),
@@ -293,7 +293,7 @@ private fun HomeScreenPreview() {
 @Composable
 private fun HomeScreenEmptyPreview() {
     BudgetPilotTheme {
-        HomeScreen(
+        HomeContent(
             state = HomeState(isLoading = false, isEmpty = true),
             onAction = {},
         )
