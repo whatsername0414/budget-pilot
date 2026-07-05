@@ -14,6 +14,10 @@ naming:
     ignoreAnnotated: ["Composable"]
 
 style:
+  MaxLineLength:
+    # Matches ktlint's own default line-length ceiling (ktlint_official code
+    # style, 140) so the two tools don't disagree on where to wrap a line.
+    maxLineLength: 140
   MagicNumber:
     ignoreNumbers: ["-1", "0", "1", "2", "3", "100"]
     ignoreAnnotated: ["Preview", "PreviewLightDark", "PreviewScreenSizes", "PreviewFontScale", "PreviewDynamicColors"]
@@ -23,6 +27,15 @@ style:
 
 performance:
   SpreadOperator:
+    active: false
+
+exceptions:
+  TooGenericExceptionCaught:
+    # The android-error-handling skill's data-layer pattern is: catch a broad
+    # Exception at the data source/repository boundary, rethrow
+    # CancellationException, and map everything else to a typed
+    # DataError.Local/.Network — this repeats in every repository, so it's a
+    # deliberate, skill-sanctioned pattern rather than a bug to flag.
     active: false
 
 complexity:

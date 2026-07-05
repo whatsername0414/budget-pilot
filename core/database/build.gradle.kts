@@ -9,6 +9,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:domain"))
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.assertk)
