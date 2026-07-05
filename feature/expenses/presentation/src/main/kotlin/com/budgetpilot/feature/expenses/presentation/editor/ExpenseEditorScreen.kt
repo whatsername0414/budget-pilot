@@ -60,7 +60,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-fun ExpenseEditorRoot(
+fun ExpenseEditorScreen(
     onNavigateBack: (confirmationMessage: String?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ExpenseEditorViewModel = koinViewModel(),
@@ -79,7 +79,7 @@ fun ExpenseEditorRoot(
         }
     }
 
-    ExpenseEditorScreen(
+    ExpenseEditorContent(
         state = state,
         onAction = viewModel::onAction,
         modifier = modifier,
@@ -89,7 +89,7 @@ fun ExpenseEditorRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpenseEditorScreen(
+fun ExpenseEditorContent(
     state: ExpenseEditorState,
     onAction: (ExpenseEditorAction) -> Unit,
     modifier: Modifier = Modifier,

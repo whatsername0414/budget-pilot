@@ -62,7 +62,7 @@ import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
 @Composable
-fun ExpenseListRoot(
+fun ExpenseListScreen(
     onNavigateToExpenseEditor: (Long?) -> Unit,
     modifier: Modifier = Modifier,
     confirmationMessage: String? = null,
@@ -106,7 +106,7 @@ fun ExpenseListRoot(
         }
     }
 
-    ExpenseListScreen(
+    ExpenseListContent(
         state = state,
         onAction = viewModel::onAction,
         modifier = modifier,
@@ -116,7 +116,7 @@ fun ExpenseListRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpenseListScreen(
+fun ExpenseListContent(
     state: ExpenseListState,
     onAction: (ExpenseListAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -312,7 +312,7 @@ private fun SwipeableExpenseRow(
 @Composable
 private fun ExpenseListScreenPreview() {
     BudgetPilotTheme {
-        ExpenseListScreen(
+        ExpenseListContent(
             state =
                 ExpenseListState(
                     isLoading = false,
@@ -362,7 +362,7 @@ private fun ExpenseListScreenPreview() {
 @Composable
 private fun ExpenseListScreenEmptyPreview() {
     BudgetPilotTheme {
-        ExpenseListScreen(
+        ExpenseListContent(
             state = ExpenseListState(isLoading = false),
             onAction = {},
         )
@@ -373,7 +373,7 @@ private fun ExpenseListScreenEmptyPreview() {
 @Composable
 private fun ExpenseListScreenLoadingPreview() {
     BudgetPilotTheme {
-        ExpenseListScreen(
+        ExpenseListContent(
             state = ExpenseListState(isLoading = true),
             onAction = {},
         )

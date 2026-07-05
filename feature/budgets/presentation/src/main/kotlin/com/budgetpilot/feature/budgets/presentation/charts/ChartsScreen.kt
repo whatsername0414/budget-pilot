@@ -38,17 +38,17 @@ import org.koin.androidx.compose.koinViewModel
 import java.time.YearMonth
 
 @Composable
-fun ChartsRoot(
+fun ChartsScreen(
     modifier: Modifier = Modifier,
     viewModel: ChartsViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    ChartsScreen(state = state, onAction = viewModel::onAction, modifier = modifier)
+    ChartsContent(state = state, onAction = viewModel::onAction, modifier = modifier)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChartsScreen(
+fun ChartsContent(
     state: ChartsState,
     onAction: (ChartsAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -78,7 +78,7 @@ fun ChartsScreen(
                         message = state.error.asString(),
                         onRetry = { onAction(ChartsAction.OnRetryClick) },
                     )
-                else -> ChartsContent(state = state)
+                else -> ChartsLoadedContent(state = state)
             }
         }
     }
@@ -99,7 +99,7 @@ private fun LoadingChartsSkeleton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ChartsContent(
+private fun ChartsLoadedContent(
     state: ChartsState,
     modifier: Modifier = Modifier,
 ) {
@@ -155,7 +155,7 @@ private fun ChartsContent(
 @Composable
 private fun ChartsScreenPreview() {
     BudgetPilotTheme {
-        ChartsScreen(
+        ChartsContent(
             state =
                 ChartsState(
                     isLoading = false,
@@ -184,7 +184,7 @@ private fun ChartsScreenPreview() {
 @Composable
 private fun ChartsScreenEmptyPreview() {
     BudgetPilotTheme {
-        ChartsScreen(state = ChartsState(isLoading = false), onAction = {})
+        ChartsContent(state = ChartsState(isLoading = false), onAction = {})
     }
 }
 
@@ -192,6 +192,6 @@ private fun ChartsScreenEmptyPreview() {
 @Composable
 private fun ChartsScreenLoadingPreview() {
     BudgetPilotTheme {
-        ChartsScreen(state = ChartsState(isLoading = true), onAction = {})
+        ChartsContent(state = ChartsState(isLoading = true), onAction = {})
     }
 }

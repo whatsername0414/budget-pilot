@@ -55,7 +55,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun BudgetListRoot(
+fun BudgetListScreen(
     modifier: Modifier = Modifier,
     viewModel: BudgetListViewModel = koinViewModel(),
 ) {
@@ -72,7 +72,7 @@ fun BudgetListRoot(
         }
     }
 
-    BudgetListScreen(
+    BudgetListContent(
         state = state,
         onAction = viewModel::onAction,
         modifier = modifier,
@@ -97,7 +97,7 @@ fun BudgetListRoot(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BudgetListScreen(
+fun BudgetListContent(
     state: BudgetListState,
     onAction: (BudgetListAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -130,7 +130,7 @@ fun BudgetListScreen(
                         onRetry = { onAction(BudgetListAction.OnRetryClick) },
                     )
                 else ->
-                    BudgetListContent(
+                    BudgetListLoadedContent(
                         state = state,
                         onAction = onAction,
                     )
@@ -160,7 +160,7 @@ private fun LoadingBudgetsSkeleton(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun BudgetListContent(
+private fun BudgetListLoadedContent(
     state: BudgetListState,
     onAction: (BudgetListAction) -> Unit,
     modifier: Modifier = Modifier,

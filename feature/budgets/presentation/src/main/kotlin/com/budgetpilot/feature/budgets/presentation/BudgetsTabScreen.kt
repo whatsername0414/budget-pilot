@@ -11,8 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.budgetpilot.feature.budgets.presentation.charts.ChartsRoot
-import com.budgetpilot.feature.budgets.presentation.main.BudgetListRoot
+import com.budgetpilot.feature.budgets.presentation.charts.ChartsScreen
+import com.budgetpilot.feature.budgets.presentation.main.BudgetListScreen
 
 // DESIGN-SPEC.md §6 shows one shared AppTopBar/MonthSelector above the tab row.
 // BudgetListScreen/ChartsScreen already ship their own (built in P1.5/P1.6), so
@@ -24,7 +24,7 @@ private enum class BudgetsTab {
 }
 
 @Composable
-fun BudgetsTabRoot(modifier: Modifier = Modifier) {
+fun BudgetsTabScreen(modifier: Modifier = Modifier) {
     var selectedTab by rememberSaveable { mutableStateOf(BudgetsTab.BUDGETS) }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -41,8 +41,8 @@ fun BudgetsTabRoot(modifier: Modifier = Modifier) {
             )
         }
         when (selectedTab) {
-            BudgetsTab.BUDGETS -> BudgetListRoot(modifier = Modifier.weight(1f))
-            BudgetsTab.CHARTS -> ChartsRoot(modifier = Modifier.weight(1f))
+            BudgetsTab.BUDGETS -> BudgetListScreen(modifier = Modifier.weight(1f))
+            BudgetsTab.CHARTS -> ChartsScreen(modifier = Modifier.weight(1f))
         }
     }
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.budgetpilot.feature.expenses.presentation.editor.ExpenseEditorRoot
-import com.budgetpilot.feature.expenses.presentation.main.ExpenseListRoot
+import com.budgetpilot.feature.expenses.presentation.editor.ExpenseEditorScreen
+import com.budgetpilot.feature.expenses.presentation.main.ExpenseListScreen
 
 private const val EXPENSE_EDITOR_RESULT_KEY = "expense_editor_confirmation"
 
@@ -16,7 +16,7 @@ fun NavGraphBuilder.expensesGraph(navController: NavController) {
             .getStateFlow<String?>(EXPENSE_EDITOR_RESULT_KEY, null)
             .collectAsStateWithLifecycle()
 
-        ExpenseListRoot(
+        ExpenseListScreen(
             onNavigateToExpenseEditor = { expenseId ->
                 navController.navigate(ExpenseEditorRoute(expenseId))
             },
@@ -27,7 +27,7 @@ fun NavGraphBuilder.expensesGraph(navController: NavController) {
         )
     }
     composable<ExpenseEditorRoute> {
-        ExpenseEditorRoot(
+        ExpenseEditorScreen(
             onNavigateBack = { confirmationMessage ->
                 navController.previousBackStackEntry
                     ?.savedStateHandle

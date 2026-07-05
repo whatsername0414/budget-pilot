@@ -15,7 +15,7 @@ class ExpenseListRobot(
     ) = apply {
         composeTestRule.setContent {
             BudgetPilotTheme {
-                ExpenseListScreen(state = state, onAction = onAction)
+                ExpenseListContent(state = state, onAction = onAction)
             }
         }
     }

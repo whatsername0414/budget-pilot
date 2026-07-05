@@ -11,7 +11,7 @@ import com.budgetpilot.feature.budgets.presentation.main.model.UnbudgetedCategor
 @Composable
 private fun BudgetListScreenPreview() {
     BudgetPilotTheme {
-        BudgetListScreen(
+        BudgetListContent(
             state =
                 BudgetListState(
                     isLoading = false,
@@ -63,7 +63,7 @@ private fun BudgetListScreenPreview() {
 @Composable
 private fun BudgetListScreenEmptyPreview() {
     BudgetPilotTheme {
-        BudgetListScreen(
+        BudgetListContent(
             state =
                 BudgetListState(
                     isLoading = false,
@@ -82,7 +82,7 @@ private fun BudgetListScreenEmptyPreview() {
 @Composable
 private fun BudgetListScreenLoadingPreview() {
     BudgetPilotTheme {
-        BudgetListScreen(
+        BudgetListContent(
             state = BudgetListState(isLoading = true),
             onAction = {},
         )

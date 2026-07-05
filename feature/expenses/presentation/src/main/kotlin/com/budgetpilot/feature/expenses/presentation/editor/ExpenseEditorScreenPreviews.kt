@@ -10,7 +10,7 @@ import com.budgetpilot.core.presentation.UiText
 @Composable
 private fun ExpenseEditorScreenAddPreview() {
     BudgetPilotTheme {
-        ExpenseEditorScreen(
+        ExpenseEditorContent(
             state =
                 ExpenseEditorState(
                     mode = ExpenseEditorMode.ADD,
@@ -32,7 +32,7 @@ private fun ExpenseEditorScreenAddPreview() {
 @Composable
 private fun ExpenseEditorScreenEditPreview() {
     BudgetPilotTheme {
-        ExpenseEditorScreen(
+        ExpenseEditorContent(
             state =
                 ExpenseEditorState(
                     mode = ExpenseEditorMode.EDIT,
