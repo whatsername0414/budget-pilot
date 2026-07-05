@@ -30,6 +30,10 @@ private val LightColorScheme: ColorScheme =
         onBackground = OnBackgroundLight,
         surface = SurfaceLight,
         onSurface = OnSurfaceLight,
+        surfaceVariant = SurfaceVariantLight,
+        onSurfaceVariant = OnSurfaceVariantLight,
+        outline = OutlineLight,
+        outlineVariant = OutlineVariantLight,
     )
 
 private val DarkColorScheme: ColorScheme =
@@ -54,6 +58,10 @@ private val DarkColorScheme: ColorScheme =
         onBackground = OnBackgroundDark,
         surface = SurfaceDark,
         onSurface = OnSurfaceDark,
+        surfaceVariant = SurfaceVariantDark,
+        onSurfaceVariant = OnSurfaceVariantDark,
+        outline = OutlineDark,
+        outlineVariant = OutlineVariantDark,
     )
 
 /** Namespace for design tokens that M3's [MaterialTheme] has no slot for. */

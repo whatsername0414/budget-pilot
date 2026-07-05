@@ -30,4 +30,5 @@ include(":core:data")
 include(":core:presentation")
 include(":core:design-system")
 include(":core:database")
+include(":feature:expenses:presentation")
  

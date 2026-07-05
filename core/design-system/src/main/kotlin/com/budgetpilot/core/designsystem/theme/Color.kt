@@ -35,6 +35,23 @@ val OnWarningLight = Color(0xFFFFFFFF)
 val WarningContainerLight = Color(0xFFFFE3B3)
 val OnWarningContainerLight = Color(0xFF2A1800)
 
+// Slate-tinted neutral roles (DESIGN-SPEC.md §1.2) — M3's warm-gray baseline
+// clashes with this theme's slate/navy palette.
+val OnSurfaceVariantLight = Color(0xFF475569)
+val OutlineLight = Color(0xFFCBD5E1)
+val OutlineVariantLight = Color(0xFFE2E8F0)
+val SurfaceVariantLight = Color(0xFFEEF2F7)
+
+// Category identity colors (DESIGN-SPEC.md §1.3) — identity, not status.
+val CategoryFoodLight = Color(0xFFDC2626)
+val CategoryTransportLight = Color(0xFF2563EB)
+val CategoryBillsLight = Color(0xFF7C3AED)
+val CategoryGroceriesLight = Color(0xFF059669)
+val CategoryShoppingLight = Color(0xFFDB2777)
+val CategoryHealthLight = Color(0xFF0891B2)
+val CategoryEntertainmentLight = Color(0xFFD97706)
+val CategoryOtherLight = Color(0xFF64748B)
+
 // Dark theme — deep navy surfaces (not pure black) per PLAN.md §4.1.
 val PrimaryDark = Color(0xFF8FB0FF)
 val OnPrimaryDark = Color(0xFF002C71)
@@ -65,3 +82,17 @@ val WarningDark = Color(0xFFFFC66E)
 val OnWarningDark = Color(0xFF452B00)
 val WarningContainerDark = Color(0xFF613F00)
 val OnWarningContainerDark = Color(0xFFFFDDAF)
+
+val OnSurfaceVariantDark = Color(0xFF94A3B8)
+val OutlineDark = Color(0xFF334155)
+val OutlineVariantDark = Color(0xFF1E293B)
+val SurfaceVariantDark = Color(0xFF16213C)
+
+val CategoryFoodDark = Color(0xFFF87171)
+val CategoryTransportDark = Color(0xFF60A5FA)
+val CategoryBillsDark = Color(0xFFA78BFA)
+val CategoryGroceriesDark = Color(0xFF34D399)
+val CategoryShoppingDark = Color(0xFFF472B6)
+val CategoryHealthDark = Color(0xFF22D3EE)
+val CategoryEntertainmentDark = Color(0xFFFBBF24)
+val CategoryOtherDark = Color(0xFF94A3B8)
