@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.budgetpilot.android.library)
+    alias(libs.plugins.budgetpilot.koin)
 }
 
 android {
