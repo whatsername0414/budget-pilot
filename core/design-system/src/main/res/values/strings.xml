@@ -7,4 +7,5 @@
     <string name="budget_status_warning">Nearing budget limit</string>
     <string name="budget_status_over">Over budget</string>
     <string name="budget_of">of</string>
+    <string name="budget_left">left</string>
 </resources>

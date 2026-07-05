@@ -90,6 +90,7 @@ fun BudgetProgressBar(
     budget: Money,
     modifier: Modifier = Modifier,
     label: String? = null,
+    showRemaining: Boolean = false,
 ) {
     val status = budgetStatusFor(spent, budget)
     val presentation = status.presentation()
@@ -130,12 +131,20 @@ fun BudgetProgressBar(
                 color = presentation.color,
                 modifier = Modifier.weight(1f),
             )
-            AmountText(amount = spent, style = MaterialTheme.typography.labelMedium)
-            Text(
-                text = " ${stringResource(R.string.budget_of)} ",
-                style = MaterialTheme.typography.labelMedium,
-            )
-            AmountText(amount = budget, style = MaterialTheme.typography.labelMedium)
+            if (showRemaining) {
+                AmountText(amount = budget - spent, style = MaterialTheme.typography.labelMedium)
+                Text(
+                    text = " ${stringResource(R.string.budget_left)}",
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            } else {
+                AmountText(amount = spent, style = MaterialTheme.typography.labelMedium)
+                Text(
+                    text = " ${stringResource(R.string.budget_of)} ",
+                    style = MaterialTheme.typography.labelMedium,
+                )
+                AmountText(amount = budget, style = MaterialTheme.typography.labelMedium)
+            }
         }
     }
 }
