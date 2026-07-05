@@ -39,11 +39,12 @@ fun CategoryChip(
                 tint = color,
             )
         },
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = color.copy(alpha = 0.18f),
-            selectedLabelColor = color,
-            selectedLeadingIconColor = color,
-        ),
+        colors =
+            FilterChipDefaults.filterChipColors(
+                selectedContainerColor = color.copy(alpha = 0.18f),
+                selectedLabelColor = color,
+                selectedLeadingIconColor = color,
+            ),
         modifier = modifier,
     )
 }

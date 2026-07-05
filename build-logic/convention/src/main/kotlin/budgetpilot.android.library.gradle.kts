@@ -17,7 +17,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
+
+    lint {
+        lintConfig = rootProject.file("config/lint/lint.xml")
+    }
 }
+
+configureLintAndFormatting()
 
 tasks.withType<Test> {
     useJUnitPlatform()

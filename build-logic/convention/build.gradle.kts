@@ -11,4 +11,6 @@ dependencies {
     implementation(libs.room.gradlePlugin)
     implementation(libs.compose.compiler.gradlePlugin)
     implementation(libs.kotlin.serialization.gradlePlugin)
+    implementation(libs.ktlint.gradlePlugin)
+    implementation(libs.detekt.gradlePlugin)
 }

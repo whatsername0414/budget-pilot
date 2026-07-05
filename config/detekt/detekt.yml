@@ -1,0 +1,85 @@
+build:
+  maxIssues: 0
+
+config:
+  validation: true
+  warningsAsErrors: false
+
+formatting:
+  # ktlint (config'd separately via .editorconfig) is the single source of truth for formatting.
+  active: false
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ["Composable"]
+
+style:
+  MagicNumber:
+    ignoreNumbers: ["-1", "0", "1", "2", "3", "100"]
+    ignoreAnnotated: ["Preview", "PreviewLightDark", "PreviewScreenSizes", "PreviewFontScale", "PreviewDynamicColors"]
+    excludes: ["**/theme/Color.kt", "**/test/**", "**/androidTest/**"]
+  UnusedPrivateMember:
+    ignoreAnnotated: ["Preview", "PreviewLightDark", "PreviewScreenSizes", "PreviewFontScale", "PreviewDynamicColors"]
+
+performance:
+  SpreadOperator:
+    active: false
+
+complexity:
+  LongMethod:
+    threshold: 80
+  CyclomaticComplexMethod:
+    threshold: 20
+  LongParameterList:
+    functionThreshold: 8
+    constructorThreshold: 8
+
+Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+  ComposableParamOrder:
+    active: true
+  CompositionLocalAllowlist:
+    active: false
+  CompositionLocalNaming:
+    active: true
+  ContentEmitterReturningValues:
+    active: true
+  LambdaParameterEventTrailing:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: true
+  ModifierComposed:
+    active: true
+  ModifierMissing:
+    active: true
+  ModifierNaming:
+    active: true
+  ModifierNotUsedAtRoot:
+    active: true
+  ModifierReused:
+    active: true
+  ModifierWithoutDefault:
+    active: true
+  MultipleEmitters:
+    active: true
+  MutableParams:
+    active: true
+  MutableStateAutoboxing:
+    active: true
+  MutableStateParam:
+    active: true
+  PreviewAnnotationNaming:
+    active: true
+  PreviewPublic:
+    active: true
+  RememberMissing:
+    active: true
+  UnstableCollections:
+    active: true
+  ViewModelForwarding:
+    active: true
+  ViewModelInjection:
+    active: true

@@ -70,9 +70,10 @@ fun AppShell(modifier: Modifier = Modifier) {
         NavHost(
             navController = navController,
             startDestination = HomeRoute,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
         ) {
             composable<HomeRoute> {
                 PlaceholderScreen(
@@ -119,9 +120,10 @@ private fun AppBottomBar(navController: NavController) {
                 // Gap under the docked Capture FAB.
                 Spacer(modifier = Modifier.weight(1f))
             }
-            val selected = currentDestination?.hierarchy?.any {
-                it.hasRoute(destination.route::class)
-            } == true
+            val selected =
+                currentDestination?.hierarchy?.any {
+                    it.hasRoute(destination.route::class)
+                } == true
             NavigationBarItem(
                 selected = selected,
                 onClick = {
@@ -135,11 +137,12 @@ private fun AppBottomBar(navController: NavController) {
                 },
                 icon = {
                     Icon(
-                        imageVector = if (selected) {
-                            destination.selectedIcon
-                        } else {
-                            destination.unselectedIcon
-                        },
+                        imageVector =
+                            if (selected) {
+                                destination.selectedIcon
+                            } else {
+                                destination.unselectedIcon
+                            },
                         contentDescription = null,
                     )
                 },

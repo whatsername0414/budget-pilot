@@ -2,6 +2,8 @@ package com.budgetpilot.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.budgetpilot.R
 import androidx.compose.material.icons.automirrored.filled.List as FilledList
 import androidx.compose.material.icons.automirrored.filled.Send as FilledSend
 import androidx.compose.material.icons.automirrored.outlined.List as OutlinedList
@@ -10,8 +12,6 @@ import androidx.compose.material.icons.filled.DateRange as FilledDateRange
 import androidx.compose.material.icons.filled.Home as FilledHome
 import androidx.compose.material.icons.outlined.DateRange as OutlinedDateRange
 import androidx.compose.material.icons.outlined.Home as OutlinedHome
-import androidx.compose.ui.graphics.vector.ImageVector
-import com.budgetpilot.R
 
 /** The four bottom-bar destinations; Capture is reached via the FAB, not the bar. */
 enum class TopLevelDestination(

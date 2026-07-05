@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.budgetpilot.core.designsystem.components
 
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +39,10 @@ enum class BudgetStatus { ON_TRACK, WARNING, OVER_BUDGET }
 private const val WARNING_THRESHOLD_PERCENT = 80.0
 private const val OVER_BUDGET_THRESHOLD_PERCENT = 100.0
 
-fun budgetStatusFor(spent: Money, budget: Money): BudgetStatus {
+fun budgetStatusFor(
+    spent: Money,
+    budget: Money,
+): BudgetStatus {
     val percent = spent.percentOf(budget)
     return when {
         percent >= OVER_BUDGET_THRESHOLD_PERCENT -> BudgetStatus.OVER_BUDGET
@@ -53,23 +58,27 @@ private data class BudgetStatusPresentation(
 )
 
 @Composable
-private fun BudgetStatus.presentation(): BudgetStatusPresentation = when (this) {
-    BudgetStatus.ON_TRACK -> BudgetStatusPresentation(
-        color = MaterialTheme.colorScheme.tertiary,
-        icon = Icons.Filled.CheckCircle,
-        label = stringResource(R.string.budget_status_on_track),
-    )
-    BudgetStatus.WARNING -> BudgetStatusPresentation(
-        color = BudgetPilotTheme.extendedColors.warning,
-        icon = Icons.Filled.Warning,
-        label = stringResource(R.string.budget_status_warning),
-    )
-    BudgetStatus.OVER_BUDGET -> BudgetStatusPresentation(
-        color = MaterialTheme.colorScheme.error,
-        icon = Icons.Filled.Warning,
-        label = stringResource(R.string.budget_status_over),
-    )
-}
+private fun BudgetStatus.presentation(): BudgetStatusPresentation =
+    when (this) {
+        BudgetStatus.ON_TRACK ->
+            BudgetStatusPresentation(
+                color = MaterialTheme.colorScheme.tertiary,
+                icon = Icons.Filled.CheckCircle,
+                label = stringResource(R.string.budget_status_on_track),
+            )
+        BudgetStatus.WARNING ->
+            BudgetStatusPresentation(
+                color = BudgetPilotTheme.extendedColors.warning,
+                icon = Icons.Filled.Warning,
+                label = stringResource(R.string.budget_status_warning),
+            )
+        BudgetStatus.OVER_BUDGET ->
+            BudgetStatusPresentation(
+                color = MaterialTheme.colorScheme.error,
+                icon = Icons.Filled.Warning,
+                label = stringResource(R.string.budget_status_over),
+            )
+    }
 
 /**
  * Budget progress with a green/amber/red threshold — always paired with an
@@ -84,11 +93,12 @@ fun BudgetProgressBar(
 ) {
     val status = budgetStatusFor(spent, budget)
     val presentation = status.presentation()
-    val progress = if (budget == Money.ZERO) {
-        0f
-    } else {
-        (spent.percentOf(budget) / 100.0).toFloat().coerceIn(0f, 1f)
-    }
+    val progress =
+        if (budget == Money.ZERO) {
+            0f
+        } else {
+            (spent.percentOf(budget) / 100.0).toFloat().coerceIn(0f, 1f)
+        }
 
     Column(modifier = modifier.fillMaxWidth()) {
         if (label != null) {
@@ -97,10 +107,11 @@ fun BudgetProgressBar(
         }
         LinearProgressIndicator(
             progress = { progress },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .clip(RoundedCornerShape(4.dp)),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+                    .clip(RoundedCornerShape(4.dp)),
             color = presentation.color,
             trackColor = presentation.color.copy(alpha = 0.16f),
         )

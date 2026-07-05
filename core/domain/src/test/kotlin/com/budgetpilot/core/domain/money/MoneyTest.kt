@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class MoneyTest {
-
     @Test
     fun `plus adds centavos`() {
         val result = Money.ofCentavos(1_000) + Money.ofCentavos(250)

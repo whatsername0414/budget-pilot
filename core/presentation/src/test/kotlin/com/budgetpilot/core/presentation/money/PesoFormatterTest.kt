@@ -6,7 +6,6 @@ import com.budgetpilot.core.domain.money.Money
 import org.junit.jupiter.api.Test
 
 class PesoFormatterTest {
-
     @Test
     fun `zero formats as peso zero`() {
         assertThat(PesoFormatter.format(Money.ZERO)).isEqualTo("₱0.00")

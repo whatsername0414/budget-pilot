@@ -9,7 +9,6 @@ import kotlin.math.abs
  * system locale.
  */
 object PesoFormatter {
-
     fun format(money: Money): String {
         val centavos = money.centavos
         val sign = if (centavos < 0) "-" else ""

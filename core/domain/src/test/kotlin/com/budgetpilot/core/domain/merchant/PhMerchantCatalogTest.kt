@@ -6,7 +6,6 @@ import assertk.assertions.isNull
 import org.junit.jupiter.api.Test
 
 class PhMerchantCatalogTest {
-
     @Test
     fun `matches an exact known merchant name`() {
         assertThat(PhMerchantCatalog.suggestCategory("Jollibee")).isEqualTo("Food")

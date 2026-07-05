@@ -11,19 +11,21 @@ data class ExtendedColors(
     val onWarningContainer: Color,
 )
 
-val LightExtendedColors = ExtendedColors(
-    warning = WarningLight,
-    onWarning = OnWarningLight,
-    warningContainer = WarningContainerLight,
-    onWarningContainer = OnWarningContainerLight,
-)
+val LightExtendedColors =
+    ExtendedColors(
+        warning = WarningLight,
+        onWarning = OnWarningLight,
+        warningContainer = WarningContainerLight,
+        onWarningContainer = OnWarningContainerLight,
+    )
 
-val DarkExtendedColors = ExtendedColors(
-    warning = WarningDark,
-    onWarning = OnWarningDark,
-    warningContainer = WarningContainerDark,
-    onWarningContainer = OnWarningContainerDark,
-)
+val DarkExtendedColors =
+    ExtendedColors(
+        warning = WarningDark,
+        onWarning = OnWarningDark,
+        warningContainer = WarningContainerDark,
+        onWarningContainer = OnWarningContainerDark,
+    )
 
 /**
  * Backing store for [BudgetPilotTheme.extendedColors]. The app only ever has

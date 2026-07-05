@@ -6,6 +6,8 @@ kotlin {
     jvmToolchain(21)
 }
 
+configureLintAndFormatting()
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }

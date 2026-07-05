@@ -39,9 +39,10 @@ private fun SectionHeaderPreview() {
         Surface {
             SectionHeader(
                 title = "Recent expenses",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Spacing.medium),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(Spacing.medium),
                 action = { TextButton(onClick = {}) { Text("See all") } },
             )
         }

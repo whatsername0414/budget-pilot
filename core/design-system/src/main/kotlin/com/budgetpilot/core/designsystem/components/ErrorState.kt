@@ -30,9 +30,10 @@ fun ErrorState(
     retryLabel: String = stringResource(R.string.action_retry),
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(Spacing.large),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(Spacing.large),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall),
     ) {

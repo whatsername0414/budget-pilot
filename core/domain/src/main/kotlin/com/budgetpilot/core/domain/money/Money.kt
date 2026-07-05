@@ -4,8 +4,9 @@ package com.budgetpilot.core.domain.money
  * A peso amount stored as centavos to avoid floating-point rounding errors.
  */
 @JvmInline
-value class Money private constructor(val centavos: Long) : Comparable<Money> {
-
+value class Money private constructor(
+    val centavos: Long,
+) : Comparable<Money> {
     operator fun plus(other: Money): Money = Money(centavos + other.centavos)
 
     operator fun minus(other: Money): Money = Money(centavos - other.centavos)
@@ -32,11 +33,13 @@ value class Money private constructor(val centavos: Long) : Comparable<Money> {
          * Throws [IllegalArgumentException] for malformed input or sub-centavo precision.
          */
         fun fromPesos(pesos: String): Money {
-            val cleaned = pesos.trim()
-                .removePrefix("₱")
-                .removePrefix("PHP")
-                .trim()
-                .replace(",", "")
+            val cleaned =
+                pesos
+                    .trim()
+                    .removePrefix("₱")
+                    .removePrefix("PHP")
+                    .trim()
+                    .replace(",", "")
             require(cleaned.isNotEmpty()) { "Invalid peso amount: $pesos" }
 
             val negative = cleaned.startsWith("-")

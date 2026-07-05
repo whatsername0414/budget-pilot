@@ -36,26 +36,29 @@ import com.budgetpilot.core.designsystem.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 
-fun Modifier.shimmerEffect(): Modifier = composed {
-    var size by remember { mutableStateOf(IntSize.Zero) }
-    val transition = rememberInfiniteTransition(label = "shimmer")
-    val startOffsetX by transition.animateFloat(
-        initialValue = -2 * size.width.toFloat(),
-        targetValue = 2 * size.width.toFloat(),
-        animationSpec = infiniteRepeatable(animation = tween(durationMillis = 1000)),
-        label = "shimmerTranslate",
-    )
-    val baseColor = MaterialTheme.colorScheme.surfaceContainerHigh
-    val highlightColor = MaterialTheme.colorScheme.surfaceContainerHighest
+@Suppress("ktlint:compose:modifier-composed-check", "ModifierComposed")
+fun Modifier.shimmerEffect(): Modifier =
+    composed {
+        var size by remember { mutableStateOf(IntSize.Zero) }
+        val transition = rememberInfiniteTransition(label = "shimmer")
+        val startOffsetX by transition.animateFloat(
+            initialValue = -2 * size.width.toFloat(),
+            targetValue = 2 * size.width.toFloat(),
+            animationSpec = infiniteRepeatable(animation = tween(durationMillis = 1000)),
+            label = "shimmerTranslate",
+        )
+        val baseColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        val highlightColor = MaterialTheme.colorScheme.surfaceContainerHighest
 
-    background(
-        brush = Brush.linearGradient(
-            colors = listOf(baseColor, highlightColor, baseColor),
-            start = Offset(startOffsetX, 0f),
-            end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat()),
-        ),
-    ).onGloballyPositioned { size = it.size }
-}
+        background(
+            brush =
+                Brush.linearGradient(
+                    colors = listOf(baseColor, highlightColor, baseColor),
+                    start = Offset(startOffsetX, 0f),
+                    end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat()),
+                ),
+        ).onGloballyPositioned { size = it.size }
+    }
 
 /** Shimmering placeholder shown while content loads. */
 @Composable
@@ -65,10 +68,11 @@ fun LoadingSkeleton(
 ) {
     val loadingDescription = stringResource(R.string.cd_loading)
     Box(
-        modifier = modifier
-            .clip(shape)
-            .shimmerEffect()
-            .semantics { contentDescription = loadingDescription },
+        modifier =
+            modifier
+                .clip(shape)
+                .shimmerEffect()
+                .semantics { contentDescription = loadingDescription },
     )
 }
 
@@ -79,15 +83,17 @@ private fun LoadingSkeletonPreview() {
         Surface {
             Column(modifier = Modifier.padding(Spacing.medium)) {
                 LoadingSkeleton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(20.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(20.dp),
                 )
                 Spacer(Modifier.height(Spacing.small))
                 LoadingSkeleton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(64.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(64.dp),
                 )
             }
         }
