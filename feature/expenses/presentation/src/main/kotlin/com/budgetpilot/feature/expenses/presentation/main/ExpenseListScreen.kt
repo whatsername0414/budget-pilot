@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation
+package com.budgetpilot.feature.expenses.presentation.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -48,13 +48,13 @@ import com.budgetpilot.core.domain.model.Category
 import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
-import com.budgetpilot.feature.expenses.presentation.components.DateRangeFilterSheet
-import com.budgetpilot.feature.expenses.presentation.components.ExpenseFilterChipRow
-import com.budgetpilot.feature.expenses.presentation.components.ExpenseRow
-import com.budgetpilot.feature.expenses.presentation.components.ExpenseSearchField
-import com.budgetpilot.feature.expenses.presentation.model.DateRangePreset
-import com.budgetpilot.feature.expenses.presentation.model.ExpenseDayGroupUi
-import com.budgetpilot.feature.expenses.presentation.model.ExpenseUi
+import com.budgetpilot.feature.expenses.presentation.main.components.DateRangeFilterSheet
+import com.budgetpilot.feature.expenses.presentation.main.components.ExpenseFilterChipRow
+import com.budgetpilot.feature.expenses.presentation.main.components.ExpenseRow
+import com.budgetpilot.feature.expenses.presentation.main.components.ExpenseSearchField
+import com.budgetpilot.feature.expenses.presentation.main.model.DateRangePreset
+import com.budgetpilot.feature.expenses.presentation.main.model.ExpenseDayGroupUi
+import com.budgetpilot.feature.expenses.presentation.main.model.ExpenseUi
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate

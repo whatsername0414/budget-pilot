@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation
+package com.budgetpilot.feature.expenses.presentation.main
 
 import com.budgetpilot.core.presentation.UiText
 

@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation
+package com.budgetpilot.feature.expenses.presentation.editor
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -50,7 +50,7 @@ import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.model.Category
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
-import com.budgetpilot.feature.expenses.presentation.components.AmountKeypad
+import com.budgetpilot.feature.expenses.presentation.editor.components.AmountKeypad
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.time.Instant

@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation.components
+package com.budgetpilot.feature.expenses.presentation.editor.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

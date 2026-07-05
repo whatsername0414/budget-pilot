@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation.components
+package com.budgetpilot.feature.expenses.presentation.main.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +29,7 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
-import com.budgetpilot.feature.expenses.presentation.model.ExpenseUi
+import com.budgetpilot.feature.expenses.presentation.main.model.ExpenseUi
 
 /** DESIGN-SPEC.md §1.4 anatomy: 40dp tinted icon · merchant/category · amount/time. Row is the full touch target. */
 @Composable

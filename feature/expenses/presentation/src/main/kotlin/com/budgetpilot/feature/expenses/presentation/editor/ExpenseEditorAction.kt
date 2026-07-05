@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation
+package com.budgetpilot.feature.expenses.presentation.editor
 
 import java.time.LocalDate
 

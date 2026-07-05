@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation
+package com.budgetpilot.feature.expenses.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,8 +10,8 @@ import com.budgetpilot.core.domain.onSuccess
 import com.budgetpilot.core.domain.repository.CategoryRepository
 import com.budgetpilot.core.domain.repository.ExpenseRepository
 import com.budgetpilot.core.presentation.toUiText
-import com.budgetpilot.feature.expenses.presentation.model.DateRangePreset
-import com.budgetpilot.feature.expenses.presentation.model.toDayGroups
+import com.budgetpilot.feature.expenses.presentation.main.model.DateRangePreset
+import com.budgetpilot.feature.expenses.presentation.main.model.toDayGroups
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

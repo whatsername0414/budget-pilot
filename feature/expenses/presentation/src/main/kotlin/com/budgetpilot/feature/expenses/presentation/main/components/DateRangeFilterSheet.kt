@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation.components
+package com.budgetpilot.feature.expenses.presentation.main.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
-import com.budgetpilot.feature.expenses.presentation.model.DateRangePreset
+import com.budgetpilot.feature.expenses.presentation.main.model.DateRangePreset
 
 /** Bottom sheet content for the "Filters" chip — date-range presets only (DESIGN-SPEC.md §4). */
 @OptIn(ExperimentalMaterial3Api::class)

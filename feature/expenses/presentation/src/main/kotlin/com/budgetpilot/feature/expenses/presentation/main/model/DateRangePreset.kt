@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation.model
+package com.budgetpilot.feature.expenses.presentation.main.model
 
 import java.time.LocalDate
 import java.time.YearMonth

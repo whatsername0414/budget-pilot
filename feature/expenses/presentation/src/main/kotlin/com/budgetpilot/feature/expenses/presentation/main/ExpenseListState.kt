@@ -1,10 +1,10 @@
-package com.budgetpilot.feature.expenses.presentation
+package com.budgetpilot.feature.expenses.presentation.main
 
 import androidx.compose.runtime.Stable
 import com.budgetpilot.core.domain.model.Category
 import com.budgetpilot.core.presentation.UiText
-import com.budgetpilot.feature.expenses.presentation.model.DateRangePreset
-import com.budgetpilot.feature.expenses.presentation.model.ExpenseDayGroupUi
+import com.budgetpilot.feature.expenses.presentation.main.model.DateRangePreset
+import com.budgetpilot.feature.expenses.presentation.main.model.ExpenseDayGroupUi
 
 @Stable
 data class ExpenseListState(

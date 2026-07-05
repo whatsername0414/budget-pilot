@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation
+package com.budgetpilot.feature.expenses.presentation.editor
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -15,7 +15,7 @@ import com.budgetpilot.core.domain.repository.ExpenseRepository
 import com.budgetpilot.core.presentation.UiText
 import com.budgetpilot.core.presentation.money.PesoFormatter
 import com.budgetpilot.core.presentation.toUiText
-import com.budgetpilot.feature.expenses.presentation.components.AmountKeypadKeys
+import com.budgetpilot.feature.expenses.presentation.editor.components.AmountKeypadKeys
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

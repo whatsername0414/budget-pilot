@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation.model
+package com.budgetpilot.feature.expenses.presentation.main.model
 
 import androidx.compose.runtime.Stable
 import com.budgetpilot.core.domain.model.Category

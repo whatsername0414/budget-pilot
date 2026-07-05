@@ -1,6 +1,6 @@
-package com.budgetpilot.feature.expenses.presentation
+package com.budgetpilot.feature.expenses.presentation.main
 
-import com.budgetpilot.feature.expenses.presentation.model.DateRangePreset
+import com.budgetpilot.feature.expenses.presentation.main.model.DateRangePreset
 
 sealed interface ExpenseListAction {
     data class OnSearchQueryChange(

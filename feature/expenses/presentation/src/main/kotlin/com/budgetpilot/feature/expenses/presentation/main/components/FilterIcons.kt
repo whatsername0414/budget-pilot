@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.expenses.presentation.components
+package com.budgetpilot.feature.expenses.presentation.main.components
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
