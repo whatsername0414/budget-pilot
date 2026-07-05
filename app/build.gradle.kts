@@ -29,6 +29,8 @@ dependencies {
     implementation(project(":feature:expenses:presentation"))
     implementation(project(":feature:budgets:presentation"))
     implementation(project(":feature:home:presentation"))
+    implementation(project(":feature:capture:presentation"))
+    implementation(project(":feature:capture:data"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)

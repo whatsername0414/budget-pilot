@@ -33,13 +33,14 @@ import com.budgetpilot.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.budgetsGraph
+import com.budgetpilot.feature.capture.presentation.navigation.CaptureRoute
+import com.budgetpilot.feature.capture.presentation.navigation.captureGraph
 import com.budgetpilot.feature.expenses.presentation.navigation.ExpenseEditorRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.expensesGraph
 import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
 import com.budgetpilot.feature.home.presentation.navigation.homeGraph
 import com.budgetpilot.navigation.AskRoute
-import com.budgetpilot.navigation.CaptureRoute
 import com.budgetpilot.navigation.TopLevelDestination
 
 // Scaffold keeps 16dp between the FAB and the bottom bar; shifting the 56dp FAB
@@ -101,12 +102,7 @@ fun AppShell(modifier: Modifier = Modifier) {
                     icon = TopLevelDestination.ASK.unselectedIcon,
                 )
             }
-            composable<CaptureRoute> {
-                PlaceholderScreen(
-                    screenName = stringResource(R.string.nav_capture),
-                    icon = Icons.Filled.Add,
-                )
-            }
+            captureGraph(navController)
         }
     }
 }
