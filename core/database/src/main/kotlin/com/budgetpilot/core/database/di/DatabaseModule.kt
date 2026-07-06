@@ -18,6 +18,7 @@ val coreDatabaseModule =
         single { get<BudgetPilotDatabase>().expenseDao() }
         single { get<BudgetPilotDatabase>().budgetDao() }
         single { get<BudgetPilotDatabase>().extractionCacheDao() }
+        single { get<BudgetPilotDatabase>().insightDao() }
         single<CategoryRepository> { RoomCategoryRepository(get()) }
         single<ExpenseRepository> { RoomExpenseRepository(get()) }
         single<BudgetRepository> { RoomBudgetRepository(get()) }

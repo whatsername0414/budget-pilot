@@ -51,7 +51,10 @@ complexity:
     threshold: 20
   LongParameterList:
     functionThreshold: 8
-    constructorThreshold: 8
+    # InsightCheckUseCase (feature:insights:data) wires nine single-purpose collaborators
+    # (three repos, cloud-AI prefs, rule engine, throttle policy, message composer, store,
+    # clock) — a legitimate orchestration use case, not a class needing a parameter object.
+    constructorThreshold: 10
 
 Compose:
   ComposableAnnotationNaming:

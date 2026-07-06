@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insight_notification_channel_name">Budget insights</string>
+    <string name="insight_notification_channel_description">Occasional notices when Budget Pilot spots something worth knowing about your spending.</string>
+    <string name="insight_notification_title">Budget Pilot noticed something</string>
+</resources>
