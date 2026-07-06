@@ -26,6 +26,16 @@ android {
             "\"${localProperties.getProperty("GEMINI_API_KEY", "")}\"",
         )
     }
+
+    // Local unit tests run on the plain JVM with no Robolectric/AssetManager, so the
+    // prompt files aren't readable via Context.assets there — exposing the same
+    // src/main/assets files as test resources lets tests load them via the JVM
+    // classpath instead, with no duplicated copies.
+    sourceSets {
+        getByName("test") {
+            resources.srcDirs("src/main/assets")
+        }
+    }
 }
 
 dependencies {
