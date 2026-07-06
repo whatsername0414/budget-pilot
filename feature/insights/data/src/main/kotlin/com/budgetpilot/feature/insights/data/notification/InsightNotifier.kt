@@ -28,7 +28,11 @@ class InsightNotifier(
     private val context: Context,
 ) {
     fun notify(insight: Insight) {
-        if (!hasNotificationPermission()) return
+        val permissionGranted =
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+        if (!permissionGranted) return
         ensureChannel()
 
         val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName) ?: return
@@ -53,12 +57,6 @@ class InsightNotifier(
                 .build()
 
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, notification)
-    }
-
-    private fun hasNotificationPermission(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return true
-        return ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
-            PackageManager.PERMISSION_GRANTED
     }
 
     private fun ensureChannel() {

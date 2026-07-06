@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Required for InsightNotifier's NotificationManagerCompat.notify() call to be lint-valid
+         on API 33+; the runtime request flow that actually grants it is P5.4's job. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -14,18 +16,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetPilot">
-        <!-- Koin's workManagerFactory() initializes WorkManager itself (BudgetPilotApp); the
-             default AndroidX initializer would collide with that second initialization. -->
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-        </provider>
         <activity
             android:name=".MainActivity"
             android:exported="true"
