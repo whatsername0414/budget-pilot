@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ask_top_bar_title">Ask</string>
+    <string name="ask_input_placeholder">Ask about your spending…</string>
+    <string name="cd_send">Send</string>
+    <string name="ask_empty_title">Ask anything about your spending</string>
+    <string name="suggestion_food_this_month">Food this month?</string>
+    <string name="suggestion_over_budget">Am I over budget?</string>
+    <string name="suggestion_biggest_expense_week">Biggest expense this week?</string>
+    <string name="suggestion_compare_months">Compare June vs May</string>
+    <string name="status_planning">Planning…</string>
+    <string name="status_checking_expenses">Checking your expenses…</string>
+    <string name="status_almost_done">Almost done…</string>
+    <string name="how_i_calculated_this">How I calculated this</string>
+    <string name="cd_collapse_trace">Collapse reasoning trace</string>
+    <string name="cd_expand_trace">Expand reasoning trace</string>
+    <plurals name="answer_composed_summary">
+        <item quantity="one">Answer composed — %1$d model turn · %2$s total</item>
+        <item quantity="other">Answer composed — %1$d model turns · %2$s total</item>
+    </plurals>
+    <string name="cd_trace_step">Step %1$d: %2$s. %3$s. %4$s. Took %5$s.</string>
+    <string name="error_ask_rate_limited">You\'ve asked a few questions in a row — the free tier needs a short breather.</string>
+    <string name="retry_countdown">Try again in %1$ds</string>
+    <string name="error_ask_offline">You\'re offline. Turn on demo mode in Settings to keep exploring without a connection.</string>
+    <string name="error_ask_no_api_key">Add a Gemini API key in Settings to start asking questions.</string>
+    <string name="error_ask_generic">Something interrupted that answer. Give it another try.</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_open_settings">Open settings</string>
+    <string name="cd_error_icon">Error</string>
+    <string name="cd_warning_icon">Warning</string>
+    <string name="cd_sparkle_icon">Thinking</string>
+</resources>
