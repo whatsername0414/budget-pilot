@@ -10,6 +10,7 @@ import com.budgetpilot.core.ai.domain.fake.FakeLlmClient
 import com.budgetpilot.core.ai.domain.model.AgentAnswer
 import com.budgetpilot.core.ai.domain.model.ChatRole
 import com.budgetpilot.core.ai.domain.model.LlmResponse
+import com.budgetpilot.core.ai.domain.model.MessagePart
 import com.budgetpilot.core.ai.domain.model.ToolCall
 import com.budgetpilot.core.ai.domain.model.ToolSchema
 import com.budgetpilot.core.ai.domain.model.TraceStep
@@ -90,6 +91,36 @@ class AgentLoopTest {
                     .takeLast(2)
                     .map { it.role }
             assertThat(toolResultRoles).isEqualTo(listOf(ChatRole.TOOL, ChatRole.TOOL))
+        }
+
+    @Test
+    fun `the model's tool call turn is echoed back before the tool's function response`() =
+        runTest {
+            val tool = FakeAgentTool(name = "get_categories", script = listOf(Result.Success(JsonPrimitive("categories"))))
+            val llm =
+                FakeLlmClient(
+                    script =
+                        listOf(
+                            Result.Success(toolCallResponse("get_categories")),
+                            Result.Success(LlmResponse.Text("done")),
+                        ),
+                )
+            val loop = AgentLoop(llm = llm, tools = listOf(tool))
+
+            loop.run(goal = "goal", systemPrompt = "system")
+
+            val secondRequestMessages = llm.receivedRequests[1].messages
+            val modelTurn = secondRequestMessages[secondRequestMessages.size - 2]
+            val toolTurn = secondRequestMessages.last()
+
+            assertThat(modelTurn.role).isEqualTo(ChatRole.MODEL)
+            val functionCall = modelTurn.parts.single() as MessagePart.FunctionCall
+            assertThat(functionCall.name).isEqualTo("get_categories")
+
+            assertThat(toolTurn.role).isEqualTo(ChatRole.TOOL)
+            val functionResponse = toolTurn.parts.single() as MessagePart.FunctionResponse
+            assertThat(functionResponse.name).isEqualTo("get_categories")
+            assertThat(functionResponse.response["result"]).isEqualTo(JsonPrimitive("categories"))
         }
 
     @Test

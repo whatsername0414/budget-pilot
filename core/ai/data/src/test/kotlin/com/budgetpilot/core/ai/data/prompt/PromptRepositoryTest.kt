@@ -28,6 +28,16 @@ class PromptRepositoryTest {
     }
 
     @Test
+    fun `loads agent prompt content from the asset file`() {
+        val repository = AssetPromptRepository(ClasspathPromptFileSource())
+
+        val prompt = repository.getPrompt(PromptId.AGENT_V1)
+
+        assertThat(prompt).contains("Agent Q&A v1")
+        assertThat(prompt).contains("resolve_date_range")
+    }
+
+    @Test
     fun `caches prompt content so the file source is only read once per id`() {
         var readCount = 0
         val fileSource =

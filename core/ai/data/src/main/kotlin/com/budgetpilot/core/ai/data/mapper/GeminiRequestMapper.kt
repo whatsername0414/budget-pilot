@@ -1,7 +1,9 @@
 package com.budgetpilot.core.ai.data.mapper
 
 import com.budgetpilot.core.ai.data.dto.GeminiContent
+import com.budgetpilot.core.ai.data.dto.GeminiFunctionCall
 import com.budgetpilot.core.ai.data.dto.GeminiFunctionDeclaration
+import com.budgetpilot.core.ai.data.dto.GeminiFunctionResponse
 import com.budgetpilot.core.ai.data.dto.GeminiGenerateContentRequest
 import com.budgetpilot.core.ai.data.dto.GeminiGenerationConfig
 import com.budgetpilot.core.ai.data.dto.GeminiInlineData
@@ -56,11 +58,8 @@ private fun ChatMessage.toGeminiContent(): GeminiContent =
     )
 
 /**
- * Gemini's `contents` array only accepts "user"/"model" roles. There is no dedicated tool-result
- * role in the wire format we've verified (CLAUDE.md §10, P3.1) and the provider-agnostic
- * [MessagePart] has no function-response variant yet either (tracked as CLAUDE.md open question
- * #5) — so a [ChatRole.TOOL] message is passed straight through as plain "user" text for now.
- * Revisit once Phase 4's `AgentLoop` needs to round-trip real tool results.
+ * Gemini's `contents` array only accepts "user"/"model" roles — a function response turn is sent
+ * with role "user" (carrying a `functionResponse` part), matching a [ChatRole.TOOL] message.
  */
 private fun ChatRole.toGeminiRole(): String =
     when (this) {
@@ -73,6 +72,8 @@ private fun MessagePart.toGeminiPart(): GeminiPart =
     when (this) {
         is MessagePart.Text -> GeminiPart(text = text)
         is MessagePart.Image -> GeminiPart(inlineData = GeminiInlineData(mimeType = mimeType, data = base64Data))
+        is MessagePart.FunctionCall -> GeminiPart(functionCall = GeminiFunctionCall(name = name, args = args))
+        is MessagePart.FunctionResponse -> GeminiPart(functionResponse = GeminiFunctionResponse(name = name, response = response))
     }
 
 private fun ToolSchema.toGeminiFunctionDeclaration(): GeminiFunctionDeclaration =

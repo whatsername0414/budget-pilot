@@ -11,6 +11,11 @@ import com.budgetpilot.core.ai.domain.model.TraceStep
 import com.budgetpilot.core.domain.Result
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 /**
  * Tool-calling loop: sends [goal] to [llm] alongside every [tools] schema, executes whichever
@@ -58,6 +63,7 @@ class AgentLoop(
                     return Result.Success(AgentAnswer(text = llmResponse.content, trace = trace.toList()))
                 }
                 is LlmResponse.ToolCalls -> {
+                    messages += modelToolCallMessage(llmResponse.calls)
                     for (call in llmResponse.calls) {
                         currentCoroutineContext().ensureActive()
                         val failure = executeTool(call, toolFailureCounts, trace, onStep, messages)
@@ -81,7 +87,7 @@ class AgentLoop(
         if (tool == null) {
             val summary = "Unknown tool: ${call.name}"
             recordStep(trace, onStep, call, summary, durationMs = 0)
-            messages += toolResultMessage(summary)
+            messages += toolResultMessage(call.name, errorResponse(summary))
             return null
         }
 
@@ -93,7 +99,7 @@ class AgentLoop(
             is Result.Success -> {
                 val summary = result.data.toString()
                 recordStep(trace, onStep, call, summary, durationMs)
-                messages += toolResultMessage(summary)
+                messages += toolResultMessage(call.name, successResponse(result.data))
                 null
             }
             is Result.Error -> {
@@ -104,7 +110,7 @@ class AgentLoop(
                 if (failures >= TOOL_FAILURE_LIMIT) {
                     AiError.ToolFailure(call.name)
                 } else {
-                    messages += toolResultMessage(summary)
+                    messages += toolResultMessage(call.name, errorResponse(summary))
                     null
                 }
             }
@@ -129,7 +135,17 @@ class AgentLoop(
         onStep(step)
     }
 
-    private fun toolResultMessage(text: String): ChatMessage = ChatMessage(role = ChatRole.TOOL, parts = listOf(MessagePart.Text(text)))
+    private fun modelToolCallMessage(calls: List<ToolCall>): ChatMessage =
+        ChatMessage(role = ChatRole.MODEL, parts = calls.map { MessagePart.FunctionCall(name = it.name, args = it.args) })
+
+    private fun toolResultMessage(
+        name: String,
+        response: JsonObject,
+    ): ChatMessage = ChatMessage(role = ChatRole.TOOL, parts = listOf(MessagePart.FunctionResponse(name = name, response = response)))
+
+    private fun successResponse(data: JsonElement): JsonObject = buildJsonObject { put("result", data) }
+
+    private fun errorResponse(message: String): JsonObject = buildJsonObject { put("error", JsonPrimitive(message)) }
 
     private companion object {
         const val TOOL_FAILURE_LIMIT = 2
