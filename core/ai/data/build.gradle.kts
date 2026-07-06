@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.budgetpilot.android.library)
     alias(libs.plugins.budgetpilot.serialization)
+    alias(libs.plugins.budgetpilot.koin)
 }
 
 android {

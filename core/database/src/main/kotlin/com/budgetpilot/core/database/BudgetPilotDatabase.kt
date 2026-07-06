@@ -1,6 +1,7 @@
 package com.budgetpilot.core.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -9,9 +10,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.budgetpilot.core.database.dao.BudgetDao
 import com.budgetpilot.core.database.dao.CategoryDao
 import com.budgetpilot.core.database.dao.ExpenseDao
+import com.budgetpilot.core.database.dao.ExtractionCacheDao
 import com.budgetpilot.core.database.entity.BudgetEntity
 import com.budgetpilot.core.database.entity.CategoryEntity
 import com.budgetpilot.core.database.entity.ExpenseEntity
+import com.budgetpilot.core.database.entity.ExtractionCacheEntity
 import com.budgetpilot.core.database.seed.DefaultCategories
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,9 +23,10 @@ import kotlinx.coroutines.launch
 private const val DATABASE_NAME = "budgetpilot.db"
 
 @Database(
-    entities = [CategoryEntity::class, ExpenseEntity::class, BudgetEntity::class],
-    version = 1,
+    entities = [CategoryEntity::class, ExpenseEntity::class, BudgetEntity::class, ExtractionCacheEntity::class],
+    version = 2,
     exportSchema = true,
+    autoMigrations = [AutoMigration(from = 1, to = 2)],
 )
 @TypeConverters(Converters::class)
 abstract class BudgetPilotDatabase : RoomDatabase() {
@@ -31,6 +35,8 @@ abstract class BudgetPilotDatabase : RoomDatabase() {
     abstract fun expenseDao(): ExpenseDao
 
     abstract fun budgetDao(): BudgetDao
+
+    abstract fun extractionCacheDao(): ExtractionCacheDao
 }
 
 fun buildBudgetPilotDatabase(context: Context): BudgetPilotDatabase {

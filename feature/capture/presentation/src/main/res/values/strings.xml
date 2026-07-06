@@ -38,7 +38,7 @@
     <string name="error_extraction_nothing_recognized">We couldn\'t find any expense details in this photo. Try retaking it or enter the expense manually.</string>
     <string name="error_extraction_image_unreadable">This photo is too blurry or dark to read. Try retaking it.</string>
     <string name="error_extraction_cancelled">Extraction was cancelled.</string>
-    <string name="error_extraction_rate_limited">Too many scans right now. Please try again shortly.</string>
+    <string name="error_extraction_rate_limited">Too many scans right now. Try again in a minute, or enter the expense manually.</string>
     <string name="error_extraction_network">No connection. Check your internet and try again.</string>
     <string name="error_extraction_unavailable">Receipt scanning is unavailable right now. Try again or enter the expense manually.</string>
     <plurals name="line_items_count">

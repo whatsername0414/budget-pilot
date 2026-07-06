@@ -1,6 +1,7 @@
 package com.budgetpilot
 
 import android.app.Application
+import com.budgetpilot.core.ai.data.di.coreAiDataModule
 import com.budgetpilot.core.database.di.coreDatabaseModule
 import com.budgetpilot.feature.budgets.presentation.di.budgetsPresentationModule
 import com.budgetpilot.feature.capture.data.di.captureDataModule
@@ -18,6 +19,7 @@ class BudgetPilotApp : Application() {
             // More feature and core modules are registered here as later phases add them.
             modules(
                 coreDatabaseModule,
+                coreAiDataModule,
                 expensesPresentationModule,
                 budgetsPresentationModule,
                 homePresentationModule,
