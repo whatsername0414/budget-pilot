@@ -1,4 +1,4 @@
-package com.budgetpilot.navigation
+package com.budgetpilot.feature.ask.presentation.navigation
 
 import kotlinx.serialization.Serializable
 

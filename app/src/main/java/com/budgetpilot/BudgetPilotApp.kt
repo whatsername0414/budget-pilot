@@ -4,6 +4,7 @@ import android.app.Application
 import com.budgetpilot.core.ai.data.di.coreAiDataModule
 import com.budgetpilot.core.data.di.coreDataModule
 import com.budgetpilot.core.database.di.coreDatabaseModule
+import com.budgetpilot.feature.ask.presentation.di.askPresentationModule
 import com.budgetpilot.feature.budgets.presentation.di.budgetsPresentationModule
 import com.budgetpilot.feature.capture.data.di.captureDataModule
 import com.budgetpilot.feature.capture.presentation.di.capturePresentationModule
@@ -29,6 +30,7 @@ class BudgetPilotApp : Application() {
                 captureDataModule,
                 capturePresentationModule,
                 settingsPresentationModule,
+                askPresentationModule,
             )
         }
     }

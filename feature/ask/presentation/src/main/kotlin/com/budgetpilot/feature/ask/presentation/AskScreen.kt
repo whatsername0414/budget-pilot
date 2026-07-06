@@ -11,11 +11,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.theme.Spacing
+import com.budgetpilot.core.presentation.ObserveAsEvents
 import com.budgetpilot.feature.ask.presentation.components.AskAnswerCard
 import com.budgetpilot.feature.ask.presentation.components.AskEmptyState
 import com.budgetpilot.feature.ask.presentation.components.AskErrorCard
@@ -23,11 +26,27 @@ import com.budgetpilot.feature.ask.presentation.components.AskFollowUpChips
 import com.budgetpilot.feature.ask.presentation.components.AskInputBar
 import com.budgetpilot.feature.ask.presentation.components.AskRunningCard
 import com.budgetpilot.feature.ask.presentation.components.QuestionBubble
+import org.koin.androidx.compose.koinViewModel
 
-/**
- * Stateless Ask screen content (state + onAction only). [AskViewModel] and the
- * `AskScreen` wrapper wiring it via `koinViewModel()` arrive in P4.5.
- */
+/** Stateful Ask entry point: owns the ViewModel and forwards its settings-link event. */
+@Composable
+fun AskScreen(
+    onNavigateToSettings: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: AskViewModel = koinViewModel(),
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            AskEvent.NavigateToSettings -> onNavigateToSettings()
+        }
+    }
+
+    AskContent(state = state, onAction = viewModel::onAction, modifier = modifier)
+}
+
+/** Stateless Ask screen content (state + onAction only). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AskContent(

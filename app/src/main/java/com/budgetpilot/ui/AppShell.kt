@@ -26,11 +26,11 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.budgetpilot.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.feature.ask.presentation.navigation.askGraph
 import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.budgetsGraph
 import com.budgetpilot.feature.capture.presentation.navigation.CaptureRoute
@@ -43,7 +43,6 @@ import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
 import com.budgetpilot.feature.home.presentation.navigation.homeGraph
 import com.budgetpilot.feature.settings.presentation.navigation.SettingsRoute
 import com.budgetpilot.feature.settings.presentation.navigation.settingsGraph
-import com.budgetpilot.navigation.AskRoute
 import com.budgetpilot.navigation.TopLevelDestination
 
 // Scaffold keeps 16dp between the FAB and the bottom bar; shifting the 56dp FAB
@@ -112,12 +111,7 @@ fun AppShell(modifier: Modifier = Modifier) {
             expensesGraph(navController)
             budgetsGraph()
             settingsGraph(navController)
-            composable<AskRoute> {
-                PlaceholderScreen(
-                    screenName = stringResource(TopLevelDestination.ASK.labelRes),
-                    icon = TopLevelDestination.ASK.unselectedIcon,
-                )
-            }
+            askGraph(onNavigateToSettings = { navController.navigate(SettingsRoute) })
             captureGraph(
                 navController = navController,
                 onSaveSuccess = { confirmationMessage ->
