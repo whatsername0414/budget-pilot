@@ -85,6 +85,8 @@ fun ConfidenceField(
                     focusedBorderColor = warning,
                     unfocusedContainerColor = BudgetPilotTheme.extendedColors.warningContainer.copy(alpha = 0.10f),
                     focusedContainerColor = BudgetPilotTheme.extendedColors.warningContainer.copy(alpha = 0.10f),
+                    unfocusedLabelColor = warning,
+                    focusedLabelColor = warning,
                 )
             } else {
                 OutlinedTextFieldDefaults.colors()

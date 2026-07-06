@@ -10,6 +10,7 @@
     <string name="action_open_settings">Open settings</string>
     <string name="action_choose_from_gallery">Choose from gallery</string>
     <string name="confirm_expense_title">Confirm expense</string>
+    <string name="reading_receipt_title">Reading receipt</string>
     <string name="cd_back">Back</string>
     <string name="cd_receipt_photo">Receipt photo</string>
     <string name="source_badge_receipt">RECEIPT</string>
@@ -23,13 +24,14 @@
     <string name="action_enter_manually">Enter manually</string>
     <string name="action_retake">Retake</string>
     <string name="action_save_expense">Save expense</string>
-    <string name="thumbnail_caption">Extracted from your photo · View photo</string>
-    <string name="thumbnail_low_confidence_hint">Fields marked ⚠ need a quick check</string>
+    <string name="thumbnail_caption_prefix">Extracted from your photo · </string>
+    <string name="thumbnail_caption_view_photo">View photo</string>
+    <string name="thumbnail_low_confidence_hint_prefix">Fields marked</string>
+    <string name="thumbnail_low_confidence_hint_suffix">need a quick check.</string>
     <string name="label_merchant">Merchant</string>
     <string name="label_sent_to">Sent to</string>
     <string name="label_date">Date</string>
     <string name="label_total">Total</string>
-    <string name="label_note_optional">Note (optional)</string>
     <string name="confidence_helper_merchant">Hard to read on the receipt — please check</string>
     <string name="confidence_helper_date">Hard to read on the receipt — please check</string>
     <string name="confidence_helper_amount">Hard to read on the receipt — please check</string>

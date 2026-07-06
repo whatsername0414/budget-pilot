@@ -31,10 +31,6 @@ sealed interface ConfirmExpenseAction {
         val categoryId: Long,
     ) : ConfirmExpenseAction
 
-    data class OnNoteChange(
-        val note: String,
-    ) : ConfirmExpenseAction
-
     data object OnLineItemsToggleClick : ConfirmExpenseAction
 
     data object OnSaveClick : ConfirmExpenseAction

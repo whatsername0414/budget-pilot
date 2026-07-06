@@ -76,7 +76,6 @@ class ConfirmExpenseViewModel(
                         categoryConfidence = Confidence.HIGH,
                     )
                 }
-            is ConfirmExpenseAction.OnNoteChange -> _state.update { it.copy(note = action.note) }
             ConfirmExpenseAction.OnLineItemsToggleClick ->
                 _state.update { it.copy(isLineItemsExpanded = !it.isLineItemsExpanded) }
             ConfirmExpenseAction.OnSaveClick -> save()
@@ -212,7 +211,7 @@ class ConfirmExpenseViewModel(
                         merchant = current.merchant.trim(),
                         categoryId = categoryId,
                         date = current.date,
-                        note = current.note.trim().ifBlank { null },
+                        note = null,
                         source = source,
                         imageUri = current.imagePath,
                         createdAt = Instant.now(),

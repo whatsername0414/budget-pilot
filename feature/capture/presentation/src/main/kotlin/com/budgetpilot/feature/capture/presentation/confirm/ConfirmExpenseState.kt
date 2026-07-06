@@ -38,7 +38,6 @@ data class ConfirmExpenseState(
     val selectedCategoryId: Long? = null,
     val isCategoryManuallySelected: Boolean = false,
     val categoryConfidence: Confidence = Confidence.HIGH,
-    val note: String = "",
     val isSaving: Boolean = false,
     val isImageViewerVisible: Boolean = false,
 ) {

@@ -9,9 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -19,6 +24,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -33,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.budgetpilot.core.designsystem.components.AppCard
 import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.components.ErrorState
 import com.budgetpilot.core.designsystem.components.LoadingSkeleton
@@ -87,10 +95,16 @@ fun ConfirmExpenseContent(
     Scaffold(
         modifier = modifier,
         topBar = {
-            ConfirmExpenseTopBar(
-                receiptType = state.receiptType,
-                onBackClick = { onAction(ConfirmExpenseAction.OnBackClick) },
-            )
+            if (state.phase == ConfirmExpensePhase.LOADING) {
+                ConfirmExpenseLoadingTopBar(
+                    onCancelClick = { onAction(ConfirmExpenseAction.OnRetakeClick) },
+                )
+            } else {
+                ConfirmExpenseTopBar(
+                    receiptType = state.receiptType,
+                    onBackClick = { onAction(ConfirmExpenseAction.OnBackClick) },
+                )
+            }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
@@ -143,6 +157,20 @@ private fun ConfirmExpenseTopBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ConfirmExpenseLoadingTopBar(onCancelClick: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = stringResource(R.string.reading_receipt_title), style = MaterialTheme.typography.titleLarge) },
+        navigationIcon = {
+            IconButton(onClick = onCancelClick) {
+                Icon(imageVector = Icons.Filled.Close, contentDescription = stringResource(R.string.cd_close))
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+    )
+}
+
 @Composable
 private fun SourceBadge(
     receiptType: ReceiptType,
@@ -179,6 +207,7 @@ private fun ConfirmExpenseLoadingSection(
         modifier =
             modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(Spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(Spacing.medium),
@@ -188,8 +217,9 @@ private fun ConfirmExpenseLoadingSection(
             contentDescription = null,
             modifier =
                 Modifier
-                    .size(width = 56.dp, height = 72.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .fillMaxWidth()
+                    .height(132.dp)
+                    .clip(RoundedCornerShape(16.dp)),
             contentScale = ContentScale.Crop,
         )
         Row(
@@ -208,29 +238,33 @@ private fun ConfirmExpenseLoadingSection(
                 color = MaterialTheme.colorScheme.primary,
             )
         }
-        LoadingSkeleton(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-        )
-        LoadingSkeleton(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-        )
-        LoadingSkeleton(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(96.dp),
-        )
+        AppCard(modifier = Modifier.fillMaxWidth()) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
+                LoadingSkeleton(
+                    shape = RoundedCornerShape(6.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(LOADING_TITLE_SKELETON_WIDTH_FRACTION)
+                            .height(20.dp),
+                )
+                LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(44.dp))
+                LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(44.dp))
+                LoadingSkeleton(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(LOADING_LAST_FIELD_SKELETON_WIDTH_FRACTION)
+                            .height(44.dp),
+                )
+            }
+        }
         TextButton(onClick = onCancelClick) {
             Text(stringResource(R.string.action_cancel))
         }
     }
 }
+
+private const val LOADING_TITLE_SKELETON_WIDTH_FRACTION = 0.45f
+private const val LOADING_LAST_FIELD_SKELETON_WIDTH_FRACTION = 0.70f
 
 @Composable
 private fun ImageViewerDialog(
