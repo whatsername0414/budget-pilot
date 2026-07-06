@@ -36,6 +36,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -76,6 +77,7 @@ fun ExpenseListScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val resources = LocalResources.current
     val currentOnConfirmationMessageDismiss by rememberUpdatedState(onConfirmationMessageDismiss)
 
     ObserveAsEvents(viewModel.events) { event ->
@@ -90,8 +92,8 @@ fun ExpenseListScreen(
                 scope.launch {
                     val result =
                         snackbarHostState.showSnackbar(
-                            message = context.getString(R.string.expense_deleted_message, event.merchant),
-                            actionLabel = context.getString(R.string.action_undo),
+                            message = resources.getString(R.string.expense_deleted_message, event.merchant),
+                            actionLabel = resources.getString(R.string.action_undo),
                             duration = SnackbarDuration.Short,
                         )
                     if (result == SnackbarResult.ActionPerformed) {
