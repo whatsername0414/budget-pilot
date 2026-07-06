@@ -35,6 +35,7 @@ import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.budgetsGraph
 import com.budgetpilot.feature.capture.presentation.navigation.CaptureRoute
 import com.budgetpilot.feature.capture.presentation.navigation.captureGraph
+import com.budgetpilot.feature.expenses.presentation.navigation.EXPENSE_EDITOR_RESULT_KEY
 import com.budgetpilot.feature.expenses.presentation.navigation.ExpenseEditorRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.expensesGraph
@@ -102,7 +103,17 @@ fun AppShell(modifier: Modifier = Modifier) {
                     icon = TopLevelDestination.ASK.unselectedIcon,
                 )
             }
-            captureGraph(navController)
+            captureGraph(
+                navController = navController,
+                onSaveSuccess = { confirmationMessage ->
+                    navController.navigate(HistoryRoute) {
+                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                        launchSingleTop = true
+                    }
+                    navController.getBackStackEntry(HistoryRoute).savedStateHandle[EXPENSE_EDITOR_RESULT_KEY] =
+                        confirmationMessage
+                },
+            )
         }
     }
 }

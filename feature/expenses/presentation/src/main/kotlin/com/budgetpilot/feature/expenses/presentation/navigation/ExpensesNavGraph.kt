@@ -8,7 +8,13 @@ import androidx.navigation.compose.composable
 import com.budgetpilot.feature.expenses.presentation.editor.ExpenseEditorScreen
 import com.budgetpilot.feature.expenses.presentation.main.ExpenseListScreen
 
-private const val EXPENSE_EDITOR_RESULT_KEY = "expense_editor_confirmation"
+/**
+ * Also used by [com.budgetpilot.feature.capture.presentation.navigation.captureGraph]'s
+ * save-success handoff — capture's Confirm screen returns to this same History
+ * destination with a snackbar, so it reuses this result key rather than inventing
+ * a second round-trip mechanism.
+ */
+const val EXPENSE_EDITOR_RESULT_KEY = "expense_editor_confirmation"
 
 fun NavGraphBuilder.expensesGraph(navController: NavController) {
     composable<HistoryRoute> { backStackEntry ->

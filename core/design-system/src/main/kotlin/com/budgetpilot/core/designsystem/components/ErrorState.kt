@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +22,15 @@ import com.budgetpilot.core.designsystem.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 
-/** Error message + retry action, for a failed load/operation. */
+/** Error message + retry action (and an optional secondary escape hatch), for a failed load/operation. */
 @Composable
 fun ErrorState(
     message: String,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
     retryLabel: String = stringResource(R.string.action_retry),
+    secondaryActionLabel: String? = null,
+    onSecondaryAction: (() -> Unit)? = null,
 ) {
     Column(
         modifier =
@@ -53,6 +56,11 @@ fun ErrorState(
             modifier = Modifier.padding(top = Spacing.small),
         ) {
             Text(retryLabel)
+        }
+        if (secondaryActionLabel != null && onSecondaryAction != null) {
+            TextButton(onClick = onSecondaryAction) {
+                Text(secondaryActionLabel)
+            }
         }
     }
 }
