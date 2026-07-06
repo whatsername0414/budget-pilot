@@ -51,6 +51,15 @@ private val FabDockOffset = 44.dp
 @Composable
 fun AppShell(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = backStackEntry?.destination
+    // Capture, Confirm expense, and the expense editor are pushed/modal destinations
+    // (DESIGN-SPEC.md §2/§5/§8), not tabs — the bottom bar and FAB are chrome for the
+    // four top-level destinations only.
+    val isTopLevelDestination =
+        TopLevelDestination.entries.any { destination ->
+            currentDestination?.hierarchy?.any { it.hasRoute(destination.route::class) } == true
+        }
 
     Scaffold(
         modifier = modifier,
@@ -58,22 +67,24 @@ fun AppShell(modifier: Modifier = Modifier) {
         // status-bar inset. Without this, Scaffold's default safeDrawing contentWindowInsets
         // (unconsumed here since there's no topBar) doubles that inset on top of AppTopBar's own.
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
-        bottomBar = { AppBottomBar(navController) },
+        bottomBar = { if (isTopLevelDestination) AppBottomBar(navController) },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate(CaptureRoute) { launchSingleTop = true }
-                },
-                modifier = Modifier.offset(y = FabDockOffset),
-                // PLAN.md §4.1 assigns the FAB to the primary role, not M3's
-                // default primaryContainer.
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Add,
-                    contentDescription = stringResource(R.string.cd_capture_fab),
-                )
+            if (isTopLevelDestination) {
+                FloatingActionButton(
+                    onClick = {
+                        navController.navigate(CaptureRoute) { launchSingleTop = true }
+                    },
+                    modifier = Modifier.offset(y = FabDockOffset),
+                    // PLAN.md §4.1 assigns the FAB to the primary role, not M3's
+                    // default primaryContainer.
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = stringResource(R.string.cd_capture_fab),
+                    )
+                }
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
