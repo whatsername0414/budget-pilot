@@ -24,6 +24,12 @@ style:
     excludes: ["**/theme/Color.kt", "**/test/**", "**/androidTest/**"]
   UnusedPrivateMember:
     ignoreAnnotated: ["Preview", "PreviewLightDark", "PreviewScreenSizes", "PreviewFontScale", "PreviewDynamicColors"]
+  ReturnCount:
+    # The house Result pattern (android-error-handling skill) is a chain of early-return guard
+    # clauses ("if (x) return Result.Error(...)") rather than a single terminal expression, so
+    # functions validating several conditions or branching over a sealed outcome type routinely
+    # exceed the rule's default of 2 without being any less readable for it.
+    max: 4
 
 performance:
   SpreadOperator:
