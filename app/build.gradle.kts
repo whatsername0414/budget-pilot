@@ -25,6 +25,7 @@ android {
 
 dependencies {
     implementation(project(":core:design-system"))
+    implementation(project(":core:data"))
     implementation(project(":core:database"))
     implementation(project(":core:ai:data"))
     implementation(project(":feature:expenses:presentation"))
@@ -32,6 +33,7 @@ dependencies {
     implementation(project(":feature:home:presentation"))
     implementation(project(":feature:capture:presentation"))
     implementation(project(":feature:capture:data"))
+    implementation(project(":feature:settings:presentation"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)

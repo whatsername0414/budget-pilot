@@ -8,12 +8,14 @@ fun NavGraphBuilder.homeGraph(
     onSeeAllExpenses: () -> Unit,
     onSeeBudgets: () -> Unit,
     onAddExpense: () -> Unit,
+    onOpenSettings: () -> Unit,
 ) {
     composable<HomeRoute> {
         HomeScreen(
             onSeeAllExpenses = onSeeAllExpenses,
             onSeeBudgets = onSeeBudgets,
             onAddExpense = onAddExpense,
+            onOpenSettings = onOpenSettings,
         )
     }
 }

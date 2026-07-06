@@ -73,6 +73,25 @@ class ExtractionRouterTest {
             assertThat(result).isEqualTo(Result.Error(ExtractionError.Cloud.RateLimited))
         }
 
+    @Test
+    fun `router honors a live toggle change without needing a new instance`() =
+        runTest {
+            var cloudAllowed = true
+            val router =
+                ExtractionRouter(
+                    cloud = FakeReceiptExtractor(Result.Success(cloudReceipt)),
+                    onDevice = FakeReceiptExtractor(Result.Success(onDeviceReceipt)),
+                    connectivity = ConnectivityObserver { true },
+                    preferences = CloudAiPolicy { cloudAllowed },
+                )
+
+            assertThat(router.extract(image())).isEqualTo(Result.Success(cloudReceipt))
+
+            cloudAllowed = false
+
+            assertThat(router.extract(image())).isEqualTo(Result.Success(onDeviceReceipt))
+        }
+
     private fun router(
         online: Boolean,
         cloudAllowed: Boolean,

@@ -6,4 +6,6 @@ sealed interface HomeEvent {
     data object NavigateToBudgets : HomeEvent
 
     data object NavigateToAddExpense : HomeEvent
+
+    data object NavigateToSettings : HomeEvent
 }

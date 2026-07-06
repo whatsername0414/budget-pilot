@@ -8,4 +8,6 @@ sealed interface HomeAction {
     data object OnAddExpenseClick : HomeAction
 
     data object OnRetryClick : HomeAction
+
+    data object OnSettingsClick : HomeAction
 }

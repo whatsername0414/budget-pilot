@@ -14,8 +14,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -56,6 +60,7 @@ fun HomeScreen(
     onSeeAllExpenses: () -> Unit,
     onSeeBudgets: () -> Unit,
     onAddExpense: () -> Unit,
+    onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
@@ -66,6 +71,7 @@ fun HomeScreen(
             HomeEvent.NavigateToExpenseList -> onSeeAllExpenses()
             HomeEvent.NavigateToBudgets -> onSeeBudgets()
             HomeEvent.NavigateToAddExpense -> onAddExpense()
+            HomeEvent.NavigateToSettings -> onOpenSettings()
         }
     }
 
@@ -81,7 +87,19 @@ fun HomeContent(
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = { AppTopBar(title = stringResource(R.string.home_top_bar_title)) },
+        topBar = {
+            AppTopBar(
+                title = stringResource(R.string.home_top_bar_title),
+                actions = {
+                    IconButton(onClick = { onAction(HomeAction.OnSettingsClick) }) {
+                        Icon(
+                            imageVector = Icons.Filled.Settings,
+                            contentDescription = stringResource(R.string.cd_open_settings),
+                        )
+                    }
+                },
+            )
+        },
     ) { innerPadding ->
         when {
             state.isLoading -> HomeLoadingSkeleton(modifier = Modifier.padding(innerPadding))

@@ -55,6 +55,7 @@ class HomeViewModel(
             HomeAction.OnSeeBudgetsClick -> sendEvent(HomeEvent.NavigateToBudgets)
             HomeAction.OnAddExpenseClick -> sendEvent(HomeEvent.NavigateToAddExpense)
             HomeAction.OnRetryClick -> retryTick.update { it + 1 }
+            HomeAction.OnSettingsClick -> sendEvent(HomeEvent.NavigateToSettings)
         }
     }
 

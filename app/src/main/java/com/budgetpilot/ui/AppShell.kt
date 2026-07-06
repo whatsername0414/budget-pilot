@@ -41,6 +41,8 @@ import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.expensesGraph
 import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
 import com.budgetpilot.feature.home.presentation.navigation.homeGraph
+import com.budgetpilot.feature.settings.presentation.navigation.SettingsRoute
+import com.budgetpilot.feature.settings.presentation.navigation.settingsGraph
 import com.budgetpilot.navigation.AskRoute
 import com.budgetpilot.navigation.TopLevelDestination
 
@@ -105,9 +107,11 @@ fun AppShell(modifier: Modifier = Modifier) {
                     navController.navigate(BudgetsRoute) { launchSingleTop = true }
                 },
                 onAddExpense = { navController.navigate(ExpenseEditorRoute()) },
+                onOpenSettings = { navController.navigate(SettingsRoute) },
             )
             expensesGraph(navController)
             budgetsGraph()
+            settingsGraph(navController)
             composable<AskRoute> {
                 PlaceholderScreen(
                     screenName = stringResource(TopLevelDestination.ASK.labelRes),

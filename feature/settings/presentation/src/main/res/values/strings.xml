@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_back">Back</string>
+    <string name="cd_open_settings">Settings</string>
+    <string name="settings_top_bar_title">Settings</string>
+    <string name="settings_section_ai_privacy">AI &amp; Privacy</string>
+    <string name="settings_cloud_ai_title">Use cloud AI</string>
+    <string name="settings_cloud_ai_description">Photos and questions are sent to Google Gemini to read your receipts and answer questions. Free-tier usage may be used to improve Google\'s models.</string>
+    <string name="settings_api_key_title">Gemini API key</string>
+    <string name="settings_api_key_description">Used to call Gemini for receipt scanning and Q&amp;A. Never shown here — set it in local.properties.</string>
+    <string name="settings_api_key_status_active">ACTIVE</string>
+    <string name="settings_api_key_status_missing">ADD KEY</string>
+</resources>
