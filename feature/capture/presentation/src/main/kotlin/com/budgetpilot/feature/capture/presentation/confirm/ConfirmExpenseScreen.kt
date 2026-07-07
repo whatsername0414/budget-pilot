@@ -206,7 +206,7 @@ private fun SourceBadge(
             text = label,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
-            modifier = Modifier.padding(horizontal = Spacing.extraSmall, vertical = 2.dp),
+            modifier = Modifier.padding(horizontal = Spacing.small, vertical = 3.dp),
         )
     }
 }
@@ -225,7 +225,7 @@ private fun ConfirmExpenseLoadingSection(
                 .verticalScroll(rememberScrollState())
                 .padding(Spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         AsyncImage(
             model = File(imagePath),

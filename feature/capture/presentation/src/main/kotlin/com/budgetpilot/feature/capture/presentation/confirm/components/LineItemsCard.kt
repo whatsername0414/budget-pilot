@@ -3,6 +3,7 @@ package com.budgetpilot.feature.capture.presentation.confirm.components
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.components.AppCard
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
@@ -34,7 +36,10 @@ fun LineItemsCard(
     onToggleClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AppCard(modifier = modifier.animateContentSize()) {
+    AppCard(
+        modifier = modifier.animateContentSize(),
+        contentPadding = PaddingValues(horizontal = Spacing.medium, vertical = 12.dp),
+    ) {
         Row(
             modifier =
                 Modifier

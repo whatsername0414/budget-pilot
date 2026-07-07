@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -70,6 +71,7 @@ import org.koin.androidx.compose.koinViewModel
 
 private val CaptureBackground = Color(color = 0xFF0B0F1A)
 private val CaptureControl = Color(color = 0xFFF1F5F9)
+private val CaptureHintMuted = Color(color = 0xFFCBD5E1)
 private const val SHUTTER_PRESSED_SCALE = 0.92f
 
 @Composable
@@ -203,7 +205,7 @@ fun CaptureContent(
                     Modifier
                         .weight(1f)
                         .fillMaxWidth()
-                        .padding(Spacing.medium)
+                        .padding(horizontal = Spacing.medium, vertical = Spacing.extraSmall)
                         .clip(RoundedCornerShape(20.dp))
                         .background(Color.Black),
             ) {
@@ -246,7 +248,7 @@ private fun CaptureViewfinderArea(
         )
         Text(
             text = stringResource(R.string.capture_hint_align_receipt),
-            color = CaptureControl,
+            color = CaptureHintMuted,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
             modifier =
@@ -274,7 +276,8 @@ private fun CaptureTopBar(
         modifier =
             modifier
                 .fillMaxWidth()
-                .padding(Spacing.small),
+                .height(64.dp)
+                .padding(horizontal = Spacing.medium),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onCloseClick) {
@@ -377,7 +380,7 @@ private fun CaptureBottomControls(
         modifier =
             modifier
                 .fillMaxWidth()
-                .padding(Spacing.large),
+                .padding(start = Spacing.huge, top = 20.dp, end = Spacing.huge, bottom = Spacing.medium),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(modifier = Modifier.weight(1f)) {
@@ -434,7 +437,7 @@ private fun ShutterButton(
                     scaleX = scale
                     scaleY = scale
                 }.clip(CircleShape)
-                .border(width = 3.dp, color = CaptureControl, shape = CircleShape)
+                .border(width = 4.dp, color = CaptureControl, shape = CircleShape)
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null,
@@ -442,7 +445,7 @@ private fun ShutterButton(
                 ) {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     onClick()
-                }.padding(6.dp),
+                }.padding(9.dp),
         contentAlignment = Alignment.Center,
     ) {
         Box(

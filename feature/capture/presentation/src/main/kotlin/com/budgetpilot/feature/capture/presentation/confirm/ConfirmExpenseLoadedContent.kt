@@ -234,7 +234,7 @@ private fun ThumbnailRow(
                         imageVector = Icons.Filled.Warning,
                         contentDescription = null,
                         tint = BudgetPilotTheme.extendedColors.warning,
-                        modifier = Modifier.size(14.dp),
+                        modifier = Modifier.size(16.dp),
                     )
                     Text(
                         text = stringResource(R.string.thumbnail_low_confidence_hint_suffix),
