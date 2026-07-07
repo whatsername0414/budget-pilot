@@ -1,5 +1,6 @@
 package com.budgetpilot.feature.budgets.presentation.charts.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +16,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,9 +31,10 @@ import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.money.PesoFormatter
 import com.budgetpilot.feature.budgets.presentation.charts.model.CategorySpendUi
 
-private val BarShape = RoundedCornerShape(6.dp)
-private const val CATEGORY_LABEL_WEIGHT = 0.32f
-private const val BAR_TRACK_WEIGHT = 0.68f
+private val BarShape = RoundedCornerShape(4.dp)
+private val CategoryLabelWidth = 96.dp
+private val CategoryValueWidth = 74.dp
+private val CategorySpendRowGap = 10.dp
 
 /**
  * Horizontal bars, sorted descending, with direct value labels — never a pie
@@ -66,20 +70,22 @@ private fun CategorySpendRow(
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.small),
+        horizontalArrangement = Arrangement.spacedBy(CategorySpendRowGap),
     ) {
         Text(
             text = category.name,
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(CATEGORY_LABEL_WEIGHT),
+            modifier = Modifier.width(CategoryLabelWidth),
         )
         Box(
             modifier =
                 Modifier
-                    .weight(BAR_TRACK_WEIGHT)
-                    .height(20.dp),
+                    .weight(1f)
+                    .height(20.dp)
+                    .clip(BarShape)
+                    .background(MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.08f)),
         ) {
             Surface(
                 color = categoryColor(category.colorKey),
@@ -92,7 +98,8 @@ private fun CategorySpendRow(
         }
         AmountText(
             amount = category.amount,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.End),
+            modifier = Modifier.width(CategoryValueWidth),
         )
     }
 }

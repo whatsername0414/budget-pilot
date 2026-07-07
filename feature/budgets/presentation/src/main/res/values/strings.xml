@@ -20,7 +20,8 @@
     <string name="action_set_budget">Set budget</string>
     <string name="cd_previous_month">Previous month</string>
     <string name="cd_next_month">Next month</string>
-    <string name="budget_editor_title">%1$s budget / %2$s</string>
+    <string name="budget_editor_title">%1$s budget</string>
+    <string name="budget_editor_amount_label">Monthly budget</string>
     <string name="budget_editor_last_month_spent">You spent %1$s on %2$s last month.</string>
     <string name="action_remove">Remove</string>
     <string name="action_cancel">Cancel</string>

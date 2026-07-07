@@ -35,6 +35,8 @@ import com.budgetpilot.feature.budgets.presentation.main.components.MonthSelecto
 import org.koin.androidx.compose.koinViewModel
 import java.time.YearMonth
 
+private val CategoryCardContentGap = 12.dp
+
 @Composable
 fun ChartsScreen(
     modifier: Modifier = Modifier,
@@ -103,7 +105,7 @@ private fun ChartsLoadedContent(
             if (state.hasCategorySpend) {
                 CategorySpendChart(
                     categorySpend = state.categorySpend,
-                    modifier = Modifier.padding(top = Spacing.small),
+                    modifier = Modifier.padding(top = CategoryCardContentGap),
                 )
             } else {
                 EmptyState(
@@ -125,7 +127,7 @@ private fun ChartsLoadedContent(
                     text = state.trendCaption,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = Spacing.extraSmall),
+                    modifier = Modifier.padding(top = Spacing.small),
                 )
             } else {
                 EmptyState(

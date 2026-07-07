@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
-import com.budgetpilot.core.designsystem.theme.Spacing
 import kotlinx.coroutines.delay
 
 private val KeypadRows =
@@ -36,6 +35,7 @@ private val KeypadRows =
 
 private val KeyHeight = 56.dp
 private val KeyShape = RoundedCornerShape(12.dp)
+private val KeyGap = 6.dp
 private const val BACKSPACE_INITIAL_DELAY_MS = 400L
 private const val BACKSPACE_REPEAT_DELAY_MS = 80L
 
@@ -51,12 +51,12 @@ fun AmountKeypad(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(Spacing.small),
+        verticalArrangement = Arrangement.spacedBy(KeyGap),
     ) {
         KeypadRows.forEach { row ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(Spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(KeyGap),
             ) {
                 row.forEach { key ->
                     AmountKey(

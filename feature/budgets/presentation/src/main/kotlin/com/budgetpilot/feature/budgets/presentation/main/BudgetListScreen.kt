@@ -1,5 +1,6 @@
 package com.budgetpilot.feature.budgets.presentation.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,9 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
@@ -29,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -246,16 +249,13 @@ private fun BudgetCategoryCard(
     modifier: Modifier = Modifier,
 ) {
     AppCard(modifier = modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = categoryIcon(category.iconKey),
-                contentDescription = null,
-                tint = categoryColor(category.colorKey),
-            )
-            Spacer(Modifier.width(Spacing.small))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Text(
                 text = category.name,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.weight(1f),
             )
             if (!isReadOnly) {
@@ -267,10 +267,14 @@ private fun BudgetCategoryCard(
                 }
             }
         }
-        Spacer(Modifier.height(Spacing.small))
+        Spacer(Modifier.height(Spacing.extraSmall))
         BudgetProgressBar(spent = category.spent, budget = category.budget)
     }
 }
+
+private val UnbudgetedRowIconSize = 40.dp
+private val UnbudgetedRowIconRadius = 12.dp
+private val UnbudgetedRowItemGap = 12.dp
 
 @Composable
 private fun UnbudgetedCategoryRow(
@@ -279,6 +283,7 @@ private fun UnbudgetedCategoryRow(
     onSetBudgetClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val color = categoryColor(category.colorKey)
     Row(
         modifier =
             modifier
@@ -286,13 +291,23 @@ private fun UnbudgetedCategoryRow(
                 .dashedBorder(color = MaterialTheme.colorScheme.outline)
                 .padding(Spacing.medium),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(UnbudgetedRowItemGap),
     ) {
-        Icon(
-            imageVector = categoryIcon(category.iconKey),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(Modifier.width(Spacing.small))
+        Box(
+            modifier =
+                Modifier
+                    .size(UnbudgetedRowIconSize)
+                    .clip(RoundedCornerShape(UnbudgetedRowIconRadius))
+                    .background(color.copy(alpha = 0.15f)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                imageVector = categoryIcon(category.iconKey),
+                contentDescription = null,
+                tint = color,
+                modifier = Modifier.size(20.dp),
+            )
+        }
         Text(
             text = stringResource(R.string.unbudgeted_category_label, category.name),
             style = MaterialTheme.typography.bodyMedium,

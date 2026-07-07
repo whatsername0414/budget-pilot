@@ -3,6 +3,7 @@ package com.budgetpilot.feature.budgets.presentation.main.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -15,9 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.feature.budgets.presentation.R
+
+private val MonthLabelWidth = 150.dp
+private val MonthSelectorGap = 4.dp
 
 /** DESIGN-SPEC.md §6: chevrons + month label; forward chevron disabled beyond the current month. */
 @Composable
@@ -30,7 +36,7 @@ fun MonthSelector(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.spacedBy(MonthSelectorGap, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onPreviousClick) {
@@ -39,7 +45,12 @@ fun MonthSelector(
                 contentDescription = stringResource(R.string.cd_previous_month),
             )
         }
-        Text(text = monthLabel, style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = monthLabel,
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.width(MonthLabelWidth),
+        )
         IconButton(onClick = onNextClick, enabled = isNextEnabled) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

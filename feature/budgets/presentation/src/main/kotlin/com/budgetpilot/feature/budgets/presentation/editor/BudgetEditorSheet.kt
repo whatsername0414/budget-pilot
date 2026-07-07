@@ -1,20 +1,25 @@
 package com.budgetpilot.feature.budgets.presentation.editor
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -23,10 +28,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.icons.categoryIcon
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
@@ -40,6 +47,10 @@ import com.budgetpilot.feature.budgets.presentation.editor.components.AmountKeyp
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import java.time.YearMonth
+
+private val HeaderIconSize = 40.dp
+private val HeaderIconRadius = 12.dp
+private val HeaderRowGap = 12.dp
 
 private val QuickAmounts =
     listOf(
@@ -94,24 +105,45 @@ private fun BudgetEditorContent(
                 .fillMaxWidth()
                 .padding(horizontal = Spacing.medium, vertical = Spacing.small),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = categoryIcon(state.categoryIconKey),
-                contentDescription = null,
-                tint = categoryColor(state.categoryColorKey),
-            )
-            Spacer(Modifier.width(Spacing.small))
-            Text(
-                text = stringResource(R.string.budget_editor_title, state.categoryName, state.monthLabel),
-                style = MaterialTheme.typography.titleMedium,
-            )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(HeaderRowGap),
+        ) {
+            val categoryColor = categoryColor(state.categoryColorKey)
+            Box(
+                modifier =
+                    Modifier
+                        .size(HeaderIconSize)
+                        .clip(RoundedCornerShape(HeaderIconRadius))
+                        .background(categoryColor.copy(alpha = 0.15f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = categoryIcon(state.categoryIconKey),
+                    contentDescription = null,
+                    tint = categoryColor,
+                    modifier = Modifier.size(20.dp),
+                )
+            }
+            Column {
+                Text(
+                    text = stringResource(R.string.budget_editor_title, state.categoryName),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    text = state.monthLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
         Spacer(Modifier.height(Spacing.medium))
         BudgetAmountSection(state = state)
         Spacer(Modifier.height(Spacing.medium))
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing.small)) {
             QuickAmounts.forEach { amount ->
-                AssistChip(
+                FilterChip(
+                    selected = state.parsedAmount == amount,
                     onClick = { onAction(BudgetEditorAction.OnQuickAmountSelect(amount)) },
                     label = { Text(PesoFormatter.format(amount)) },
                 )
@@ -134,7 +166,25 @@ private fun BudgetAmountSection(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        AmountText(amount = state.displayAmount, style = MaterialTheme.typography.headlineMedium)
+        OutlinedTextField(
+            value = PesoFormatter.format(state.displayAmount),
+            onValueChange = {},
+            modifier = Modifier.fillMaxWidth(),
+            readOnly = true,
+            singleLine = true,
+            label = { Text(stringResource(R.string.budget_editor_amount_label)) },
+            textStyle =
+                MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    fontFeatureSettings = "tnum",
+                ),
+            isError = state.amountError != null,
+            colors =
+                OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.primary,
+                ),
+        )
         if (state.amountError != null) {
             Text(
                 text = state.amountError.asString(),
