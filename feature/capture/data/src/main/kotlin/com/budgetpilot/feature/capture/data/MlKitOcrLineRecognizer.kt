@@ -23,7 +23,11 @@ class MlKitOcrLineRecognizer(
             textRecognizer
                 .process(InputImage.fromBitmap(bitmap, 0))
                 .addOnSuccessListener { text ->
-                    val lines = text.textBlocks.flatMap { it.lines }.map { OcrLine(it.text, it.confidence) }
+                    val lines =
+                        text.textBlocks
+                            .flatMap { it.lines }
+                            .sortedWith(compareBy({ it.boundingBox?.top ?: 0 }, { it.boundingBox?.left ?: 0 }))
+                            .map { OcrLine(it.text, it.confidence) }
                     continuation.resume(Result.Success(lines))
                 }.addOnFailureListener {
                     continuation.resume(Result.Error(ExtractionError.ImageUnreadable))
