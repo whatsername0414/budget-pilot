@@ -39,10 +39,10 @@ import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.budgetsGraph
 import com.budgetpilot.feature.capture.presentation.navigation.CaptureRoute
 import com.budgetpilot.feature.capture.presentation.navigation.captureGraph
-import com.budgetpilot.feature.expenses.presentation.navigation.EXPENSE_EDITOR_RESULT_KEY
-import com.budgetpilot.feature.expenses.presentation.navigation.ExpenseEditorRoute
-import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
-import com.budgetpilot.feature.expenses.presentation.navigation.expensesGraph
+import com.budgetpilot.feature.history.presentation.navigation.EXPENSE_EDITOR_RESULT_KEY
+import com.budgetpilot.feature.history.presentation.navigation.ExpenseEditorRoute
+import com.budgetpilot.feature.history.presentation.navigation.HistoryRoute
+import com.budgetpilot.feature.history.presentation.navigation.historyGraph
 import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
 import com.budgetpilot.feature.home.presentation.navigation.homeGraph
 import com.budgetpilot.feature.insights.presentation.InsightCardHost
@@ -115,7 +115,7 @@ fun AppShell(modifier: Modifier = Modifier) {
                     )
                 },
             )
-            expensesGraph(navController)
+            historyGraph(navController)
             budgetsGraph()
             settingsGraph(navController)
             askGraph(onNavigateToSettings = { navController.navigate(SettingsRoute) })

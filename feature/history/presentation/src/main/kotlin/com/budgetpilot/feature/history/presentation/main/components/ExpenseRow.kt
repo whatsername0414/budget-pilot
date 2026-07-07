@@ -1,6 +1,7 @@
-package com.budgetpilot.feature.home.presentation.components
+package com.budgetpilot.feature.history.presentation.main.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,18 +31,19 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
-import com.budgetpilot.feature.home.presentation.R
-import com.budgetpilot.feature.home.presentation.model.HomeExpenseUi
+import com.budgetpilot.feature.history.presentation.R
+import com.budgetpilot.feature.history.presentation.main.model.ExpenseUi
 
 private val ExpenseRowVerticalPadding = 10.dp
 private val ExpenseRowItemGap = 12.dp
 private val ExpenseRowMetaGap = 6.dp
 
-/** DESIGN-SPEC.md §1.4 anatomy, duplicated from :feature:history (features never depend on each other). */
+/** DESIGN-SPEC.md §1.4 anatomy: 40dp tinted icon · merchant/category · amount/time. Row is the full touch target. */
 @Composable
-fun HomeExpenseRow(
-    expense: HomeExpenseUi,
+fun ExpenseRow(
+    expense: ExpenseUi,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
 ) {
     val color = categoryColor(expense.categoryColorKey)
 
@@ -50,6 +52,7 @@ fun HomeExpenseRow(
             modifier
                 .fillMaxWidth()
                 .heightIn(min = 60.dp)
+                .clickable(onClick = onClick)
                 .padding(vertical = ExpenseRowVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(ExpenseRowItemGap),
@@ -84,7 +87,7 @@ fun HomeExpenseRow(
                 Text(
                     text =
                         if (expense.source != ExpenseSource.MANUAL) {
-                            stringResource(R.string.home_expense_row_category_with_source, expense.categoryName)
+                            stringResource(R.string.expense_row_category_with_source, expense.categoryName)
                         } else {
                             expense.categoryName
                         },
@@ -94,7 +97,7 @@ fun HomeExpenseRow(
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (expense.source != ExpenseSource.MANUAL) {
-                    HomeSourceBadge(source = expense.source)
+                    SourceBadge(source = expense.source)
                 }
             }
         }
@@ -114,7 +117,7 @@ fun HomeExpenseRow(
 }
 
 @Composable
-private fun HomeSourceBadge(
+private fun SourceBadge(
     source: ExpenseSource,
     modifier: Modifier = Modifier,
 ) {
@@ -134,13 +137,13 @@ private fun HomeSourceBadge(
 
 @Preview
 @Composable
-private fun HomeExpenseRowPreview() {
+private fun ExpenseRowPreview() {
     BudgetPilotTheme {
         Surface {
             Column {
-                HomeExpenseRow(
+                ExpenseRow(
                     expense =
-                        HomeExpenseUi(
+                        ExpenseUi(
                             id = 1,
                             merchant = "Jollibee SM North",
                             categoryName = "Food",
@@ -151,9 +154,9 @@ private fun HomeExpenseRowPreview() {
                             source = ExpenseSource.RECEIPT,
                         ),
                 )
-                HomeExpenseRow(
+                ExpenseRow(
                     expense =
-                        HomeExpenseUi(
+                        ExpenseUi(
                             id = 2,
                             merchant = "Cash — parking",
                             categoryName = "Transport",

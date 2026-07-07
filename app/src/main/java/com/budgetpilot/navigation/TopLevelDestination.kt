@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.budgetpilot.R
 import com.budgetpilot.feature.ask.presentation.navigation.AskRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
-import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
+import com.budgetpilot.feature.history.presentation.navigation.HistoryRoute
 import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
 import androidx.compose.material.icons.filled.Home as FilledHome
 import androidx.compose.material.icons.outlined.Home as OutlinedHome

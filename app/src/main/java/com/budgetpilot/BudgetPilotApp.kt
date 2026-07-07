@@ -12,7 +12,7 @@ import com.budgetpilot.feature.ask.presentation.di.askPresentationModule
 import com.budgetpilot.feature.budgets.presentation.di.budgetsPresentationModule
 import com.budgetpilot.feature.capture.data.di.captureDataModule
 import com.budgetpilot.feature.capture.presentation.di.capturePresentationModule
-import com.budgetpilot.feature.expenses.presentation.di.expensesPresentationModule
+import com.budgetpilot.feature.history.presentation.di.historyPresentationModule
 import com.budgetpilot.feature.home.presentation.di.homePresentationModule
 import com.budgetpilot.feature.insights.data.di.insightsDataModule
 import com.budgetpilot.feature.insights.data.worker.InsightCheckWorker
@@ -41,7 +41,7 @@ class BudgetPilotApp :
                 coreDataModule,
                 coreDatabaseModule,
                 coreAiDataModule,
-                expensesPresentationModule,
+                historyPresentationModule,
                 budgetsPresentationModule,
                 homePresentationModule,
                 captureDataModule,

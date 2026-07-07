@@ -1,4 +1,4 @@
-package com.budgetpilot.feature.budgets.presentation.editor.components
+package com.budgetpilot.feature.history.presentation.editor.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -39,11 +39,7 @@ private val KeyGap = 6.dp
 private const val BACKSPACE_INITIAL_DELAY_MS = 400L
 private const val BACKSPACE_REPEAT_DELAY_MS = 80L
 
-/**
- * DESIGN-SPEC.md §14: same 4x3 plain-decimal-entry keypad as
- * `:feature:history`'s `AmountKeypad`, duplicated here rather than shared —
- * features never depend on each other (PLAN.md §3).
- */
+/** DESIGN-SPEC.md §5: 4x3 plain-decimal-entry keypad (1-9, '.', 0, backspace). */
 @Composable
 fun AmountKeypad(
     onKeyPress: (String) -> Unit,

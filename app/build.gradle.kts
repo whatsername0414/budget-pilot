@@ -28,7 +28,7 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:database"))
     implementation(project(":core:ai:data"))
-    implementation(project(":feature:expenses:presentation"))
+    implementation(project(":feature:history:presentation"))
     implementation(project(":feature:budgets:presentation"))
     implementation(project(":feature:home:presentation"))
     implementation(project(":feature:capture:presentation"))
