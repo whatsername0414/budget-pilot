@@ -12,4 +12,5 @@
     <string name="home_section_recent_expenses">Recent expenses</string>
     <string name="home_hero_of">of </string>
     <string name="home_hero_budgeted_days_left"> budgeted · %1$d days left</string>
+    <string name="home_expense_row_category_with_source">%1$s · </string>
 </resources>

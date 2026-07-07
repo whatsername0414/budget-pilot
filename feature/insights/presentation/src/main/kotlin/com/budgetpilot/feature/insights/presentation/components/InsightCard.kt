@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -20,6 +21,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +32,10 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.feature.insights.presentation.R
 
 private val InsightCardShape = RoundedCornerShape(16.dp)
+private val InsightCardVerticalPadding = 14.dp
+private val InsightSparkleSize = 20.dp
+private val InsightDismissIconSize = 16.dp
+private const val INSIGHT_DISMISS_ICON_ALPHA = 0.7f
 
 /**
  * The dashboard's proactive-insight card (DESIGN-SPEC.md §11) — the only card in the app allowed
@@ -51,32 +57,32 @@ fun InsightCard(
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             ),
     ) {
-        Column(modifier = Modifier.padding(Spacing.medium)) {
+        Column(modifier = Modifier.padding(horizontal = Spacing.medium, vertical = InsightCardVerticalPadding)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(Spacing.small),
                 verticalAlignment = Alignment.Top,
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(Spacing.small),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = StateIcons.Sparkle, contentDescription = null)
+                Icon(
+                    imageVector = StateIcons.Sparkle,
+                    contentDescription = null,
+                    modifier = Modifier.size(InsightSparkleSize),
+                )
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(R.string.insight_card_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
                     )
+                    Text(text = message, style = MaterialTheme.typography.bodyMedium)
                 }
                 IconButton(onClick = onDismiss) {
                     Icon(
                         imageVector = Icons.Filled.Close,
                         contentDescription = stringResource(R.string.cd_dismiss_insight),
+                        modifier = Modifier.size(InsightDismissIconSize).alpha(INSIGHT_DISMISS_ICON_ALPHA),
                     )
                 }
             }
-            Spacer(Modifier.height(Spacing.small))
-            Text(text = message, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.height(Spacing.small))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 TextButton(onClick = onAskMore) {

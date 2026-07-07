@@ -1,8 +1,10 @@
 package com.budgetpilot.feature.home.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -29,7 +31,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -174,7 +178,10 @@ private fun HomeLoadedContent(
                 },
             )
             AppCard(modifier = Modifier.fillMaxWidth()) {
-                state.topCategories.forEach { category -> TopCategoryRow(category) }
+                state.topCategories.forEachIndexed { index, category ->
+                    TopCategoryRow(category)
+                    if (index != state.topCategories.lastIndex) Spacer(Modifier.height(TopCategoryRowGap))
+                }
             }
 
             if (state.worstBudgets.isNotEmpty()) {
@@ -202,7 +209,10 @@ private fun HomeLoadedContent(
                     }
                 },
             )
-            AppCard(modifier = Modifier.fillMaxWidth()) {
+            AppCard(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = Spacing.medium, vertical = RecentExpensesCardVerticalPadding),
+            ) {
                 state.recentExpenses.forEachIndexed { index, expense ->
                     HomeExpenseRow(expense = expense)
                     if (index != state.recentExpenses.lastIndex) {
@@ -225,9 +235,9 @@ private fun HomeHeroCard(
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(Modifier.height(Spacing.extraSmall))
+        Spacer(Modifier.height(Spacing.small))
         AmountText(amount = state.totalSpent, style = MaterialTheme.typography.displaySmall)
-        Spacer(Modifier.height(Spacing.extraSmall))
+        Spacer(Modifier.height(Spacing.small))
         Row {
             Text(
                 text = stringResource(R.string.home_hero_of),
@@ -256,9 +266,9 @@ private fun TopCategoryRow(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().padding(vertical = Spacing.extraSmall),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.small),
+        horizontalArrangement = Arrangement.spacedBy(TopCategoryRowItemGap),
     ) {
         Text(
             text = category.name,
@@ -267,7 +277,14 @@ private fun TopCategoryRow(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.width(96.dp),
         )
-        Box(modifier = Modifier.weight(1f).height(20.dp)) {
+        Box(
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .height(20.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.08f)),
+        ) {
             Surface(
                 color = categoryColor(category.colorKey),
                 shape = RoundedCornerShape(4.dp),
@@ -277,9 +294,18 @@ private fun TopCategoryRow(
                         .fillMaxHeight(),
             ) {}
         }
-        AmountText(amount = category.amount, style = MaterialTheme.typography.labelMedium)
+        AmountText(
+            amount = category.amount,
+            style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.End),
+            modifier = Modifier.width(TopCategoryValueWidth),
+        )
     }
 }
+
+private val TopCategoryRowGap = 12.dp
+private val TopCategoryRowItemGap = 10.dp
+private val TopCategoryValueWidth = 74.dp
+private val RecentExpensesCardVerticalPadding = 4.dp
 
 @Preview
 @Composable
