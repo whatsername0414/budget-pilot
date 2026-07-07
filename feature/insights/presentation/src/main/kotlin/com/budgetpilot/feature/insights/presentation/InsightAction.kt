@@ -4,4 +4,6 @@ sealed interface InsightAction {
     data object OnDismissClick : InsightAction
 
     data object OnAskMoreClick : InsightAction
+
+    data object OnNotificationPermissionResult : InsightAction
 }

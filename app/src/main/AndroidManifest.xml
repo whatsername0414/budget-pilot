@@ -16,6 +16,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetPilot">
+        <!-- WorkManager is configured with Koin's WorkerFactory via Configuration.Provider
+             (BudgetPilotApp), so the library's default androidx-startup initializer must be
+             removed or the first WorkManager.getInstance() call would use the default config. -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

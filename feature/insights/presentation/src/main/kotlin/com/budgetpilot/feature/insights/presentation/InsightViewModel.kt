@@ -1,5 +1,6 @@
 package com.budgetpilot.feature.insights.presentation
 
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.budgetpilot.feature.insights.data.InsightCheckUseCase
@@ -45,6 +46,7 @@ class InsightViewModel(
         when (action) {
             InsightAction.OnDismissClick -> dismiss()
             InsightAction.OnAskMoreClick -> askMore()
+            InsightAction.OnNotificationPermissionResult -> markNotificationPermissionRequested()
         }
     }
 
@@ -68,6 +70,17 @@ class InsightViewModel(
         val insight = insightStore.getLatestUndismissed()
         currentInsight = insight
         _state.update { it.copy(card = insight?.let { found -> InsightCardUi(message = found.message) }) }
+        if (insight != null) maybeRequestNotificationPermission()
+    }
+
+    private fun markNotificationPermissionRequested() {
+        viewModelScope.launch { insightStore.markNotificationPermissionRequested() }
+    }
+
+    private suspend fun maybeRequestNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+        if (insightStore.hasRequestedNotificationPermission()) return
+        _events.send(InsightEvent.RequestNotificationPermission)
     }
 }
 

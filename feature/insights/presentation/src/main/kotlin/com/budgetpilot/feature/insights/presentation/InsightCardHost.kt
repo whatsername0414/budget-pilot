@@ -1,5 +1,9 @@
 package com.budgetpilot.feature.insights.presentation
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,9 +26,20 @@ fun InsightCardHost(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val notificationPermissionLauncher =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+                viewModel.onAction(InsightAction.OnNotificationPermissionResult)
+            }
+        } else {
+            null
+        }
+
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is InsightEvent.NavigateToAsk -> onNavigateToAsk(event.prefillQuestion)
+            InsightEvent.RequestNotificationPermission ->
+                notificationPermissionLauncher?.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 

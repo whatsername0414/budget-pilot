@@ -12,4 +12,8 @@ interface InsightStore {
         id: Long,
         dismissedAt: Instant,
     )
+
+    suspend fun hasRequestedNotificationPermission(): Boolean
+
+    suspend fun markNotificationPermissionRequested()
 }

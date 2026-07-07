@@ -37,7 +37,7 @@ val insightsDataModule =
         single { InsightNotifier(androidContext()) }
         worker { params ->
             InsightCheckWorker(
-                context = params.get(),
+                context = get(),
                 workerParams = params.get(),
                 useCase = get(),
                 notifier = get(),

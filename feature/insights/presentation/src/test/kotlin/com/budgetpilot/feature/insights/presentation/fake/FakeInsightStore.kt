@@ -13,6 +13,8 @@ class FakeInsightStore(
     var latestUndismissed: Insight? = latestUndismissed
         private set
     val dismissed = mutableListOf<Pair<Long, Instant>>()
+    var notificationPermissionRequested: Boolean = false
+        private set
 
     override suspend fun save(insight: Insight): Long = insight.id
 
@@ -32,4 +34,10 @@ class FakeInsightStore(
         type: InsightType,
         month: String,
     ): Boolean = false
+
+    override suspend fun hasRequestedNotificationPermission(): Boolean = notificationPermissionRequested
+
+    override suspend fun markNotificationPermissionRequested() {
+        notificationPermissionRequested = true
+    }
 }

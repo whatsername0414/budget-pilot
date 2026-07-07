@@ -2,6 +2,7 @@ package com.budgetpilot.feature.insights.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import com.budgetpilot.core.database.dao.InsightDao
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.map
 import java.time.Instant
 
 private val LAST_SHOWN_AT_MILLIS_KEY = longPreferencesKey("insight_last_shown_at_millis")
+private val NOTIFICATION_PERMISSION_REQUESTED_KEY = booleanPreferencesKey("insight_notification_permission_requested")
 
 /**
  * Persists insights to Room (so [wasShown] can check the full type+month history) while keeping
@@ -51,4 +53,13 @@ class RoomInsightStore(
         id: Long,
         dismissedAt: Instant,
     ) = dao.dismiss(id, dismissedAt)
+
+    override suspend fun hasRequestedNotificationPermission(): Boolean =
+        dataStore.data
+            .map { preferences -> preferences[NOTIFICATION_PERMISSION_REQUESTED_KEY] }
+            .first() ?: false
+
+    override suspend fun markNotificationPermissionRequested() {
+        dataStore.edit { preferences -> preferences[NOTIFICATION_PERMISSION_REQUESTED_KEY] = true }
+    }
 }

@@ -4,4 +4,6 @@ sealed interface InsightEvent {
     data class NavigateToAsk(
         val prefillQuestion: String,
     ) : InsightEvent
+
+    data object RequestNotificationPermission : InsightEvent
 }

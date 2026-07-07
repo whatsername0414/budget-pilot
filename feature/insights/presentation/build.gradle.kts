@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":feature:insights:domain"))
     implementation(project(":feature:insights:data"))
 
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.core)
