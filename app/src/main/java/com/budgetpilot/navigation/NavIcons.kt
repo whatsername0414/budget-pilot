@@ -13,7 +13,10 @@ import androidx.compose.ui.unit.dp
  * own icon sprite; outlined counterparts are copied from the matching
  * MIT-licensed `@material-design-icons/svg` "outlined" glyph (same source
  * family already used for `CategoryIcons`/`FilterIcons`) rather than adding
- * `material-icons-extended`.
+ * `material-icons-extended`. [CameraFilled] (2026-07-07 FAB speed-dial
+ * rework) is the same MIT "photo_camera" glyph `:feature:capture:presentation`
+ * already carries as its private `CaptureIcons.PhotoCamera` — duplicated here
+ * since that one isn't exported and `:app` can't depend on it.
  */
 object NavIcons {
     val ReceiptFilled: ImageVector by lazy {
@@ -71,6 +74,18 @@ object NavIcons {
                         "2-2v-2.28A2 2 0 0 0 22 15V9a2 2 0 0 0-1-1.72zM20 9v6h-7V9h7zM5 19V5h14v2h-6c-1.1 " +
                         "0-2 .9-2 2v6c0 1.1.9 2 2 2h6v2H5z",
                     "M17.5,12A1.5,1.5,0,1,1,14.5,12A1.5,1.5,0,1,1,17.5,12Z",
+                ),
+        )
+    }
+
+    val CameraFilled: ImageVector by lazy {
+        vectorOf(
+            name = "CameraFilled",
+            paths =
+                listOf(
+                    "M9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 " +
+                        "2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z",
+                    "M8.8 12a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0z",
                 ),
         )
     }

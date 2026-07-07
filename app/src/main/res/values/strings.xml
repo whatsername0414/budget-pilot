@@ -4,7 +4,10 @@
     <string name="nav_history">History</string>
     <string name="nav_ask">Ask</string>
     <string name="nav_budgets">Budgets</string>
-    <string name="cd_capture_fab">Capture a receipt</string>
+    <string name="cd_fab_expand">Add expense</string>
+    <string name="cd_fab_collapse">Close</string>
+    <string name="fab_scan_receipt">Scan receipt</string>
+    <string name="fab_enter_manually">Enter manually</string>
     <string name="placeholder_title">Coming soon</string>
     <string name="placeholder_description">This screen will be built in a later phase.</string>
 </resources>

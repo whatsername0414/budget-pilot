@@ -11,12 +11,17 @@ import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
 import androidx.compose.material.icons.filled.Home as FilledHome
 import androidx.compose.material.icons.outlined.Home as OutlinedHome
 
-/** The four bottom-bar destinations; Capture is reached via the FAB, not the bar. */
+/**
+ * The four bottom-bar destinations; Capture is reached via the FAB, not the
+ * bar. [showsFab] is false only for Ask, whose input bar already owns the
+ * bottom-right of the screen (2026-07-07 FAB speed-dial rework).
+ */
 enum class TopLevelDestination(
     val route: Any,
     @param:StringRes val labelRes: Int,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
+    val showsFab: Boolean = true,
 ) {
     HOME(
         route = HomeRoute,
@@ -35,6 +40,7 @@ enum class TopLevelDestination(
         labelRes = R.string.nav_ask,
         selectedIcon = NavIcons.ChatFilled,
         unselectedIcon = NavIcons.ChatOutlined,
+        showsFab = false,
     ),
     BUDGETS(
         route = BudgetsRoute,
