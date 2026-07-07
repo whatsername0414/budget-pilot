@@ -1,6 +1,8 @@
 package com.budgetpilot.core.ai.data.di
 
 import com.budgetpilot.core.ai.data.BuildConfig
+import com.budgetpilot.core.ai.data.DemoAwareLlmClient
+import com.budgetpilot.core.ai.data.FakeLlmClient
 import com.budgetpilot.core.ai.data.KtorGeminiLlmClient
 import com.budgetpilot.core.ai.data.RateLimiter
 import com.budgetpilot.core.ai.data.agent.AgentSessionFactory
@@ -16,18 +18,32 @@ import com.budgetpilot.core.ai.domain.tool.GetCategoriesTool
 import com.budgetpilot.core.ai.domain.tool.QueryExpensesTool
 import com.budgetpilot.core.ai.domain.tool.ResolveDateRangeTool
 import com.budgetpilot.core.data.network.HttpClientFactory
+import com.budgetpilot.core.data.preferences.UserPreferences
 import com.budgetpilot.core.domain.ai.ApiKeyStatusProvider
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.time.Clock
+
+private val REAL_LLM_CLIENT = named("realLlmClient")
+private val DEMO_LLM_CLIENT = named("demoLlmClient")
 
 val coreAiDataModule =
     module {
         single { HttpClientFactory.create(OkHttp.create()) }
         single { RateLimiter() }
-        single<LlmClient> { KtorGeminiLlmClient(httpClient = get(), rateLimiter = get()) }
+        single(REAL_LLM_CLIENT) { KtorGeminiLlmClient(httpClient = get(), rateLimiter = get()) }
+        single(DEMO_LLM_CLIENT) { FakeLlmClient() }
+        single<LlmClient> {
+            val preferences = get<UserPreferences>()
+            DemoAwareLlmClient(
+                realClient = get(REAL_LLM_CLIENT),
+                demoClient = get(DEMO_LLM_CLIENT),
+                isDemoModeEnabled = { preferences.isDemoModeEnabledSnapshot() },
+            )
+        }
         single<PromptFileSource> { AndroidAssetPromptFileSource(androidContext()) }
         single<PromptRepository> { AssetPromptRepository(get()) }
         single<ApiKeyStatusProvider> { ApiKeyStatusProvider { BuildConfig.GEMINI_API_KEY.isNotBlank() } }

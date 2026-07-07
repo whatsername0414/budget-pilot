@@ -12,8 +12,24 @@ class FakeUserPreferencesRepository(
     private val _cloudAiEnabled = MutableStateFlow(initialCloudAiEnabled)
     override val cloudAiEnabled = _cloudAiEnabled
 
+    private val _privateModeEnabled = MutableStateFlow(false)
+    override val privateModeEnabled = _privateModeEnabled
+
+    private val _demoModeEnabled = MutableStateFlow(false)
+    override val demoModeEnabled = _demoModeEnabled
+
     override suspend fun setCloudAiEnabled(enabled: Boolean): EmptyResult<DataError.Local> {
         _cloudAiEnabled.value = enabled
+        return Result.Success(Unit)
+    }
+
+    override suspend fun setPrivateModeEnabled(enabled: Boolean): EmptyResult<DataError.Local> {
+        _privateModeEnabled.value = enabled
+        return Result.Success(Unit)
+    }
+
+    override suspend fun setDemoModeEnabled(enabled: Boolean): EmptyResult<DataError.Local> {
+        _demoModeEnabled.value = enabled
         return Result.Success(Unit)
     }
 }

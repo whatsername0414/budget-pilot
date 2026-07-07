@@ -46,6 +46,7 @@ fun SettingsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val appVersion = remember(context) { context.appVersionName() }
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -59,6 +60,7 @@ fun SettingsScreen(
         state = state,
         onAction = viewModel::onAction,
         onNavigateBack = onNavigateBack,
+        appVersion = appVersion,
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
@@ -70,6 +72,7 @@ fun SettingsContent(
     state: SettingsState,
     onAction: (SettingsAction) -> Unit,
     onNavigateBack: () -> Unit,
+    appVersion: String,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
@@ -85,33 +88,117 @@ fun SettingsContent(
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding).padding(Spacing.medium)) {
-            Text(
-                text = stringResource(R.string.settings_section_ai_privacy).uppercase(Locale.ENGLISH),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            SectionLabel(stringResource(R.string.settings_section_ai_privacy))
             Spacer(modifier = Modifier.height(Spacing.small))
-            AppCard(modifier = Modifier.fillMaxWidth()) {
-                SettingRow(
-                    title = stringResource(R.string.settings_cloud_ai_title),
-                    description = stringResource(R.string.settings_cloud_ai_description),
-                    onClick = { onAction(SettingsAction.OnCloudAiToggle(!state.cloudAiEnabled)) },
-                    trailingContent = {
-                        Switch(
-                            checked = state.cloudAiEnabled,
-                            onCheckedChange = { enabled -> onAction(SettingsAction.OnCloudAiToggle(enabled)) },
-                        )
-                    },
-                )
-                HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
-                SettingRow(
-                    title = stringResource(R.string.settings_api_key_title),
-                    description = stringResource(R.string.settings_api_key_description),
-                    trailingContent = { ApiKeyStatusChip(isConfigured = state.isApiKeyConfigured) },
-                )
-            }
+            AiPrivacyCard(state = state, onAction = onAction)
+
+            Spacer(modifier = Modifier.height(Spacing.large))
+            SectionLabel(stringResource(R.string.settings_section_demo))
+            Spacer(modifier = Modifier.height(Spacing.small))
+            DemoCard(demoModeEnabled = state.demoModeEnabled, onAction = onAction)
+
+            Spacer(modifier = Modifier.height(Spacing.large))
+            SectionLabel(stringResource(R.string.settings_section_about))
+            Spacer(modifier = Modifier.height(Spacing.small))
+            AboutCard(appVersion = appVersion)
         }
     }
+}
+
+@Composable
+private fun AiPrivacyCard(
+    state: SettingsState,
+    onAction: (SettingsAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AppCard(modifier = modifier.fillMaxWidth()) {
+        SettingRow(
+            title = stringResource(R.string.settings_private_mode_title),
+            description = stringResource(R.string.settings_private_mode_description),
+            onClick = { onAction(SettingsAction.OnPrivateModeToggle(!state.privateModeEnabled)) },
+            trailingContent = {
+                Switch(
+                    checked = state.privateModeEnabled,
+                    onCheckedChange = { enabled -> onAction(SettingsAction.OnPrivateModeToggle(enabled)) },
+                )
+            },
+        )
+        HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
+        SettingRow(
+            title = stringResource(R.string.settings_cloud_ai_title),
+            description =
+                if (state.privateModeEnabled) {
+                    stringResource(R.string.settings_cloud_ai_description_private_mode_on)
+                } else {
+                    stringResource(R.string.settings_cloud_ai_description)
+                },
+            enabled = !state.privateModeEnabled,
+            onClick = { onAction(SettingsAction.OnCloudAiToggle(!state.cloudAiEnabled)) },
+            trailingContent = {
+                Switch(
+                    checked = state.cloudAiEnabled,
+                    enabled = !state.privateModeEnabled,
+                    onCheckedChange = { enabled -> onAction(SettingsAction.OnCloudAiToggle(enabled)) },
+                )
+            },
+        )
+        HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
+        SettingRow(
+            title = stringResource(R.string.settings_api_key_title),
+            description = stringResource(R.string.settings_api_key_description),
+            trailingContent = { ApiKeyStatusChip(isConfigured = state.isApiKeyConfigured) },
+        )
+    }
+}
+
+@Composable
+private fun DemoCard(
+    demoModeEnabled: Boolean,
+    onAction: (SettingsAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AppCard(modifier = modifier.fillMaxWidth()) {
+        SettingRow(
+            title = stringResource(R.string.settings_demo_mode_title),
+            description = stringResource(R.string.settings_demo_mode_description),
+            onClick = { onAction(SettingsAction.OnDemoModeToggle(!demoModeEnabled)) },
+            trailingContent = {
+                Switch(
+                    checked = demoModeEnabled,
+                    onCheckedChange = { enabled -> onAction(SettingsAction.OnDemoModeToggle(enabled)) },
+                )
+            },
+        )
+    }
+}
+
+@Composable
+private fun AboutCard(
+    appVersion: String,
+    modifier: Modifier = Modifier,
+) {
+    AppCard(modifier = modifier.fillMaxWidth()) {
+        SettingRow(
+            title = stringResource(R.string.settings_about_version_title),
+            description = stringResource(R.string.settings_about_description),
+            trailingContent = {
+                Text(text = appVersion, style = MaterialTheme.typography.labelMedium)
+            },
+        )
+    }
+}
+
+@Composable
+private fun SectionLabel(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = text.uppercase(Locale.ENGLISH),
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -156,6 +243,7 @@ private fun SettingsScreenPreview() {
             state = SettingsState(cloudAiEnabled = true, isApiKeyConfigured = true, isLoading = false),
             onAction = {},
             onNavigateBack = {},
+            appVersion = "1.0",
         )
     }
 }
@@ -168,6 +256,27 @@ private fun SettingsScreenMissingKeyPreview() {
             state = SettingsState(cloudAiEnabled = false, isApiKeyConfigured = false, isLoading = false),
             onAction = {},
             onNavigateBack = {},
+            appVersion = "1.0",
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun SettingsScreenPrivateModePreview() {
+    BudgetPilotTheme {
+        SettingsContent(
+            state =
+                SettingsState(
+                    privateModeEnabled = true,
+                    cloudAiEnabled = true,
+                    isApiKeyConfigured = true,
+                    demoModeEnabled = true,
+                    isLoading = false,
+                ),
+            onAction = {},
+            onNavigateBack = {},
+            appVersion = "1.0",
         )
     }
 }

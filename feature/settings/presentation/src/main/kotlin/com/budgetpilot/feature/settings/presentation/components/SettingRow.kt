@@ -14,20 +14,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 
+private const val DISABLED_ALPHA = 0.38f
+
 /**
  * A single row within a Settings card (DESIGN-SPEC.md §12): title, a full-sentence description,
  * and trailing content — usually a [Switch] but also used for the API-key status chip. The whole
- * row is tappable when [onClick] is supplied, not just the trailing content.
+ * row is tappable when [onClick] is supplied, not just the trailing content. [enabled] dims the
+ * row (Material's standard 0.38 disabled-content alpha) and drops the row-level click handler —
+ * used e.g. for the Cloud AI row while private mode forces it off; the [trailingContent] switch's
+ * own `enabled` still needs setting separately by the caller.
  */
 @Composable
 fun SettingRow(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onClick: (() -> Unit)? = null,
     trailingContent: @Composable () -> Unit = {},
 ) {
@@ -35,7 +42,8 @@ fun SettingRow(
         modifier =
             modifier
                 .fillMaxWidth()
-                .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+                .then(if (onClick != null && enabled) Modifier.clickable(onClick = onClick) else Modifier)
+                .alpha(if (enabled) 1f else DISABLED_ALPHA)
                 .padding(vertical = Spacing.small),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -62,6 +70,21 @@ private fun SettingRowPreview() {
                 description = "Photos and questions are sent to Google Gemini to read your receipts.",
                 onClick = {},
                 trailingContent = { Switch(checked = true, onCheckedChange = null) },
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun SettingRowDisabledPreview() {
+    BudgetPilotTheme {
+        Surface {
+            SettingRow(
+                title = "Use cloud AI",
+                description = "Cloud AI is off while private mode is on.",
+                enabled = false,
+                trailingContent = { Switch(checked = false, enabled = false, onCheckedChange = null) },
             )
         }
     }

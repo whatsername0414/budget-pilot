@@ -46,6 +46,22 @@ class SettingsViewModelTest {
         }
 
     @Test
+    fun `initial state reflects the current private mode and demo mode preferences`() =
+        runTest {
+            val viewModel =
+                viewModel(
+                    preferences =
+                        FakeUserPreferencesRepository(
+                            initialPrivateModeEnabled = true,
+                            initialDemoModeEnabled = true,
+                        ),
+                )
+
+            assertThat(viewModel.state.value.privateModeEnabled).isTrue()
+            assertThat(viewModel.state.value.demoModeEnabled).isTrue()
+        }
+
+    @Test
     fun `toggling cloud AI persists the new value via the repository`() =
         runTest {
             val preferences = FakeUserPreferencesRepository(initialCloudAiEnabled = true)
@@ -55,6 +71,32 @@ class SettingsViewModelTest {
 
             assertThat(viewModel.state.value.cloudAiEnabled).isFalse()
             assertThat(preferences.cloudAiEnabled.value).isFalse()
+        }
+
+    @Test
+    fun `toggling private mode persists the new value without changing the stored cloud AI preference`() =
+        runTest {
+            val preferences = FakeUserPreferencesRepository(initialCloudAiEnabled = true)
+            val viewModel = viewModel(preferences = preferences)
+
+            viewModel.onAction(SettingsAction.OnPrivateModeToggle(true))
+
+            assertThat(viewModel.state.value.privateModeEnabled).isTrue()
+            assertThat(preferences.privateModeEnabled.value).isTrue()
+            assertThat(viewModel.state.value.cloudAiEnabled).isTrue()
+            assertThat(preferences.cloudAiEnabled.value).isTrue()
+        }
+
+    @Test
+    fun `toggling demo mode persists the new value via the repository`() =
+        runTest {
+            val preferences = FakeUserPreferencesRepository()
+            val viewModel = viewModel(preferences = preferences)
+
+            viewModel.onAction(SettingsAction.OnDemoModeToggle(true))
+
+            assertThat(viewModel.state.value.demoModeEnabled).isTrue()
+            assertThat(preferences.demoModeEnabled.value).isTrue()
         }
 
     @Test
@@ -70,6 +112,21 @@ class SettingsViewModelTest {
                 assertThat(awaitItem()).isInstanceOf(SettingsEvent.ShowError::class)
             }
             assertThat(viewModel.state.value.cloudAiEnabled).isTrue()
+        }
+
+    @Test
+    fun `a failed private mode persist emits ShowError and leaves the toggle unchanged`() =
+        runTest {
+            val preferences =
+                FakeUserPreferencesRepository(failWith = DataError.Local.DISK_FULL)
+            val viewModel = viewModel(preferences = preferences)
+
+            viewModel.events.test {
+                viewModel.onAction(SettingsAction.OnPrivateModeToggle(true))
+
+                assertThat(awaitItem()).isInstanceOf(SettingsEvent.ShowError::class)
+            }
+            assertThat(viewModel.state.value.privateModeEnabled).isFalse()
         }
 
     private fun viewModel(
