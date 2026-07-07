@@ -34,7 +34,9 @@ private val ON_DEVICE_EXTRACTOR = named("onDeviceExtractor")
 val captureDataModule =
     module {
         single<ExtractionCache> { RoomExtractionCache(get()) }
-        single<ReceiptExtractor>(CLOUD_EXTRACTOR) { VisionLlmExtractor(llmClient = get(), promptRepository = get(), extractionCache = get()) }
+        single<ReceiptExtractor>(CLOUD_EXTRACTOR) {
+            VisionLlmExtractor(llmClient = get(), promptRepository = get(), extractionCache = get())
+        }
         single { TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS) }
         single<OcrLineRecognizer> { MlKitOcrLineRecognizer(get()) }
         single { PhReceiptParser(clock = get()) }
