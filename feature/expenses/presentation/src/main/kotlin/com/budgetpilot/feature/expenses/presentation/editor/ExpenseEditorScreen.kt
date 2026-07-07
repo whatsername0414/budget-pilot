@@ -1,5 +1,6 @@
 package com.budgetpilot.feature.expenses.presentation.editor
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
@@ -13,10 +14,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +45,8 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.components.CategoryChip
@@ -60,6 +65,11 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+
+private val AmountHeroFontSize = 44.sp
+private val AmountHeroLineHeight = 52.sp
+private val KeypadTopPadding = 10.dp
+private val KeypadBottomPadding = 6.dp
 
 @Composable
 fun ExpenseEditorScreen(
@@ -130,10 +140,24 @@ fun ExpenseEditorContent(
                         .padding(horizontal = Spacing.medium),
             )
 
-            AmountKeypad(
-                onKeyPress = { onAction(ExpenseEditorAction.OnAmountKeyPress(it)) },
-                modifier = Modifier.padding(Spacing.medium),
-            )
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.surface),
+            ) {
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                AmountKeypad(
+                    onKeyPress = { onAction(ExpenseEditorAction.OnAmountKeyPress(it)) },
+                    modifier =
+                        Modifier.padding(
+                            start = Spacing.medium,
+                            end = Spacing.medium,
+                            top = KeypadTopPadding,
+                            bottom = KeypadBottomPadding,
+                        ),
+                )
+            }
         }
     }
 
@@ -179,6 +203,7 @@ private fun ExpenseEditorForm(
                         }
                     },
             label = { Text(stringResource(R.string.label_merchant)) },
+            trailingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = null) },
             isError = state.merchantError != null,
             supportingText = { state.merchantError?.let { Text(it.asString()) } },
             singleLine = true,
@@ -314,7 +339,11 @@ private fun AmountHero(
         )
         AmountText(
             amount = amount,
-            style = MaterialTheme.typography.displaySmall,
+            style =
+                MaterialTheme.typography.displaySmall.copy(
+                    fontSize = AmountHeroFontSize,
+                    lineHeight = AmountHeroLineHeight,
+                ),
             color = if (error != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
         )
         if (error != null) {

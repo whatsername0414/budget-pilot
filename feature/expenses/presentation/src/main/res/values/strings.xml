@@ -8,6 +8,7 @@
     <string name="expense_empty_no_expenses_description">Add your first expense to start tracking your budget.</string>
     <string name="action_add_expense">Add expense</string>
     <string name="cd_delete_expense">Delete expense</string>
+    <string name="expense_row_category_with_source">%1$s · </string>
     <string name="search_placeholder_merchant_note">Search merchant or note</string>
     <string name="cd_clear_search">Clear search</string>
     <string name="action_filters">Filters</string>

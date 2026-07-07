@@ -2,6 +2,7 @@ package com.budgetpilot.feature.expenses.presentation.main.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +31,12 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
+import com.budgetpilot.feature.expenses.presentation.R
 import com.budgetpilot.feature.expenses.presentation.main.model.ExpenseUi
+
+private val ExpenseRowVerticalPadding = 10.dp
+private val ExpenseRowItemGap = 12.dp
+private val ExpenseRowMetaGap = 6.dp
 
 /** DESIGN-SPEC.md §1.4 anatomy: 40dp tinted icon · merchant/category · amount/time. Row is the full touch target. */
 @Composable
@@ -46,8 +53,9 @@ fun ExpenseRow(
                 .fillMaxWidth()
                 .heightIn(min = 60.dp)
                 .clickable(onClick = onClick)
-                .padding(vertical = Spacing.small),
+                .padding(vertical = ExpenseRowVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(ExpenseRowItemGap),
     ) {
         Box(
             modifier =
@@ -61,31 +69,35 @@ fun ExpenseRow(
                 imageVector = categoryIcon(expense.categoryIconKey),
                 contentDescription = null,
                 tint = color,
+                modifier = Modifier.size(20.dp),
             )
         }
 
-        Column(
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .padding(horizontal = Spacing.small),
-        ) {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = expense.merchant,
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(ExpenseRowMetaGap),
+            ) {
                 Text(
-                    text = expense.categoryName,
+                    text =
+                        if (expense.source != ExpenseSource.MANUAL) {
+                            stringResource(R.string.expense_row_category_with_source, expense.categoryName)
+                        } else {
+                            expense.categoryName
+                        },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (expense.source != ExpenseSource.MANUAL) {
-                    SourceBadge(source = expense.source, modifier = Modifier.padding(start = Spacing.extraSmall))
+                    SourceBadge(source = expense.source)
                 }
             }
         }

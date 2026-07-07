@@ -65,6 +65,10 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
+private val DayCardVerticalPadding = 4.dp
+private val DayHeaderTopPadding = 6.dp
+private val DayHeaderBottomPadding = 2.dp
+
 @Composable
 fun ExpenseListScreen(
     onNavigateToExpenseEditor: (Long?) -> Unit,
@@ -229,7 +233,9 @@ private fun ExpenseDayList(
                 DayGroupHeader(dayGroup = dayGroup)
             }
             item(key = "card_${dayGroup.date}") {
-                AppCard {
+                AppCard(
+                    contentPadding = PaddingValues(horizontal = Spacing.medium, vertical = DayCardVerticalPadding),
+                ) {
                     dayGroup.expenses.forEach { expense ->
                         SwipeableExpenseRow(
                             expense = expense,
@@ -253,8 +259,9 @@ private fun DayGroupHeader(
             modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(vertical = Spacing.extraSmall),
+                .padding(top = DayHeaderTopPadding, bottom = DayHeaderBottomPadding),
         horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom,
     ) {
         Text(text = dayGroup.dateLabel, style = MaterialTheme.typography.titleSmall)
         AmountText(
