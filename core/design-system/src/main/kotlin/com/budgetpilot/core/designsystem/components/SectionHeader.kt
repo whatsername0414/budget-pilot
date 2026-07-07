@@ -3,6 +3,7 @@ package com.budgetpilot.core.designsystem.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -12,8 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
+
+private val SectionHeaderMinHeight = 28.dp
 
 /** Title for a screen section, with an optional trailing action (e.g. "See all"). */
 @Composable
@@ -23,7 +27,10 @@ fun SectionHeader(
     action: @Composable (() -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = SectionHeaderMinHeight),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {

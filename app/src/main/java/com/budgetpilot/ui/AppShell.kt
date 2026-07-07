@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FabPosition
@@ -19,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -47,9 +50,14 @@ import com.budgetpilot.feature.settings.presentation.navigation.SettingsRoute
 import com.budgetpilot.feature.settings.presentation.navigation.settingsGraph
 import com.budgetpilot.navigation.TopLevelDestination
 
-// Scaffold keeps 16dp between the FAB and the bottom bar; shifting the 56dp FAB
-// down by 16 + 56/2 centers it on the bar's top edge, over the gap left in the bar.
-private val FabDockOffset = 44.dp
+// design/mockups.html .fab: 60dp square, 20dp corner radius (not a circle).
+private val FabSize = 60.dp
+private val FabShape = RoundedCornerShape(20.dp)
+private val FabIconSize = 26.dp
+
+// Scaffold keeps 16dp between the FAB and the bottom bar; shifting the 60dp FAB
+// down by 16 + 60/2 centers it on the bar's top edge, over the gap left in the bar.
+private val FabDockOffset = 46.dp
 
 @Composable
 fun AppShell(modifier: Modifier = Modifier) {
@@ -73,21 +81,9 @@ fun AppShell(modifier: Modifier = Modifier) {
         bottomBar = { if (isTopLevelDestination) AppBottomBar(navController) },
         floatingActionButton = {
             if (isTopLevelDestination) {
-                FloatingActionButton(
-                    onClick = {
-                        navController.navigate(CaptureRoute) { launchSingleTop = true }
-                    },
-                    modifier = Modifier.offset(y = FabDockOffset),
-                    // PLAN.md §4.1 assigns the FAB to the primary role, not M3's
-                    // default primaryContainer.
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = stringResource(R.string.cd_capture_fab),
-                    )
-                }
+                CaptureFab(
+                    onClick = { navController.navigate(CaptureRoute) { launchSingleTop = true } },
+                )
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
@@ -139,6 +135,27 @@ fun AppShell(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun CaptureFab(onClick: () -> Unit) {
+    FloatingActionButton(
+        onClick = onClick,
+        modifier =
+            Modifier
+                .offset(y = FabDockOffset)
+                .size(FabSize),
+        shape = FabShape,
+        // PLAN.md §4.1 assigns the FAB to the primary role, not M3's default primaryContainer.
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = stringResource(R.string.cd_capture_fab),
+            modifier = Modifier.size(FabIconSize),
+        )
+    }
+}
+
+@Composable
 private fun AppBottomBar(navController: NavController) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
@@ -175,7 +192,12 @@ private fun AppBottomBar(navController: NavController) {
                         contentDescription = null,
                     )
                 },
-                label = { Text(stringResource(destination.labelRes)) },
+                label = {
+                    Text(
+                        text = stringResource(destination.labelRes),
+                        fontWeight = if (selected) FontWeight.SemiBold else null,
+                    )
+                },
             )
         }
     }

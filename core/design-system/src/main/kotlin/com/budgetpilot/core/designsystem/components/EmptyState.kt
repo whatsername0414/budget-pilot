@@ -2,6 +2,7 @@ package com.budgetpilot.core.designsystem.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -15,10 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
+
+// design/mockups.html .minibtn: 40dp-tall pill button, 20dp horizontal padding, SemiBold label.
+private val ActionButtonPadding = PaddingValues(horizontal = 20.dp, vertical = Spacing.small)
 
 /** Illustration + message + optional next action, for lists/screens with no data. */
 @Composable
@@ -59,8 +65,9 @@ fun EmptyState(
             Button(
                 onClick = onAction,
                 modifier = Modifier.padding(top = Spacing.small),
+                contentPadding = ActionButtonPadding,
             ) {
-                Text(actionLabel)
+                Text(actionLabel, fontWeight = FontWeight.SemiBold)
             }
         }
     }

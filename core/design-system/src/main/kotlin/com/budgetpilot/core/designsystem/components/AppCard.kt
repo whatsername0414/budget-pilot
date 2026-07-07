@@ -1,5 +1,6 @@
 package com.budgetpilot.core.designsystem.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,12 +31,15 @@ fun AppCard(
     contentPadding: PaddingValues = PaddingValues(Spacing.medium),
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    // Mockup .card always carries a hairline border (design/mockups.html), resolving
+    // DESIGN-SPEC.md §1.2's "if elevation contrast is insufficient" in favor of "always".
+    val border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     if (onClick != null) {
-        Card(onClick = onClick, modifier = modifier, shape = AppCardShape) {
+        Card(onClick = onClick, modifier = modifier, shape = AppCardShape, border = border) {
             Column(modifier = Modifier.padding(contentPadding), content = content)
         }
     } else {
-        Card(modifier = modifier, shape = AppCardShape) {
+        Card(modifier = modifier, shape = AppCardShape, border = border) {
             Column(modifier = Modifier.padding(contentPadding), content = content)
         }
     }
