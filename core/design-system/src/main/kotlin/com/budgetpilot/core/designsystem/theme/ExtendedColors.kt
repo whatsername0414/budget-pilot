@@ -11,20 +11,12 @@ data class ExtendedColors(
     val onWarningContainer: Color,
 )
 
-val LightExtendedColors =
+val AppExtendedColors =
     ExtendedColors(
-        warning = WarningLight,
-        onWarning = OnWarningLight,
-        warningContainer = WarningContainerLight,
-        onWarningContainer = OnWarningContainerLight,
-    )
-
-val DarkExtendedColors =
-    ExtendedColors(
-        warning = WarningDark,
-        onWarning = OnWarningDark,
-        warningContainer = WarningContainerDark,
-        onWarningContainer = OnWarningContainerDark,
+        warning = Warning,
+        onWarning = OnWarning,
+        warningContainer = WarningContainer,
+        onWarningContainer = OnWarningContainer,
     )
 
 /**
@@ -33,4 +25,4 @@ val DarkExtendedColors =
  * `SideEffect` gives the same observable, ambient-style read that a custom
  * CompositionLocal would, without introducing one.
  */
-internal var currentExtendedColors = mutableStateOf(LightExtendedColors)
+internal var currentExtendedColors = mutableStateOf(AppExtendedColors)

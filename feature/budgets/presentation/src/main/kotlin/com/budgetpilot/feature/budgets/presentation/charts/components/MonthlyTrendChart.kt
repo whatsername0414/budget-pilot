@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.domain.money.Money
@@ -135,7 +135,7 @@ private fun buildTrendSummary(points: List<MonthlyTrendPointUi>): String {
     return "Monthly spending trend. Spending peaked in ${peak.label} at ${PesoFormatter.format(peak.total)}."
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun MonthlyTrendChartPreview() {
     BudgetPilotTheme {

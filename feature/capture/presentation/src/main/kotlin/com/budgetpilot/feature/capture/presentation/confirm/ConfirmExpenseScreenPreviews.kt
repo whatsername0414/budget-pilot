@@ -1,7 +1,7 @@
 package com.budgetpilot.feature.capture.presentation.confirm
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.domain.model.Category
 import com.budgetpilot.core.domain.money.Money
@@ -15,7 +15,7 @@ private val PreviewCategories =
         Category(2, "Transport", "directions_bus", "transport", true),
     )
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun ConfirmExpenseScreenLoadingPreview() {
     BudgetPilotTheme {
@@ -26,7 +26,7 @@ private fun ConfirmExpenseScreenLoadingPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun ConfirmExpenseScreenLoadedPreview() {
     BudgetPilotTheme {
@@ -51,7 +51,7 @@ private fun ConfirmExpenseScreenLoadedPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun ConfirmExpenseScreenErrorPreview() {
     BudgetPilotTheme {

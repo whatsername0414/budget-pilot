@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.icons.categoryIcon
@@ -123,7 +123,7 @@ private fun SourceBadge(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun ExpenseRowPreview() {
     BudgetPilotTheme {

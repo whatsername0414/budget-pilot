@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -181,7 +181,7 @@ private fun AppBottomBar(navController: NavController) {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AppShellPreview() {
     BudgetPilotTheme {

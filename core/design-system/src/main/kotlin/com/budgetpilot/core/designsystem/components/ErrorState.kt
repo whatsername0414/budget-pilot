@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import com.budgetpilot.core.designsystem.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
@@ -65,7 +65,7 @@ fun ErrorState(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun ErrorStatePreview() {
     BudgetPilotTheme {

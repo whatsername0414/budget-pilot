@@ -23,7 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.components.CategoryChip
 import com.budgetpilot.core.designsystem.icons.categoryIcon
@@ -106,7 +106,7 @@ fun ExpenseFilterChipRow(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun ExpenseFilterRowPreview() {
     BudgetPilotTheme {

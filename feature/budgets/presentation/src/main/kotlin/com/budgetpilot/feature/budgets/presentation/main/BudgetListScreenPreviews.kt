@@ -1,13 +1,13 @@
 package com.budgetpilot.feature.budgets.presentation.main
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.feature.budgets.presentation.main.model.BudgetCategoryUi
 import com.budgetpilot.feature.budgets.presentation.main.model.UnbudgetedCategoryUi
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun BudgetListScreenPreview() {
     BudgetPilotTheme {
@@ -59,7 +59,7 @@ private fun BudgetListScreenPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun BudgetListScreenEmptyPreview() {
     BudgetPilotTheme {
@@ -78,7 +78,7 @@ private fun BudgetListScreenEmptyPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun BudgetListScreenLoadingPreview() {
     BudgetPilotTheme {

@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.components.AppCard
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
@@ -73,7 +73,7 @@ fun LineItemsCard(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun LineItemsCardPreview() {
     BudgetPilotTheme {

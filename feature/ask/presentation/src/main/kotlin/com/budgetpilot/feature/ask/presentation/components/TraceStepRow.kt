@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
@@ -122,7 +122,7 @@ private fun formatDurationLabel(durationMs: Long): String {
 private const val MS_PER_TENTH_SECOND = 100
 private const val TENTHS_PER_SECOND = 10
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun TraceStepRowPreview() {
     BudgetPilotTheme {

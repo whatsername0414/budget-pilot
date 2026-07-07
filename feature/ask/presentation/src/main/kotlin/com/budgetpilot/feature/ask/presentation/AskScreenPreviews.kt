@@ -1,12 +1,12 @@
 package com.budgetpilot.feature.ask.presentation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 
 private const val SAMPLE_TURN_ID = 1L
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AskScreenEmptyPreview() {
     BudgetPilotTheme {
@@ -14,7 +14,7 @@ private fun AskScreenEmptyPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AskScreenLoadingMidTracePreview() {
     BudgetPilotTheme {
@@ -47,7 +47,7 @@ private fun AskScreenLoadingMidTracePreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AskScreenAnsweredTraceExpandedPreview() {
     BudgetPilotTheme {
@@ -89,7 +89,7 @@ private fun AskScreenAnsweredTraceExpandedPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AskScreenErrorRateLimitedPreview() {
     BudgetPilotTheme {
@@ -100,7 +100,7 @@ private fun AskScreenErrorRateLimitedPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AskScreenErrorOfflinePreview() {
     BudgetPilotTheme {
@@ -108,7 +108,7 @@ private fun AskScreenErrorOfflinePreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AskScreenErrorNoApiKeyPreview() {
     BudgetPilotTheme {
@@ -116,7 +116,7 @@ private fun AskScreenErrorNoApiKeyPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AskScreenErrorGenericPreview() {
     BudgetPilotTheme {

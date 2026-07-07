@@ -24,7 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.icons.categoryIcon
@@ -207,7 +207,7 @@ private fun RemoveBudgetDialog(
     )
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun BudgetEditorContentPreview() {
     BudgetPilotTheme {

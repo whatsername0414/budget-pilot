@@ -24,7 +24,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import com.budgetpilot.core.designsystem.components.AppCard
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
@@ -129,7 +129,7 @@ private fun formatTotalDuration(totalDurationMs: Long): String {
 private const val MS_PER_TENTH_SECOND = 100
 private const val TENTHS_PER_SECOND = 10
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun AskAnswerCardPreview() {
     BudgetPilotTheme {

@@ -1,12 +1,12 @@
 package com.budgetpilot.feature.expenses.presentation.editor
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.domain.model.Category
 import com.budgetpilot.core.presentation.UiText
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun ExpenseEditorScreenAddPreview() {
     BudgetPilotTheme {
@@ -28,7 +28,7 @@ private fun ExpenseEditorScreenAddPreview() {
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 private fun ExpenseEditorScreenEditPreview() {
     BudgetPilotTheme {
