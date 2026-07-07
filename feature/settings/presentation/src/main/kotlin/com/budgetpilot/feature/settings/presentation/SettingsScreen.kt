@@ -1,6 +1,7 @@
 package com.budgetpilot.feature.settings.presentation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -35,6 +37,10 @@ import com.budgetpilot.feature.settings.presentation.components.SettingRow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
+
+private val SettingsSectionGap = 14.dp
+private val SettingsCardContentPadding = PaddingValues(horizontal = Spacing.medium, vertical = Spacing.extraSmall)
+private val ApiKeyChipVerticalPadding = 3.dp
 
 @Composable
 fun SettingsScreen(
@@ -87,19 +93,20 @@ fun SettingsContent(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding).padding(Spacing.medium)) {
+        Column(modifier = Modifier.padding(innerPadding).padding(horizontal = Spacing.medium)) {
+            Spacer(modifier = Modifier.height(Spacing.extraSmall))
             SectionLabel(stringResource(R.string.settings_section_ai_privacy))
-            Spacer(modifier = Modifier.height(Spacing.small))
+            Spacer(modifier = Modifier.height(SettingsSectionGap))
             AiPrivacyCard(state = state, onAction = onAction)
 
-            Spacer(modifier = Modifier.height(Spacing.large))
+            Spacer(modifier = Modifier.height(SettingsSectionGap))
             SectionLabel(stringResource(R.string.settings_section_demo))
-            Spacer(modifier = Modifier.height(Spacing.small))
+            Spacer(modifier = Modifier.height(SettingsSectionGap))
             DemoCard(demoModeEnabled = state.demoModeEnabled, onAction = onAction)
 
-            Spacer(modifier = Modifier.height(Spacing.large))
+            Spacer(modifier = Modifier.height(SettingsSectionGap))
             SectionLabel(stringResource(R.string.settings_section_about))
-            Spacer(modifier = Modifier.height(Spacing.small))
+            Spacer(modifier = Modifier.height(SettingsSectionGap))
             AboutCard(appVersion = appVersion)
         }
     }
@@ -111,7 +118,7 @@ private fun AiPrivacyCard(
     onAction: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AppCard(modifier = modifier.fillMaxWidth()) {
+    AppCard(modifier = modifier.fillMaxWidth(), contentPadding = SettingsCardContentPadding) {
         SettingRow(
             title = stringResource(R.string.settings_private_mode_title),
             description = stringResource(R.string.settings_private_mode_description),
@@ -146,6 +153,7 @@ private fun AiPrivacyCard(
         SettingRow(
             title = stringResource(R.string.settings_api_key_title),
             description = stringResource(R.string.settings_api_key_description),
+            verticalAlignment = Alignment.CenterVertically,
             trailingContent = { ApiKeyStatusChip(isConfigured = state.isApiKeyConfigured) },
         )
     }
@@ -157,7 +165,7 @@ private fun DemoCard(
     onAction: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AppCard(modifier = modifier.fillMaxWidth()) {
+    AppCard(modifier = modifier.fillMaxWidth(), contentPadding = SettingsCardContentPadding) {
         SettingRow(
             title = stringResource(R.string.settings_demo_mode_title),
             description = stringResource(R.string.settings_demo_mode_description),
@@ -177,12 +185,17 @@ private fun AboutCard(
     appVersion: String,
     modifier: Modifier = Modifier,
 ) {
-    AppCard(modifier = modifier.fillMaxWidth()) {
+    AppCard(modifier = modifier.fillMaxWidth(), contentPadding = SettingsCardContentPadding) {
         SettingRow(
             title = stringResource(R.string.settings_about_version_title),
             description = stringResource(R.string.settings_about_description),
+            verticalAlignment = Alignment.CenterVertically,
             trailingContent = {
-                Text(text = appVersion, style = MaterialTheme.typography.labelMedium)
+                Text(
+                    text = appVersion,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             },
         )
     }
@@ -222,15 +235,15 @@ private fun ApiKeyStatusChip(
         modifier = modifier,
         color = containerColor,
         contentColor = contentColor,
-        shape = RoundedCornerShape(Spacing.small),
+        shape = RoundedCornerShape(Spacing.extraSmall),
     ) {
         Text(
             text =
                 stringResource(
                     if (isConfigured) R.string.settings_api_key_status_active else R.string.settings_api_key_status_missing,
                 ),
-            style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.padding(horizontal = Spacing.small, vertical = Spacing.extraSmall),
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.padding(horizontal = Spacing.small, vertical = ApiKeyChipVerticalPadding),
         )
     }
 }
