@@ -1,0 +1,6 @@
+0.95:Maya
+0.9:Send Money
+0.9:To: Maria Santos
+0.9:Amount: PHP 750.00
+0.9:Ref No. 555111222333
+0.9:04 Jul 2026

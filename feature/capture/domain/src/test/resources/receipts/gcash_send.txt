@@ -1,0 +1,7 @@
+0.95:GCash
+0.9:Send Money
+0.9:To: Juan Dela Cruz
+0.9:Amount: PHP 500.00
+0.9:Ref No. 1122334455667
+0.9:07/05/2026 14:32
+0.9:Transaction Successful

@@ -1,0 +1,6 @@
+0.95:GCash
+0.9:Bills Payment
+0.9:Biller: Meralco
+0.9:Amount: PHP 1,532.00
+0.9:Ref No. 998877665544
+0.9:03-07-26 09:10
