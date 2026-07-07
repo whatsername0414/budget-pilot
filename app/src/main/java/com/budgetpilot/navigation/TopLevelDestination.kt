@@ -31,7 +31,7 @@ enum class TopLevelDestination(
         unselectedIcon = NavIcons.ReceiptOutlined,
     ),
     ASK(
-        route = AskRoute,
+        route = AskRoute(),
         labelRes = R.string.nav_ask,
         selectedIcon = NavIcons.ChatFilled,
         unselectedIcon = NavIcons.ChatOutlined,

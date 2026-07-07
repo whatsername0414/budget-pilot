@@ -36,6 +36,7 @@ dependencies {
     implementation(project(":feature:settings:presentation"))
     implementation(project(":feature:ask:presentation"))
     implementation(project(":feature:insights:data"))
+    implementation(project(":feature:insights:presentation"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)

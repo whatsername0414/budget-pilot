@@ -30,6 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.budgetpilot.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.feature.ask.presentation.navigation.AskRoute
 import com.budgetpilot.feature.ask.presentation.navigation.askGraph
 import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.budgetsGraph
@@ -41,6 +42,7 @@ import com.budgetpilot.feature.expenses.presentation.navigation.HistoryRoute
 import com.budgetpilot.feature.expenses.presentation.navigation.expensesGraph
 import com.budgetpilot.feature.home.presentation.navigation.HomeRoute
 import com.budgetpilot.feature.home.presentation.navigation.homeGraph
+import com.budgetpilot.feature.insights.presentation.InsightCardHost
 import com.budgetpilot.feature.settings.presentation.navigation.SettingsRoute
 import com.budgetpilot.feature.settings.presentation.navigation.settingsGraph
 import com.budgetpilot.navigation.TopLevelDestination
@@ -107,6 +109,15 @@ fun AppShell(modifier: Modifier = Modifier) {
                 },
                 onAddExpense = { navController.navigate(ExpenseEditorRoute()) },
                 onOpenSettings = { navController.navigate(SettingsRoute) },
+                insightSlot = {
+                    InsightCardHost(
+                        onNavigateToAsk = { prefillQuestion ->
+                            navController.navigate(AskRoute(prefillQuestion = prefillQuestion)) {
+                                launchSingleTop = true
+                            }
+                        },
+                    )
+                },
             )
             expensesGraph(navController)
             budgetsGraph()

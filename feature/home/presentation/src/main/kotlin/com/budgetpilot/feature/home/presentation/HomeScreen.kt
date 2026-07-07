@@ -62,6 +62,7 @@ fun HomeScreen(
     onAddExpense: () -> Unit,
     onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
+    insightSlot: @Composable () -> Unit = {},
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -75,7 +76,7 @@ fun HomeScreen(
         }
     }
 
-    HomeContent(state = state, onAction = viewModel::onAction, modifier = modifier)
+    HomeContent(state = state, onAction = viewModel::onAction, insightSlot = insightSlot, modifier = modifier)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,6 +85,7 @@ fun HomeContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
+    insightSlot: @Composable () -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier,
@@ -109,7 +111,13 @@ fun HomeContent(
                     onRetry = { onAction(HomeAction.OnRetryClick) },
                     modifier = Modifier.padding(innerPadding),
                 )
-            else -> HomeLoadedContent(state = state, onAction = onAction, modifier = Modifier.padding(innerPadding))
+            else ->
+                HomeLoadedContent(
+                    state = state,
+                    onAction = onAction,
+                    insightSlot = insightSlot,
+                    modifier = Modifier.padding(innerPadding),
+                )
         }
     }
 }
@@ -134,6 +142,7 @@ private fun HomeLoadedContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
+    insightSlot: @Composable () -> Unit = {},
 ) {
     Column(
         modifier =
@@ -145,7 +154,7 @@ private fun HomeLoadedContent(
     ) {
         HomeHeroCard(state = state)
 
-        HomeInsightSlot()
+        insightSlot()
 
         if (state.isEmpty) {
             EmptyState(
@@ -239,12 +248,6 @@ private fun HomeHeroCard(
         Spacer(Modifier.height(Spacing.small))
         BudgetProgressBar(spent = state.totalSpent, budget = state.totalBudgeted, showRemaining = true)
     }
-}
-
-/** Reserved for the Phase-5 proactive-insight card (PLAN.md §6 Phase 5); intentionally empty until then. */
-@Composable
-private fun HomeInsightSlot(modifier: Modifier = Modifier) {
-    Box(modifier = modifier)
 }
 
 @Composable

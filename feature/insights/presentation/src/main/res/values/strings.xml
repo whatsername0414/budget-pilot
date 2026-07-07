@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insight_card_title">Budget Pilot noticed something</string>
+    <string name="cd_dismiss_insight">Dismiss</string>
+    <string name="action_ask_more">Ask more</string>
+</resources>

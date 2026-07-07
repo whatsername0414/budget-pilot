@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.budgetpilot.core.database.entity.InsightEntity
+import java.time.Instant
 
 @Dao
 interface InsightDao {
@@ -15,4 +16,13 @@ interface InsightDao {
         type: String,
         month: String,
     ): Boolean
+
+    @Query("SELECT * FROM insights WHERE dismissedAt IS NULL ORDER BY createdAt DESC LIMIT 1")
+    suspend fun getLatestUndismissed(): InsightEntity?
+
+    @Query("UPDATE insights SET dismissedAt = :dismissedAt WHERE id = :id")
+    suspend fun dismiss(
+        id: Long,
+        dismissedAt: Instant,
+    )
 }

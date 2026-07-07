@@ -11,6 +11,7 @@ import com.budgetpilot.feature.capture.presentation.di.capturePresentationModule
 import com.budgetpilot.feature.expenses.presentation.di.expensesPresentationModule
 import com.budgetpilot.feature.home.presentation.di.homePresentationModule
 import com.budgetpilot.feature.insights.data.di.insightsDataModule
+import com.budgetpilot.feature.insights.presentation.di.insightsPresentationModule
 import com.budgetpilot.feature.settings.presentation.di.settingsPresentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -35,6 +36,7 @@ class BudgetPilotApp : Application() {
                 settingsPresentationModule,
                 askPresentationModule,
                 insightsDataModule,
+                insightsPresentationModule,
             )
         }
     }

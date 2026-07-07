@@ -1,5 +1,6 @@
 package com.budgetpilot.feature.ask.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.budgetpilot.core.ai.data.agent.AgentSessionFactory
@@ -16,9 +17,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AskViewModel(
+    savedStateHandle: SavedStateHandle,
     private val agentSessionFactory: AgentSessionFactory,
 ) : ViewModel() {
-    private val _state = MutableStateFlow(AskState())
+    private val _state =
+        MutableStateFlow(
+            AskState(questionInput = savedStateHandle.get<String>(KEY_PREFILL_QUESTION) ?: ""),
+        )
     val state = _state.asStateFlow()
 
     private val _events = Channel<AskEvent>(Channel.BUFFERED)
@@ -145,6 +150,10 @@ class AskViewModel(
         _state.update { state ->
             state.copy(turns = state.turns.map { turn -> if (turn.id == turnId) transform(turn) else turn })
         }
+    }
+
+    private companion object {
+        const val KEY_PREFILL_QUESTION = "prefillQuestion"
     }
 }
 

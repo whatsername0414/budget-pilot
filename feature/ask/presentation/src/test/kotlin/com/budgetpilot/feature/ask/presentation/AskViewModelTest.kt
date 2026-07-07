@@ -1,5 +1,6 @@
 package com.budgetpilot.feature.ask.presentation
 
+import androidx.lifecycle.SavedStateHandle
 import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
@@ -268,7 +269,7 @@ class AskViewModelTest {
         tools: List<AgentTool> = emptyList(),
     ): AskViewModel {
         val factory = AgentSessionFactory(llmClient = llmClient, tools = tools, promptRepository = fakePromptRepository)
-        return AskViewModel(agentSessionFactory = factory)
+        return AskViewModel(savedStateHandle = SavedStateHandle(), agentSessionFactory = factory)
     }
 
     private fun scriptedErrorClient(error: AiError): FakeLlmClient = FakeLlmClient(script = listOf(Result.Error(error)))

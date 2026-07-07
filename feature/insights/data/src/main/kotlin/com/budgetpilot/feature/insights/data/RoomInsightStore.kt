@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import com.budgetpilot.core.database.dao.InsightDao
 import com.budgetpilot.feature.insights.data.mapper.toEntity
+import com.budgetpilot.feature.insights.data.mapper.toInsight
 import com.budgetpilot.feature.insights.domain.InsightHistoryStore
 import com.budgetpilot.feature.insights.domain.InsightStore
 import com.budgetpilot.feature.insights.domain.model.Insight
@@ -43,4 +44,11 @@ class RoomInsightStore(
         type: InsightType,
         month: String,
     ): Boolean = dao.wasShown(type.name, month)
+
+    override suspend fun getLatestUndismissed(): Insight? = dao.getLatestUndismissed()?.toInsight()
+
+    override suspend fun dismiss(
+        id: Long,
+        dismissedAt: Instant,
+    ) = dao.dismiss(id, dismissedAt)
 }
