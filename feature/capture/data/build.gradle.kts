@@ -17,4 +17,5 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.mlkit.text.recognition)
 }

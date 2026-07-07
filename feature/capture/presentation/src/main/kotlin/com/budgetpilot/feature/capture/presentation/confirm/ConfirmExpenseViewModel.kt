@@ -13,6 +13,7 @@ import com.budgetpilot.core.domain.repository.ExpenseRepository
 import com.budgetpilot.core.presentation.UiText
 import com.budgetpilot.core.presentation.money.PesoFormatter
 import com.budgetpilot.core.presentation.toUiText
+import com.budgetpilot.feature.capture.domain.ExtractionError
 import com.budgetpilot.feature.capture.domain.ReceiptExtractor
 import com.budgetpilot.feature.capture.domain.ReceiptImage
 import com.budgetpilot.feature.capture.domain.model.Confidence
@@ -36,6 +37,7 @@ import java.time.LocalDate
 class ConfirmExpenseViewModel(
     savedStateHandle: SavedStateHandle,
     private val receiptExtractor: ReceiptExtractor,
+    private val onDeviceExtractor: ReceiptExtractor,
     private val expenseRepository: ExpenseRepository,
     private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
@@ -57,6 +59,7 @@ class ConfirmExpenseViewModel(
             ConfirmExpenseAction.OnBackClick -> sendEvent(ConfirmExpenseEvent.NavigateBack)
             ConfirmExpenseAction.OnRetakeClick -> sendEvent(ConfirmExpenseEvent.NavigateToRetake)
             ConfirmExpenseAction.OnRetryExtractionClick -> extract()
+            ConfirmExpenseAction.OnRetryOnDeviceClick -> extract(forceOnDevice = true)
             ConfirmExpenseAction.OnEnterManuallyClick -> enterManually()
             ConfirmExpenseAction.OnThumbnailClick -> _state.update { it.copy(isImageViewerVisible = true) }
             ConfirmExpenseAction.OnDismissImageViewer -> _state.update { it.copy(isImageViewerVisible = false) }
@@ -91,11 +94,12 @@ class ConfirmExpenseViewModel(
         }
     }
 
-    private fun extract() {
+    private fun extract(forceOnDevice: Boolean = false) {
         _state.update {
             it.copy(
                 phase = ConfirmExpensePhase.LOADING,
                 errorMessage = null,
+                canUseOfflineScan = false,
                 stagedStatusText = UiText.StringResource(R.string.confirm_status_uploading),
             )
         }
@@ -105,11 +109,19 @@ class ConfirmExpenseViewModel(
                 ReceiptImage(path = imagePath) {
                     withContext(Dispatchers.IO) { File(imagePath).readBytes() }
                 }
-            receiptExtractor
+            val extractor = if (forceOnDevice) onDeviceExtractor else receiptExtractor
+            extractor
                 .extract(image)
                 .onSuccess(::applyExtractedReceipt)
                 .onFailure { error ->
-                    _state.update { it.copy(phase = ConfirmExpensePhase.ERROR, errorMessage = error.toUiText()) }
+                    _state.update {
+                        it.copy(
+                            phase = ConfirmExpensePhase.ERROR,
+                            errorMessage = error.toUiText(),
+                            canUseOfflineScan =
+                                error is ExtractionError.Cloud.RateLimited || error is ExtractionError.Cloud.Network,
+                        )
+                    }
                 }
         }
     }

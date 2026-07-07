@@ -52,6 +52,7 @@ import com.budgetpilot.feature.capture.presentation.R
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
+import com.budgetpilot.core.designsystem.R as DesignSystemR
 
 @Composable
 fun ConfirmExpenseScreen(
@@ -124,7 +125,21 @@ fun ConfirmExpenseContent(
                 ConfirmExpensePhase.ERROR ->
                     ErrorState(
                         message = state.errorMessage?.asString().orEmpty(),
-                        onRetry = { onAction(ConfirmExpenseAction.OnRetryExtractionClick) },
+                        onRetry = {
+                            val action =
+                                if (state.canUseOfflineScan) {
+                                    ConfirmExpenseAction.OnRetryOnDeviceClick
+                                } else {
+                                    ConfirmExpenseAction.OnRetryExtractionClick
+                                }
+                            onAction(action)
+                        },
+                        retryLabel =
+                            if (state.canUseOfflineScan) {
+                                stringResource(R.string.action_use_offline_scan)
+                            } else {
+                                stringResource(DesignSystemR.string.action_retry)
+                            },
                         secondaryActionLabel = stringResource(R.string.action_enter_manually),
                         onSecondaryAction = { onAction(ConfirmExpenseAction.OnEnterManuallyClick) },
                         modifier = Modifier.align(Alignment.Center),

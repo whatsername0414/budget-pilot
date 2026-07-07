@@ -15,10 +15,8 @@ import kotlinx.coroutines.delay
 import java.time.LocalDate
 
 /**
- * Temporary until P3.5 (`VisionLlmExtractor`): returns a canned Jollibee
- * receipt after a fixed delay so the rest of the capture flow (P2.3+) has a
- * real, demoable extraction result to build against ahead of the Gemini
- * integration.
+ * Test-only fixture (superseded in the production Koin graph by [MlKitReceiptExtractor], P6.1):
+ * returns a canned Jollibee receipt after a fixed delay.
  */
 class StubReceiptExtractor : ReceiptExtractor {
     override suspend fun extract(image: ReceiptImage): Result<ExtractedReceipt, ExtractionError> {

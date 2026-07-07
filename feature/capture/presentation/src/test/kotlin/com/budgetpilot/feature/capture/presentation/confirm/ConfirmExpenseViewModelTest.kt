@@ -44,11 +44,13 @@ class ConfirmExpenseViewModelTest {
     private fun viewModel(
         imagePath: String = "receipts/0.jpg",
         receiptExtractor: FakeReceiptExtractor = FakeReceiptExtractor(),
+        onDeviceExtractor: FakeReceiptExtractor = FakeReceiptExtractor(),
         expenseRepository: FakeExpenseRepository = FakeExpenseRepository(),
         categoryRepository: FakeCategoryRepository = FakeCategoryRepository(),
     ) = ConfirmExpenseViewModel(
         savedStateHandle = SavedStateHandle(mapOf(ConfirmExpenseViewModel.KEY_IMAGE_PATH to imagePath)),
         receiptExtractor = receiptExtractor,
+        onDeviceExtractor = onDeviceExtractor,
         expenseRepository = expenseRepository,
         categoryRepository = categoryRepository,
     )
@@ -102,6 +104,52 @@ class ConfirmExpenseViewModelTest {
 
             assertThat(extractor.extractCallCount).isEqualTo(2)
             assertThat(viewModel.state.value.phase).isEqualTo(ConfirmExpensePhase.LOADED)
+        }
+
+    @Test
+    fun `cloud rate-limit failure offers the offline scan fallback`() =
+        runTest {
+            val extractor = FakeReceiptExtractor().apply { result = Result.Error(ExtractionError.Cloud.RateLimited) }
+
+            val viewModel = viewModel(receiptExtractor = extractor)
+
+            assertThat(viewModel.state.value.canUseOfflineScan).isTrue()
+        }
+
+    @Test
+    fun `cloud network failure offers the offline scan fallback`() =
+        runTest {
+            val extractor = FakeReceiptExtractor().apply { result = Result.Error(ExtractionError.Cloud.Network) }
+
+            val viewModel = viewModel(receiptExtractor = extractor)
+
+            assertThat(viewModel.state.value.canUseOfflineScan).isTrue()
+        }
+
+    @Test
+    fun `a non-cloud extraction failure does not offer the offline scan fallback`() =
+        runTest {
+            val extractor = FakeReceiptExtractor().apply { result = Result.Error(ExtractionError.ImageUnreadable) }
+
+            val viewModel = viewModel(receiptExtractor = extractor)
+
+            assertThat(viewModel.state.value.canUseOfflineScan).isFalse()
+        }
+
+    @Test
+    fun `retrying on-device after a cloud failure calls only the on-device extractor`() =
+        runTest {
+            val cloudExtractor = FakeReceiptExtractor().apply { result = Result.Error(ExtractionError.Cloud.Network) }
+            val onDeviceExtractor = FakeReceiptExtractor()
+            val viewModel = viewModel(receiptExtractor = cloudExtractor, onDeviceExtractor = onDeviceExtractor)
+            assertThat(viewModel.state.value.canUseOfflineScan).isTrue()
+
+            viewModel.onAction(ConfirmExpenseAction.OnRetryOnDeviceClick)
+
+            assertThat(cloudExtractor.extractCallCount).isEqualTo(1)
+            assertThat(onDeviceExtractor.extractCallCount).isEqualTo(1)
+            assertThat(viewModel.state.value.phase).isEqualTo(ConfirmExpensePhase.LOADED)
+            assertThat(viewModel.state.value.merchant).isEqualTo(FakeReceiptExtractor.defaultReceipt().merchant.value)
         }
 
     @Test

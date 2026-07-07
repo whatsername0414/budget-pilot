@@ -22,6 +22,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_ok">OK</string>
     <string name="action_enter_manually">Enter manually</string>
+    <string name="action_use_offline_scan">Use offline scan</string>
     <string name="action_retake">Retake</string>
     <string name="action_save_expense">Save expense</string>
     <string name="thumbnail_caption_prefix">Extracted from your photo · </string>

@@ -21,6 +21,7 @@ data class ConfirmExpenseState(
     val phase: ConfirmExpensePhase = ConfirmExpensePhase.LOADING,
     val stagedStatusText: UiText = UiText.StringResource(R.string.confirm_status_uploading),
     val errorMessage: UiText? = null,
+    val canUseOfflineScan: Boolean = false,
     val imagePath: String = "",
     val receiptType: ReceiptType = ReceiptType.PAPER,
     val merchant: String = "",

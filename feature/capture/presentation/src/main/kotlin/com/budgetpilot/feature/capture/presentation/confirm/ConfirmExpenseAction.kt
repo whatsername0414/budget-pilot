@@ -9,6 +9,8 @@ sealed interface ConfirmExpenseAction {
 
     data object OnRetryExtractionClick : ConfirmExpenseAction
 
+    data object OnRetryOnDeviceClick : ConfirmExpenseAction
+
     data object OnEnterManuallyClick : ConfirmExpenseAction
 
     data object OnThumbnailClick : ConfirmExpenseAction
