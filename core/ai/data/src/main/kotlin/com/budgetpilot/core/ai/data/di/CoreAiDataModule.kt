@@ -34,8 +34,8 @@ val coreAiDataModule =
     module {
         single { HttpClientFactory.create(OkHttp.create()) }
         single { RateLimiter() }
-        single(REAL_LLM_CLIENT) { KtorGeminiLlmClient(httpClient = get(), rateLimiter = get()) }
-        single(DEMO_LLM_CLIENT) { FakeLlmClient() }
+        single<LlmClient>(REAL_LLM_CLIENT) { KtorGeminiLlmClient(httpClient = get(), rateLimiter = get()) }
+        single<LlmClient>(DEMO_LLM_CLIENT) { FakeLlmClient() }
         single<LlmClient> {
             val preferences = get<UserPreferences>()
             DemoAwareLlmClient(
