@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.theme.Spacing
@@ -27,6 +28,8 @@ import com.budgetpilot.feature.ask.presentation.components.AskInputBar
 import com.budgetpilot.feature.ask.presentation.components.AskRunningCard
 import com.budgetpilot.feature.ask.presentation.components.QuestionBubble
 import org.koin.androidx.compose.koinViewModel
+
+private val TurnItemGap = 14.dp
 
 /** Stateful Ask entry point: owns the ViewModel and forwards its settings-link event. */
 @Composable
@@ -101,7 +104,7 @@ private fun AskTurnItem(
     turn: AskTurn,
     onAction: (AskAction) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
+    Column(verticalArrangement = Arrangement.spacedBy(TurnItemGap)) {
         QuestionBubble(question = turn.question)
         when (turn.phase) {
             AskTurnPhase.RUNNING -> AskRunningCard(stagedStatus = turn.stagedStatus, trace = turn.trace)

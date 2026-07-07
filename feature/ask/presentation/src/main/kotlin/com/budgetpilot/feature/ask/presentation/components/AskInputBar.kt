@@ -52,7 +52,12 @@ fun AskInputBar(
                 enabled = !isSending,
                 singleLine = true,
                 shape = InputFieldShape,
-                colors = OutlinedTextFieldDefaults.colors(),
+                colors =
+                    OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        disabledContainerColor = MaterialTheme.colorScheme.surface,
+                    ),
             )
             FilledIconButton(
                 onClick = onSendClick,

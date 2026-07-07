@@ -1,12 +1,15 @@
 package com.budgetpilot.feature.ask.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
@@ -20,14 +23,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.feature.ask.presentation.R
 import kotlin.math.roundToInt
 
 private val StepDotSize = 22.dp
+private val CompletedDotIconSize = 13.dp
+private val ToolNamePillShape = RoundedCornerShape(4.dp)
+private val ToolNamePillHorizontalPadding = 5.dp
+private val ToolNamePillVerticalPadding = 1.dp
+private const val TOOL_NAME_PILL_BACKGROUND_ALPHA = 0.10f
 
 /**
  * One row of the "How I calculated this" reasoning trace: a numbered/checked dot,
@@ -62,9 +72,19 @@ fun TraceStepRow(
     ) {
         StepDot(stepNumber = stepNumber, isCompleted = isCompleted)
         Column(modifier = Modifier.weight(1f)) {
+            val pillBackground = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = TOOL_NAME_PILL_BACKGROUND_ALPHA)
             Text(
                 text = toolName,
-                style = MaterialTheme.typography.labelLarge.copy(fontFamily = FontFamily.Monospace),
+                style =
+                    MaterialTheme.typography.bodySmall.copy(
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 12.sp,
+                    ),
+                modifier =
+                    Modifier
+                        .background(color = pillBackground, shape = ToolNamePillShape)
+                        .padding(horizontal = ToolNamePillHorizontalPadding, vertical = ToolNamePillVerticalPadding),
             )
             Text(
                 text = "$argsSummary → $resultSummary",
@@ -101,7 +121,7 @@ private fun StepDot(
                     imageVector = Icons.Filled.Check,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onTertiaryContainer,
-                    modifier = Modifier.size(Spacing.medium),
+                    modifier = Modifier.size(CompletedDotIconSize),
                 )
             } else {
                 Text(

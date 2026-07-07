@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
-import com.budgetpilot.core.designsystem.theme.Spacing
 
 private val QuestionBubbleShape =
     RoundedCornerShape(
@@ -24,6 +23,8 @@ private val QuestionBubbleShape =
         bottomStart = 18.dp,
     )
 private const val MAX_WIDTH_FRACTION = 0.78f
+private val BubbleHorizontalPadding = 14.dp
+private val BubbleVerticalPadding = 10.dp
 
 /** The user's own question: right-aligned, shrink-wrapped up to ~78% width (DESIGN-SPEC.md §10). */
 @Composable
@@ -41,7 +42,7 @@ fun QuestionBubble(
                 text = question,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.padding(horizontal = Spacing.medium, vertical = Spacing.small),
+                modifier = Modifier.padding(horizontal = BubbleHorizontalPadding, vertical = BubbleVerticalPadding),
             )
         }
     }

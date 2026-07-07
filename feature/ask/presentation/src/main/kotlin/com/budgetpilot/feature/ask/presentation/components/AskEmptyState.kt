@@ -32,12 +32,12 @@ fun AskEmptyState(
     Column(
         modifier = modifier.fillMaxWidth().padding(Spacing.large),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall),
     ) {
         Icon(
             imageVector = StateIcons.Sparkle,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Text(
             text = stringResource(R.string.ask_empty_title),
@@ -52,7 +52,7 @@ fun AskEmptyState(
                 stringResource(R.string.suggestion_compare_months),
             )
         Row(
-            modifier = Modifier.horizontalScroll(rememberScrollState()),
+            modifier = Modifier.padding(top = Spacing.small).horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(Spacing.small),
         ) {
             suggestions.forEach { suggestion ->

@@ -80,7 +80,7 @@ fun AskRunningCard(
         Column(modifier = Modifier.padding(top = Spacing.small)) {
             LoadingSkeleton(
                 shape = RoundedCornerShape(6.dp),
-                modifier = Modifier.fillMaxWidth().height(SkeletonLineHeight),
+                modifier = Modifier.fillMaxWidth(SKELETON_FIRST_LINE_WIDTH_FRACTION).height(SkeletonLineHeight),
             )
             Spacer(Modifier.height(Spacing.extraSmall))
             LoadingSkeleton(
@@ -91,7 +91,8 @@ fun AskRunningCard(
     }
 }
 
-private const val SKELETON_SECOND_LINE_WIDTH_FRACTION = 0.6f
+private const val SKELETON_FIRST_LINE_WIDTH_FRACTION = 0.75f
+private const val SKELETON_SECOND_LINE_WIDTH_FRACTION = 0.52f
 
 @Composable
 private fun AskStagedStatus.label(): String =
