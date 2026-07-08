@@ -3,6 +3,8 @@ package com.budgetpilot.navigation
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.budgetpilot.R
 import com.budgetpilot.feature.ask.presentation.navigation.AskRoute
 import com.budgetpilot.feature.budgets.presentation.navigation.BudgetsRoute
@@ -48,4 +50,21 @@ enum class TopLevelDestination(
         selectedIcon = NavIcons.WalletFilled,
         unselectedIcon = NavIcons.WalletOutlined,
     ),
+}
+
+/**
+ * Navigates to a top-level destination using the standard multiple-back-stacks
+ * pattern (https://developer.android.com/guide/navigation/design/multiple-back-stacks).
+ * Every call site that navigates to a top-level destination — the bottom bar
+ * AND any in-screen shortcut (e.g. Home's "See all"/"Charts" links) — must use
+ * this rather than a plain [NavController.navigate], or the back stack ends up
+ * inconsistent: switching tabs works one direction but silently no-ops the
+ * other way until a system back reconciles it.
+ */
+fun NavController.navigateToTopLevel(route: Any) {
+    navigate(route) {
+        popUpTo(graph.findStartDestination().id) { saveState = true }
+        launchSingleTop = true
+        restoreState = true
+    }
 }
