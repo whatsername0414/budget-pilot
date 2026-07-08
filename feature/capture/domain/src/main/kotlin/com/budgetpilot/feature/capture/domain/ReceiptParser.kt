@@ -15,7 +15,7 @@ import java.time.LocalDate
  * read) but a value is still guessed from them as a last-resort fallback, always at LOW
  * confidence, matching the confirm screen's "highlight low-confidence fields" contract.
  */
-class PhReceiptParser(
+class ReceiptParser(
     private val clock: Clock = Clock.systemDefaultZone(),
 ) {
     fun parse(lines: List<OcrLine>): Result<ExtractedReceipt, ExtractionError> {

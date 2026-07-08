@@ -1,6 +1,6 @@
 package com.budgetpilot.feature.capture.domain
 
-import com.budgetpilot.core.domain.merchant.PhMerchantCatalog
+import com.budgetpilot.core.domain.merchant.MerchantCatalog
 import com.budgetpilot.feature.capture.domain.model.Confidence
 import com.budgetpilot.feature.capture.domain.model.ExtractedField
 import com.budgetpilot.feature.capture.domain.model.ReceiptType
@@ -26,11 +26,11 @@ internal fun extractMerchant(
     receiptType: ReceiptType,
 ): MerchantResult = if (receiptType == ReceiptType.PAPER) extractPaperMerchant(texts) else extractWalletMerchant(texts, receiptType)
 
-/** Fuzzy-matches the top lines against [PhMerchantCatalog]; falls back to the first line, LOW confidence. */
+/** Fuzzy-matches the top lines against [MerchantCatalog]; falls back to the first line, LOW confidence. */
 private fun extractPaperMerchant(texts: List<String>): MerchantResult {
     val candidateLines = texts.filter { it.isNotBlank() }.take(TOP_LINES_FOR_MERCHANT)
     for (line in candidateLines) {
-        val category = PhMerchantCatalog.suggestCategory(line)
+        val category = MerchantCatalog.suggestCategory(line)
         if (category != null) {
             return MerchantResult(
                 field = ExtractedField(line.trim(), Confidence.HIGH),
@@ -49,7 +49,7 @@ private fun extractWalletMerchant(
     texts: List<String>,
     receiptType: ReceiptType,
 ): MerchantResult {
-    val walletCategory = ExtractedField(PhMerchantCatalog.suggestCategory(walletKeyword(receiptType)), Confidence.MEDIUM)
+    val walletCategory = ExtractedField(MerchantCatalog.suggestCategory(walletKeyword(receiptType)), Confidence.MEDIUM)
     for (line in texts) {
         val trimmed = line.trim()
         val prefix = RECIPIENT_PREFIXES.firstOrNull { trimmed.uppercase(Locale.ROOT).startsWith(it) } ?: continue

@@ -220,7 +220,8 @@ image ──► ExtractionRouter
   sends the image off-device.
 - **On-device** (`MlKitReceiptExtractor`): ML Kit's bundled (not the
   network-downloaded variant) Latin OCR model, feeding a pure-Kotlin,
-  LLM-free parser (`PhReceiptParser`) tuned for Philippine receipt layouts and
+  LLM-free parser (`ReceiptParser`) tuned for common local receipt and
+  e-wallet layouts and
   table-driven-tested against nine real fixture receipts (Jollibee, SM,
   Puregold, 7-Eleven, Mercury Drug, GCash send, GCash bill pay, Maya, and a
   deliberately degraded-OCR case). Works with the phone in airplane mode,

@@ -18,9 +18,9 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 
 /** "Today" is fixed to 2026-07-07 so the no-date fallback case is deterministic. */
-class PhReceiptParserTest {
+class ReceiptParserTest {
     private val clock = Clock.fixed(Instant.parse("2026-07-07T12:00:00Z"), ZoneOffset.UTC)
-    private val parser = PhReceiptParser(clock)
+    private val parser = ReceiptParser(clock)
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("cases")

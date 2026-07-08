@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.budgetpilot.core.domain.map
-import com.budgetpilot.core.domain.merchant.PhMerchantCatalog
+import com.budgetpilot.core.domain.merchant.MerchantCatalog
 import com.budgetpilot.core.domain.model.Expense
 import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
@@ -144,7 +144,7 @@ class ExpenseEditorViewModel(
 
         if (_state.value.isCategoryManuallySelected) return
         val suggested =
-            PhMerchantCatalog
+            MerchantCatalog
                 .suggestCategory(merchant)
                 ?.let { name -> _state.value.categories.find { it.name.equals(name, ignoreCase = true) } }
         if (suggested != null) {

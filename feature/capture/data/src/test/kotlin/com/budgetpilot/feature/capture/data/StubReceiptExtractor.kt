@@ -1,7 +1,7 @@
 package com.budgetpilot.feature.capture.data
 
 import com.budgetpilot.core.domain.Result
-import com.budgetpilot.core.domain.merchant.PhMerchantCatalog
+import com.budgetpilot.core.domain.merchant.MerchantCatalog
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.feature.capture.domain.ExtractionError
 import com.budgetpilot.feature.capture.domain.ReceiptExtractor
@@ -37,7 +37,7 @@ class StubReceiptExtractor : ReceiptExtractor {
                 date = ExtractedField(LocalDate.now(), Confidence.HIGH),
                 lineItems = ExtractedField(lineItems, Confidence.MEDIUM),
                 total = ExtractedField(total, Confidence.HIGH),
-                suggestedCategory = ExtractedField(PhMerchantCatalog.suggestCategory(merchant), Confidence.MEDIUM),
+                suggestedCategory = ExtractedField(MerchantCatalog.suggestCategory(merchant), Confidence.MEDIUM),
                 receiptType = ExtractedField(ReceiptType.PAPER, Confidence.HIGH),
             ),
         )

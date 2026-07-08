@@ -5,7 +5,7 @@ package com.budgetpilot.core.domain.merchant
  * Matching is fuzzy (case-insensitive, word-bounded substring) so it still
  * hits real receipt/OCR text like "SM SUPERMARKET STA ROSA #04521".
  */
-object PhMerchantCatalog {
+object MerchantCatalog {
     private val merchantCategories: List<Pair<String, String>> =
         listOf(
             "jollibee" to "Food",

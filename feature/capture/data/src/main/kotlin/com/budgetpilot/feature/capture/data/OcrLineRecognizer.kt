@@ -7,7 +7,7 @@ import com.budgetpilot.feature.capture.domain.model.OcrLine
 
 /**
  * Isolates the raw on-device OCR call from [MlKitReceiptExtractor] so the extractor's own
- * success/failure handoff to [com.budgetpilot.feature.capture.domain.PhReceiptParser] is unit-testable
+ * success/failure handoff to [com.budgetpilot.feature.capture.domain.ReceiptParser] is unit-testable
  * without ML Kit/Android Bitmap classes, matching the [ReceiptImageScaling] precedent of keeping
  * framework glue out of tested logic.
  */
