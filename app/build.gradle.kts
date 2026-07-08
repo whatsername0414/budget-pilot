@@ -10,8 +10,19 @@ android {
 
     defaultConfig {
         applicationId = "com.budgetpilot.app"
-        versionCode = 1
+        versionCode = providers.gradleProperty("versionCode").orNull?.toInt() ?: 1
         versionName = "1.0"
+    }
+
+    signingConfigs {
+        System.getenv("KEYSTORE_FILE")?.let { keystorePath ->
+            create("upload") {
+                storeFile = file(keystorePath)
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
+        }
     }
 
     buildTypes {
@@ -19,6 +30,8 @@ android {
             optimization {
                 enable = false
             }
+            signingConfig = signingConfigs.findByName("upload")
+                ?: signingConfigs.getByName("debug")
         }
     }
 }
