@@ -1,13 +1,13 @@
 # Budget Pilot
 
-An AI-agent expense tracker for the Philippine market — receipts, GCash/Maya
-screenshots, and cash entries become structured spending data, and a
-tool-calling agent answers natural-language questions about it by actually
-querying your local database, not by guessing.
+An AI-agent expense tracker — receipts, GCash/Maya screenshots, and cash
+entries become structured spending data, and a tool-calling agent answers
+natural-language questions about it by actually querying your local
+database, not by guessing.
 
-This is a portfolio project. Every design decision below is explained, not
-just stated — the goal is to show working Android fundamentals and a
-genuinely agentic AI integration, not a chat-wrapper demo.
+Every design decision below is explained, not just stated — the goal is a
+genuinely agentic AI integration on solid modern Android foundations, not a
+chat-wrapper demo.
 
 ![Demo](assets/demo/hero.gif)
 
@@ -202,7 +202,7 @@ range, and an aggregation mode, as shown in the tools table above.)
 ## On-device vs. cloud
 
 Every receipt (and the Q&A agent) runs through one of two paths, and the
-choice is a deliberate portfolio talking point, not just a fallback:
+choice is a deliberate design trade-off, not just a fallback:
 
 ```
 image ──► ExtractionRouter
