@@ -117,13 +117,14 @@ graph TD
     DesignSystem --> Domain & Presentation
 ```
 
-**Dependency rules, enforced by Gradle convention plugins, not just
-convention:** `presentation → domain ← data`; every module may see
+**Dependency rules:** `presentation → domain ← data`; every module may see
 `:core:domain`; feature modules never depend on each other (cross-feature
-navigation goes through callbacks wired in `:app`). `:feature:ask:presentation`
-is the one deliberate exception that depends on `:core:ai:*` directly — it has
-no domain/data split of its own, since wiring the agent loop *is* its whole
-job.
+navigation goes through callbacks wired in `:app`). These are held as project
+conventions (shared build configuration is centralized in `build-logic`
+convention plugins, but dependency direction itself is enforced by review, not
+tooling). `:feature:ask:presentation` is the one deliberate exception that
+depends on `:core:ai:*` directly — it has no domain/data split of its own,
+since wiring the agent loop *is* its whole job.
 
 ## How the agent works
 
