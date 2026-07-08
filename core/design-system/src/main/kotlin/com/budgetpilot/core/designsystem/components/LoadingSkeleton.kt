@@ -36,10 +36,15 @@ import com.budgetpilot.core.designsystem.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 
+private const val SKELETON_BASE_ALPHA = 0.12f
+private const val SKELETON_HIGHLIGHT_ALPHA = 0.20f
+
 @Suppress("ktlint:compose:modifier-composed-check", "ModifierComposed")
 fun Modifier.shimmerEffect(): Modifier =
     composed {
-        val baseColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        // design/mockups.html .skelrow i: color-mix(in srgb, var(--bp-on-surface-var) 12%, transparent)
+        // — not a surfaceContainer* role, so this is independent of Theme.kt's M3 defaults.
+        val baseColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = SKELETON_BASE_ALPHA)
 
         if (BudgetPilotTheme.reducedMotionEnabled) {
             background(baseColor)
@@ -52,7 +57,7 @@ fun Modifier.shimmerEffect(): Modifier =
                 animationSpec = infiniteRepeatable(animation = tween(durationMillis = 1000)),
                 label = "shimmerTranslate",
             )
-            val highlightColor = MaterialTheme.colorScheme.surfaceContainerHighest
+            val highlightColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = SKELETON_HIGHLIGHT_ALPHA)
 
             background(
                 brush =

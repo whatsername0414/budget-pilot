@@ -32,6 +32,19 @@ private val AppColorScheme: ColorScheme =
         onSurfaceVariant = OnSurfaceVariant,
         outline = Outline,
         outlineVariant = OutlineVariant,
+        // M3 defaults (Card, BottomSheet, SearchBar, menus, ...) read these
+        // surfaceContainer* roles instead of `surface` directly; left unset
+        // they fall back to M3's stock gray tokens, clashing with the
+        // slate/navy palette (same class of issue as the 2026-07-05 fix for
+        // onSurfaceVariant/outline/outlineVariant/surfaceVariant). Pinned to
+        // existing tokens only, no new palette colors.
+        surfaceContainerLowest = Background,
+        surfaceContainerLow = Background,
+        surfaceContainer = Surface,
+        surfaceContainerHigh = Surface,
+        surfaceContainerHighest = Surface,
+        surfaceDim = Background,
+        surfaceBright = SurfaceVariant,
     )
 
 /** Namespace for design tokens that M3's [MaterialTheme] has no slot for. */
