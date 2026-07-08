@@ -1,5 +1,11 @@
 # Budget Pilot
 
+[![CI](https://github.com/whatsername0414/budget-pilot/actions/workflows/ci.yml/badge.svg)](https://github.com/whatsername0414/budget-pilot/actions/workflows/ci.yml)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.2.21-7F52FF?logo=kotlin&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
+![minSdk 26](https://img.shields.io/badge/minSdk-26-3DDC84?logo=android&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini-2.5%20Flash-8E75B2?logo=googlegemini&logoColor=white)
+
 An AI-agent expense tracker — receipts, GCash/Maya screenshots, and cash
 entries become structured spending data, and a tool-calling agent answers
 natural-language questions about it by actually querying your local
@@ -9,7 +15,9 @@ Every design decision below is explained, not just stated — the goal is a
 genuinely agentic AI integration on solid modern Android foundations, not a
 chat-wrapper demo.
 
-![Demo](assets/demo/hero.gif)
+<p align="center">
+  <img src="assets/demo/hero.gif" width="260" alt="Capturing a receipt, confirming the extracted data, and seeing it land in the expense history">
+</p>
 
 ## Contents
 
@@ -41,7 +49,9 @@ chat-wrapper demo.
   Its "Ask more" button drops you into Ask with a question grounded in that
   same insight's actual numbers:
 
-  ![Insight card leading into a grounded Ask question](assets/demo/insight-card.gif)
+  <p align="center">
+    <img src="assets/demo/insight-card.gif" width="260" alt="Insight card leading into a grounded Ask question">
+  </p>
 - **Budgets & history** — monthly per-category budgets, a filterable expense
   history, and simple charts (horizontal bar by category, a 6-month line
   trend).
@@ -205,7 +215,9 @@ This is that same trace, live against a real Gemini call and real local data —
 `resolve_date_range` turning "this month" into concrete dates, then
 `query_expenses` aggregating the actual seeded receipts:
 
-![Ask with reasoning trace](assets/demo/ask-trace.gif)
+<p align="center">
+  <img src="assets/demo/ask-trace.gif" width="260" alt="Ask screen showing a live reasoning trace">
+</p>
 
 ## On-device vs. cloud
 
@@ -250,13 +262,14 @@ confirm screen offers "Use offline scan" as a one-tap retry through the
 on-device path, alongside "Enter manually" — degrading gracefully is a
 designed UI state, not an exception message.
 
-**Free-tier Gemini may use inputs to improve Google's models** — this is why
-the private-mode toggle exists and is visible on the main Settings screen,
-not buried in an about page. The Gemini API key lives on-device, injected at
-build time from `local.properties` and kept out of version control; this is
-an acknowledged demo-app compromise (a client-side key can be extracted from
-the APK) — a production version of this app would proxy Gemini calls through
-a backend instead of shipping the key to the client at all.
+> [!NOTE]
+> Free-tier Gemini may use inputs to improve Google's models — this is why
+> the private-mode toggle exists and is visible on the main Settings screen,
+> not buried in an about page. The Gemini API key lives on-device, injected at
+> build time from `local.properties` and kept out of version control; this is
+> an acknowledged demo-app compromise (a client-side key can be extracted from
+> the APK) — a production version of this app would proxy Gemini calls through
+> a backend instead of shipping the key to the client at all.
 
 ## Staying inside the free tier: rate limits & backoff
 
@@ -299,22 +312,26 @@ Roughly, by layer:
 | Presentation | JUnit 5 + Turbine + AssertK + fakes | Every ViewModel: state transitions, one-shot events, and error-path mapping. |
 | UI (instrumented) | Compose `ComposeTestRule` + robot pattern, JUnit 4 | Three critical flows: expense list, capture confirm, and Ask (question → answer, trace expander, error states). |
 
-**Known caveat, documented rather than hidden**: on the specific emulator
-image this project has been developed against (a Pixel 10 Pro / API 37
-preview AVD), Espresso can't inject touch input at all — not a bug in these
-tests, a toolchain limitation on that specific image. Those three
-instrumented suites are verified to compile and their logic is sound, but
-were confirmed working end-to-end via manual runs and screenshots on that
-image rather than via `connectedAndroidTest` there; they're expected to run
-normally on hardware or a less bleeding-edge AVD.
+> [!NOTE]
+> **Known caveat, documented rather than hidden**: on the specific emulator
+> image this project has been developed against (a Pixel 10 Pro / API 37
+> preview AVD), Espresso can't inject touch input at all — not a bug in these
+> tests, a toolchain limitation on that specific image. Those three
+> instrumented suites are verified to compile and their logic is sound, but
+> were confirmed working end-to-end via manual runs and screenshots on that
+> image rather than via `connectedAndroidTest` there; they're expected to run
+> normally on hardware or a less bleeding-edge AVD.
 
 ## Setup
 
 1. Clone the repo and open it in a recent Android Studio that supports AGP
    9.2.1 / Kotlin 2.2.21 / JDK 21.
 2. Get a **free** Gemini API key from [Google AI Studio](https://aistudio.google.com/).
-   Do **not** enable billing on the backing Google Cloud project — that
-   removes the free tier.
+
+   > [!IMPORTANT]
+   > Do not enable billing on the backing Google Cloud project — that
+   > removes the free tier entirely.
+
 3. Add it to a `local.properties` file at the repo root (this file is
    gitignored and never committed):
 
@@ -338,13 +355,14 @@ normally on hardware or a less bleeding-edge AVD.
    ./gradlew ktlintCheck detekt lint     # static analysis
    ```
 
-**Privacy note**: with cloud AI on, receipt images and Ask questions are sent
-to Google's Gemini API; free-tier usage may be used by Google to improve
-their models. Turn on **Offline / private mode** in Settings to keep
-everything on-device — it's a first-class toggle on the main Settings screen,
-not an afterthought. **Demo mode** (also in Settings) runs the entire app
-against scripted responses with zero network calls, for offline
-demonstrations.
+> [!NOTE]
+> **Privacy**: with cloud AI on, receipt images and Ask questions are sent
+> to Google's Gemini API; free-tier usage may be used by Google to improve
+> their models. Turn on **Offline / private mode** in Settings to keep
+> everything on-device — it's a first-class toggle on the main Settings screen,
+> not an afterthought. **Demo mode** (also in Settings) runs the entire app
+> against scripted responses with zero network calls, for offline
+> demonstrations.
 
 ## Screenshots
 
@@ -354,8 +372,8 @@ set of screenshots to capture.
 
 | Home | History | Ask |
 |---|---|---|
-| ![Home](assets/screenshots/home-dark.png) | ![History](assets/screenshots/history-dark.png) | ![Ask](assets/screenshots/ask-dark.png) |
+| <img src="assets/screenshots/home-dark.png" width="220" alt="Home screen"> | <img src="assets/screenshots/history-dark.png" width="220" alt="History screen"> | <img src="assets/screenshots/ask-dark.png" width="220" alt="Ask screen"> |
 
 | Capture confirm | Budgets & charts | Settings |
 |---|---|---|
-| ![Confirm](assets/screenshots/confirm-dark.png) | ![Budgets](assets/screenshots/budgets-dark.png) | ![Settings](assets/screenshots/settings-dark.png) |
+| <img src="assets/screenshots/confirm-dark.png" width="220" alt="Capture confirm screen"> | <img src="assets/screenshots/budgets-dark.png" width="220" alt="Budgets and charts screen"> | <img src="assets/screenshots/settings-dark.png" width="220" alt="Settings screen"> |
