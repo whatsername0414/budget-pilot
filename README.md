@@ -1,6 +1,6 @@
 # Budget Pilot
 
-[![CI](https://github.com/whatsername0414/budget-pilot/actions/workflows/ci.yml/badge.svg)](https://github.com/whatsername0414/budget-pilot/actions/workflows/ci.yml)
+[![CI](https://github.com/maceljonray/budget-pilot/actions/workflows/ci.yml/badge.svg)](https://github.com/maceljonray/budget-pilot/actions/workflows/ci.yml)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.2.21-7F52FF?logo=kotlin&logoColor=white)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
 ![minSdk 26](https://img.shields.io/badge/minSdk-26-3DDC84?logo=android&logoColor=white)
