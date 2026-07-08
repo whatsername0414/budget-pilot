@@ -35,5 +35,25 @@ sealed interface ConfirmExpenseAction {
 
     data object OnLineItemsToggleClick : ConfirmExpenseAction
 
+    data object OnAddLineItemClick : ConfirmExpenseAction
+
+    data class OnEditLineItemClick(
+        val index: Int,
+    ) : ConfirmExpenseAction
+
+    data class OnLineItemDescriptionChange(
+        val description: String,
+    ) : ConfirmExpenseAction
+
+    data class OnLineItemPriceChange(
+        val priceText: String,
+    ) : ConfirmExpenseAction
+
+    data object OnSaveLineItemClick : ConfirmExpenseAction
+
+    data object OnRemoveLineItemClick : ConfirmExpenseAction
+
+    data object OnDismissLineItemSheet : ConfirmExpenseAction
+
     data object OnSaveClick : ConfirmExpenseAction
 }

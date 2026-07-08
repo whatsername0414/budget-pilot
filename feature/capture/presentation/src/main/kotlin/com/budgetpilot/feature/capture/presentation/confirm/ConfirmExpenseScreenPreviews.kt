@@ -53,6 +53,25 @@ private fun ConfirmExpenseScreenLoadedPreview() {
 
 @Preview
 @Composable
+private fun ConfirmExpenseScreenLoadedEmptyLineItemsPreview() {
+    BudgetPilotTheme {
+        ConfirmExpenseContent(
+            state =
+                ConfirmExpenseState(
+                    phase = ConfirmExpensePhase.LOADED,
+                    merchant = "Cash",
+                    amountText = "120.00",
+                    lineItems = emptyList(),
+                    categories = PreviewCategories,
+                    selectedCategoryId = 1,
+                ),
+            onAction = {},
+        )
+    }
+}
+
+@Preview
+@Composable
 private fun ConfirmExpenseScreenErrorPreview() {
     BudgetPilotTheme {
         ConfirmExpenseContent(

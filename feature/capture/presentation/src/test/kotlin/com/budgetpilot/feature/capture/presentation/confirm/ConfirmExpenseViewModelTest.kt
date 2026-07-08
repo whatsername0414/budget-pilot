@@ -233,4 +233,93 @@ class ConfirmExpenseViewModelTest {
 
             assertThat(expenseRepository.addedExpenses).isEqualTo(emptyList())
         }
+
+    @Test
+    fun `adding a line item appends it and clears the low-confidence flag`() =
+        runTest {
+            val viewModel = viewModel()
+            assertThat(viewModel.state.value.lineItemsConfidence).isEqualTo(Confidence.MEDIUM)
+
+            viewModel.onAction(ConfirmExpenseAction.OnAddLineItemClick)
+            assertThat(viewModel.state.value.editingLineItemIndex).isNull()
+
+            viewModel.onAction(ConfirmExpenseAction.OnLineItemDescriptionChange("Iced Tea"))
+            viewModel.onAction(ConfirmExpenseAction.OnLineItemPriceChange("35.00"))
+            viewModel.onAction(ConfirmExpenseAction.OnSaveLineItemClick)
+
+            val state = viewModel.state.value
+            assertThat(state.isLineItemSheetVisible).isFalse()
+            assertThat(state.lineItems.last().description).isEqualTo("Iced Tea")
+            assertThat(state.lineItems.last().amount).isEqualTo(Money.fromPesos("35.00"))
+            assertThat(state.lineItems.size).isEqualTo(3)
+            assertThat(state.lineItemsConfidence).isEqualTo(Confidence.HIGH)
+        }
+
+    @Test
+    fun `editing a line item prefills the draft and replaces it in place`() =
+        runTest {
+            val viewModel = viewModel()
+
+            viewModel.onAction(ConfirmExpenseAction.OnEditLineItemClick(0))
+            val prefilled = viewModel.state.value
+            assertThat(prefilled.editingLineItemIndex).isEqualTo(0)
+            assertThat(prefilled.lineItemDraftDescription).isEqualTo("1pc Chickenjoy w/ Rice")
+            assertThat(prefilled.lineItemDraftPriceText).isEqualTo("89.00")
+
+            viewModel.onAction(ConfirmExpenseAction.OnLineItemPriceChange("99.00"))
+            viewModel.onAction(ConfirmExpenseAction.OnSaveLineItemClick)
+
+            val state = viewModel.state.value
+            assertThat(state.lineItems.size).isEqualTo(2)
+            assertThat(state.lineItems[0].description).isEqualTo("1pc Chickenjoy w/ Rice")
+            assertThat(state.lineItems[0].amount).isEqualTo(Money.fromPesos("99.00"))
+        }
+
+    @Test
+    fun `removing a line item drops it from the list`() =
+        runTest {
+            val viewModel = viewModel()
+
+            viewModel.onAction(ConfirmExpenseAction.OnEditLineItemClick(0))
+            viewModel.onAction(ConfirmExpenseAction.OnRemoveLineItemClick)
+
+            val state = viewModel.state.value
+            assertThat(state.isLineItemSheetVisible).isFalse()
+            assertThat(state.lineItems.size).isEqualTo(1)
+            assertThat(state.lineItems.single().description).isEqualTo("Jollibee Spaghetti")
+        }
+
+    @Test
+    fun `saving a line item with a blank name or non-positive price does nothing`() =
+        runTest {
+            val viewModel = viewModel()
+            viewModel.onAction(ConfirmExpenseAction.OnAddLineItemClick)
+
+            viewModel.onAction(ConfirmExpenseAction.OnLineItemDescriptionChange(""))
+            viewModel.onAction(ConfirmExpenseAction.OnLineItemPriceChange("35.00"))
+            viewModel.onAction(ConfirmExpenseAction.OnSaveLineItemClick)
+            assertThat(viewModel.state.value.isLineItemSheetVisible).isTrue()
+            assertThat(viewModel.state.value.lineItems.size).isEqualTo(2)
+
+            viewModel.onAction(ConfirmExpenseAction.OnLineItemDescriptionChange("Iced Tea"))
+            viewModel.onAction(ConfirmExpenseAction.OnLineItemPriceChange("0.00"))
+            viewModel.onAction(ConfirmExpenseAction.OnSaveLineItemClick)
+            assertThat(viewModel.state.value.isLineItemSheetVisible).isTrue()
+            assertThat(viewModel.state.value.lineItems.size).isEqualTo(2)
+        }
+
+    @Test
+    fun `dismissing the line item sheet discards the draft`() =
+        runTest {
+            val viewModel = viewModel()
+
+            viewModel.onAction(ConfirmExpenseAction.OnEditLineItemClick(0))
+            viewModel.onAction(ConfirmExpenseAction.OnLineItemDescriptionChange("Something else"))
+            viewModel.onAction(ConfirmExpenseAction.OnDismissLineItemSheet)
+
+            val state = viewModel.state.value
+            assertThat(state.isLineItemSheetVisible).isFalse()
+            assertThat(state.editingLineItemIndex).isNull()
+            assertThat(state.lineItems).isEqualTo(FakeReceiptExtractor.defaultReceipt().lineItems.value)
+        }
 }

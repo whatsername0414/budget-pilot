@@ -165,11 +165,13 @@ private fun ConfirmExpenseFields(
                 ),
         )
 
-        if (!state.isGCashOrMaya && state.lineItems.isNotEmpty()) {
+        if (!state.isGCashOrMaya) {
             LineItemsCard(
                 lineItems = state.lineItems,
                 isExpanded = state.isLineItemsExpanded,
                 onToggleClick = { onAction(ConfirmExpenseAction.OnLineItemsToggleClick) },
+                onAddItemClick = { onAction(ConfirmExpenseAction.OnAddLineItemClick) },
+                onEditItemClick = { index -> onAction(ConfirmExpenseAction.OnEditLineItemClick(index)) },
             )
         }
     }

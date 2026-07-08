@@ -49,6 +49,7 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.presentation.ObserveAsEvents
 import com.budgetpilot.feature.capture.domain.model.ReceiptType
 import com.budgetpilot.feature.capture.presentation.R
+import com.budgetpilot.feature.capture.presentation.confirm.components.LineItemEditorSheet
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
@@ -155,6 +156,10 @@ fun ConfirmExpenseContent(
             imagePath = state.imagePath,
             onDismiss = { onAction(ConfirmExpenseAction.OnDismissImageViewer) },
         )
+    }
+
+    if (state.isLineItemSheetVisible) {
+        LineItemEditorSheet(state = state, onAction = onAction)
     }
 }
 
