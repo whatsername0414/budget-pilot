@@ -1,5 +1,6 @@
 package com.budgetpilot.feature.settings.presentation
 
+import android.os.Build
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +35,7 @@ import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.presentation.ObserveAsEvents
 import com.budgetpilot.feature.settings.presentation.R
+import com.budgetpilot.feature.settings.presentation.components.AppearanceCard
 import com.budgetpilot.feature.settings.presentation.components.SettingRow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -106,6 +108,17 @@ fun SettingsContent(
             SectionLabel(stringResource(R.string.settings_section_demo))
             Spacer(modifier = Modifier.height(SettingsSectionGap))
             DemoCard(demoModeEnabled = state.demoModeEnabled, isLoading = state.isLoading, onAction = onAction)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                Spacer(modifier = Modifier.height(SettingsSectionGap))
+                SectionLabel(stringResource(R.string.settings_section_appearance))
+                Spacer(modifier = Modifier.height(SettingsSectionGap))
+                AppearanceCard(
+                    dynamicColorEnabled = state.dynamicColorEnabled,
+                    isLoading = state.isLoading,
+                    onAction = onAction,
+                )
+            }
 
             Spacer(modifier = Modifier.height(SettingsSectionGap))
             SectionLabel(stringResource(R.string.settings_section_about))

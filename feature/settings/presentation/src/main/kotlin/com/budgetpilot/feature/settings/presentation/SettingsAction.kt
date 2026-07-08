@@ -12,4 +12,8 @@ sealed interface SettingsAction {
     data class OnDemoModeToggle(
         val enabled: Boolean,
     ) : SettingsAction
+
+    data class OnDynamicColorToggle(
+        val enabled: Boolean,
+    ) : SettingsAction
 }

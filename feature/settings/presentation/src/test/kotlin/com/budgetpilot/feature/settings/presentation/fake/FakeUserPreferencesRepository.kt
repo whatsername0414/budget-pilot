@@ -10,6 +10,7 @@ class FakeUserPreferencesRepository(
     initialCloudAiEnabled: Boolean = true,
     initialPrivateModeEnabled: Boolean = false,
     initialDemoModeEnabled: Boolean = false,
+    initialDynamicColorEnabled: Boolean = false,
     private val failWith: DataError.Local? = null,
 ) : UserPreferencesRepository {
     private val _cloudAiEnabled = MutableStateFlow(initialCloudAiEnabled)
@@ -20,6 +21,9 @@ class FakeUserPreferencesRepository(
 
     private val _demoModeEnabled = MutableStateFlow(initialDemoModeEnabled)
     override val demoModeEnabled = _demoModeEnabled
+
+    private val _dynamicColorEnabled = MutableStateFlow(initialDynamicColorEnabled)
+    override val dynamicColorEnabled = _dynamicColorEnabled
 
     override suspend fun setCloudAiEnabled(enabled: Boolean): EmptyResult<DataError.Local> {
         if (failWith != null) return Result.Error(failWith)
@@ -36,6 +40,12 @@ class FakeUserPreferencesRepository(
     override suspend fun setDemoModeEnabled(enabled: Boolean): EmptyResult<DataError.Local> {
         if (failWith != null) return Result.Error(failWith)
         _demoModeEnabled.value = enabled
+        return Result.Success(Unit)
+    }
+
+    override suspend fun setDynamicColorEnabled(enabled: Boolean): EmptyResult<DataError.Local> {
+        if (failWith != null) return Result.Error(failWith)
+        _dynamicColorEnabled.value = enabled
         return Result.Success(Unit)
     }
 }

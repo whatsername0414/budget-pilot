@@ -26,6 +26,8 @@ private val PRIVATE_MODE_ENABLED_KEY = booleanPreferencesKey("private_mode_enabl
 private const val PRIVATE_MODE_ENABLED_DEFAULT = false
 private val DEMO_MODE_ENABLED_KEY = booleanPreferencesKey("demo_mode_enabled")
 private const val DEMO_MODE_ENABLED_DEFAULT = false
+private val DYNAMIC_COLOR_ENABLED_KEY = booleanPreferencesKey("dynamic_color_enabled")
+private const val DYNAMIC_COLOR_ENABLED_DEFAULT = false
 
 /**
  * DataStore-backed [UserPreferencesRepository]. Also exposes [isCloudAiAllowedSnapshot] and
@@ -53,6 +55,9 @@ class UserPreferences(
     override val demoModeEnabled: Flow<Boolean> =
         dataStore.data.map { preferences -> preferences[DEMO_MODE_ENABLED_KEY] ?: DEMO_MODE_ENABLED_DEFAULT }
 
+    override val dynamicColorEnabled: Flow<Boolean> =
+        dataStore.data.map { preferences -> preferences[DYNAMIC_COLOR_ENABLED_KEY] ?: DYNAMIC_COLOR_ENABLED_DEFAULT }
+
     private val cachedCloudAiEnabled: StateFlow<Boolean> =
         cloudAiEnabled.stateIn(scope, SharingStarted.Eagerly, CLOUD_AI_ENABLED_DEFAULT)
 
@@ -78,6 +83,9 @@ class UserPreferences(
 
     override suspend fun setDemoModeEnabled(enabled: Boolean): EmptyResult<DataError.Local> =
         setBooleanPreference(DEMO_MODE_ENABLED_KEY, enabled)
+
+    override suspend fun setDynamicColorEnabled(enabled: Boolean): EmptyResult<DataError.Local> =
+        setBooleanPreference(DYNAMIC_COLOR_ENABLED_KEY, enabled)
 
     @Suppress("SwallowedException")
     private suspend fun setBooleanPreference(

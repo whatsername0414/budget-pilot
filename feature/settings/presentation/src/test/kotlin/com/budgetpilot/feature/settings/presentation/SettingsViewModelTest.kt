@@ -100,6 +100,18 @@ class SettingsViewModelTest {
         }
 
     @Test
+    fun `toggling dynamic color persists the new value via the repository`() =
+        runTest {
+            val preferences = FakeUserPreferencesRepository()
+            val viewModel = viewModel(preferences = preferences)
+
+            viewModel.onAction(SettingsAction.OnDynamicColorToggle(true))
+
+            assertThat(viewModel.state.value.dynamicColorEnabled).isTrue()
+            assertThat(preferences.dynamicColorEnabled.value).isTrue()
+        }
+
+    @Test
     fun `a failed persist emits ShowError and leaves the toggle unchanged`() =
         runTest {
             val preferences =

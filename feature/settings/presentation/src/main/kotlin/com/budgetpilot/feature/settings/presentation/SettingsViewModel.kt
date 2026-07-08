@@ -33,6 +33,7 @@ class SettingsViewModel(
             is SettingsAction.OnCloudAiToggle -> toggleCloudAi(action.enabled)
             is SettingsAction.OnPrivateModeToggle -> togglePrivateMode(action.enabled)
             is SettingsAction.OnDemoModeToggle -> toggleDemoMode(action.enabled)
+            is SettingsAction.OnDynamicColorToggle -> toggleDynamicColor(action.enabled)
         }
     }
 
@@ -42,14 +43,16 @@ class SettingsViewModel(
                 userPreferencesRepository.cloudAiEnabled,
                 userPreferencesRepository.privateModeEnabled,
                 userPreferencesRepository.demoModeEnabled,
-            ) { cloudAiEnabled, privateModeEnabled, demoModeEnabled ->
-                Triple(cloudAiEnabled, privateModeEnabled, demoModeEnabled)
-            }.collect { (cloudAiEnabled, privateModeEnabled, demoModeEnabled) ->
+                userPreferencesRepository.dynamicColorEnabled,
+            ) { cloudAiEnabled, privateModeEnabled, demoModeEnabled, dynamicColorEnabled ->
+                SettingsPreferencesSnapshot(cloudAiEnabled, privateModeEnabled, demoModeEnabled, dynamicColorEnabled)
+            }.collect { snapshot ->
                 _state.update {
                     it.copy(
-                        cloudAiEnabled = cloudAiEnabled,
-                        privateModeEnabled = privateModeEnabled,
-                        demoModeEnabled = demoModeEnabled,
+                        cloudAiEnabled = snapshot.cloudAiEnabled,
+                        privateModeEnabled = snapshot.privateModeEnabled,
+                        demoModeEnabled = snapshot.demoModeEnabled,
+                        dynamicColorEnabled = snapshot.dynamicColorEnabled,
                         isLoading = false,
                     )
                 }
@@ -83,4 +86,20 @@ class SettingsViewModel(
             }
         }
     }
+
+    private fun toggleDynamicColor(enabled: Boolean) {
+        viewModelScope.launch {
+            val result = userPreferencesRepository.setDynamicColorEnabled(enabled)
+            if (result is Result.Error) {
+                _events.send(SettingsEvent.ShowError(result.error.toUiText()))
+            }
+        }
+    }
 }
+
+private data class SettingsPreferencesSnapshot(
+    val cloudAiEnabled: Boolean,
+    val privateModeEnabled: Boolean,
+    val demoModeEnabled: Boolean,
+    val dynamicColorEnabled: Boolean,
+)
