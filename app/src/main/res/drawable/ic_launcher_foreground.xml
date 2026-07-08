@@ -8,14 +8,16 @@
     android:height="108dp"
     android:viewportWidth="512"
     android:viewportHeight="512">
-    <!-- Scaled down and centered so the airplane tip and sparkle clear an adaptive-icon circular
-         mask's safe zone — the original SVG was composed for its own rx=117 rounded-square canvas,
-         which is far more forgiving than Android's circular mask option. -->
+    <!-- Scaled down and centered so every point (the airplane tip is the farthest) sits within
+         the official adaptive-icon safe zone — a circle of radius 0.30556 * viewport centered on
+         the icon, i.e. 156.4 in this 512-unit space. The original SVG was composed for its own
+         rx=117 rounded-square canvas, far more forgiving than that safe-zone guarantee, and both
+         the launcher mask and the splash-screen icon treatment enforce it. -->
     <group
         android:pivotX="256"
         android:pivotY="256"
-        android:scaleX="0.72"
-        android:scaleY="0.72">
+        android:scaleX="0.57"
+        android:scaleY="0.57">
         <path
             android:fillColor="#34D399"
             android:pathData="M98.4,329.1L128.2,329.1A18,18 0 0,1 146.2,347.1L146.2,420.8A18,18 0 0,1 128.2,438.8L98.4,438.8A18,18 0 0,1 80.4,420.8L80.4,347.1A18,18 0 0,1 98.4,329.1Z" />
