@@ -13,4 +13,5 @@ data class InsightEntity(
     val month: String,
     val createdAt: Instant,
     val dismissedAt: Instant? = null,
+    val followUpQuestion: String? = null,
 )

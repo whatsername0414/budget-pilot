@@ -12,6 +12,7 @@ fun InsightEntity.toInsight(): Insight =
         month = month,
         createdAt = createdAt,
         dismissedAt = dismissedAt,
+        followUpQuestion = followUpQuestion,
     )
 
 fun Insight.toEntity(): InsightEntity =
@@ -22,4 +23,5 @@ fun Insight.toEntity(): InsightEntity =
         month = month,
         createdAt = createdAt,
         dismissedAt = dismissedAt,
+        followUpQuestion = followUpQuestion,
     )
