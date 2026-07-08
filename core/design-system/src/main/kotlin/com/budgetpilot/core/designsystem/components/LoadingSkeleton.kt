@@ -36,28 +36,38 @@ import com.budgetpilot.core.designsystem.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 
+private const val SKELETON_BASE_ALPHA = 0.12f
+private const val SKELETON_HIGHLIGHT_ALPHA = 0.20f
+
 @Suppress("ktlint:compose:modifier-composed-check", "ModifierComposed")
 fun Modifier.shimmerEffect(): Modifier =
     composed {
-        var size by remember { mutableStateOf(IntSize.Zero) }
-        val transition = rememberInfiniteTransition(label = "shimmer")
-        val startOffsetX by transition.animateFloat(
-            initialValue = -2 * size.width.toFloat(),
-            targetValue = 2 * size.width.toFloat(),
-            animationSpec = infiniteRepeatable(animation = tween(durationMillis = 1000)),
-            label = "shimmerTranslate",
-        )
-        val baseColor = MaterialTheme.colorScheme.surfaceContainerHigh
-        val highlightColor = MaterialTheme.colorScheme.surfaceContainerHighest
+        // design/mockups.html .skelrow i: color-mix(in srgb, var(--bp-on-surface-var) 12%, transparent)
+        // — not a surfaceContainer* role, so this is independent of Theme.kt's M3 defaults.
+        val baseColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = SKELETON_BASE_ALPHA)
 
-        background(
-            brush =
-                Brush.linearGradient(
-                    colors = listOf(baseColor, highlightColor, baseColor),
-                    start = Offset(startOffsetX, 0f),
-                    end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat()),
-                ),
-        ).onGloballyPositioned { size = it.size }
+        if (BudgetPilotTheme.reducedMotionEnabled) {
+            background(baseColor)
+        } else {
+            var size by remember { mutableStateOf(IntSize.Zero) }
+            val transition = rememberInfiniteTransition(label = "shimmer")
+            val startOffsetX by transition.animateFloat(
+                initialValue = -2 * size.width.toFloat(),
+                targetValue = 2 * size.width.toFloat(),
+                animationSpec = infiniteRepeatable(animation = tween(durationMillis = 1000)),
+                label = "shimmerTranslate",
+            )
+            val highlightColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = SKELETON_HIGHLIGHT_ALPHA)
+
+            background(
+                brush =
+                    Brush.linearGradient(
+                        colors = listOf(baseColor, highlightColor, baseColor),
+                        start = Offset(startOffsetX, 0f),
+                        end = Offset(startOffsetX + size.width.toFloat(), size.height.toFloat()),
+                    ),
+            ).onGloballyPositioned { size = it.size }
+        }
     }
 
 /** Shimmering placeholder shown while content loads. */

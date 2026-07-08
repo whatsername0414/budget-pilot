@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -50,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.components.CategoryChip
+import com.budgetpilot.core.designsystem.components.LoadingSkeleton
 import com.budgetpilot.core.designsystem.icons.categoryIcon
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
@@ -68,6 +70,9 @@ import java.time.format.FormatStyle
 
 private val AmountHeroFontSize = 44.sp
 private val AmountHeroLineHeight = 52.sp
+private val AmountHeroSkeletonHeight = 76.dp
+private val CategoryChipRowHeight = 36.dp
+private val TextFieldHeight = 56.dp
 private val KeypadTopPadding = 10.dp
 private val KeypadBottomPadding = 6.dp
 
@@ -130,33 +135,42 @@ fun ExpenseEditorContent(
                     .padding(innerPadding),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            ExpenseEditorForm(
-                state = state,
-                onAction = onAction,
-                onDateFieldClick = { isDatePickerVisible = true },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Spacing.medium),
-            )
-
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface),
-            ) {
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                AmountKeypad(
-                    onKeyPress = { onAction(ExpenseEditorAction.OnAmountKeyPress(it)) },
+            if (state.isLoading) {
+                ExpenseEditorLoadingSkeleton(
                     modifier =
-                        Modifier.padding(
-                            start = Spacing.medium,
-                            end = Spacing.medium,
-                            top = KeypadTopPadding,
-                            bottom = KeypadBottomPadding,
-                        ),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = Spacing.medium),
                 )
+            } else {
+                ExpenseEditorForm(
+                    state = state,
+                    onAction = onAction,
+                    onDateFieldClick = { isDatePickerVisible = true },
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = Spacing.medium),
+                )
+
+                Column(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surface),
+                ) {
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    AmountKeypad(
+                        onKeyPress = { onAction(ExpenseEditorAction.OnAmountKeyPress(it)) },
+                        modifier =
+                            Modifier.padding(
+                                start = Spacing.medium,
+                                end = Spacing.medium,
+                                top = KeypadTopPadding,
+                                bottom = KeypadBottomPadding,
+                            ),
+                    )
+                }
             }
         }
     }
@@ -167,6 +181,20 @@ fun ExpenseEditorContent(
         isDatePickerVisible = isDatePickerVisible,
         onDismissDatePicker = { isDatePickerVisible = false },
     )
+}
+
+@Composable
+private fun ExpenseEditorLoadingSkeleton(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(Spacing.medium),
+    ) {
+        LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(AmountHeroSkeletonHeight))
+        LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(CategoryChipRowHeight))
+        LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(TextFieldHeight))
+        LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(TextFieldHeight))
+        LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(TextFieldHeight))
+    }
 }
 
 @Composable

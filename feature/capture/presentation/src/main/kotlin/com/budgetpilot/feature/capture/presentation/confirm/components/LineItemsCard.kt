@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -34,6 +35,8 @@ import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.feature.capture.domain.model.LineItem
 import com.budgetpilot.feature.capture.presentation.R
 
+private val MinTouchTargetSize = 48.dp
+
 /** Editable, collapsible list of receipt line items (DESIGN-SPEC.md §9); display/verification state only. */
 @Composable
 fun LineItemsCard(
@@ -57,6 +60,7 @@ fun LineItemsCard(
             modifier =
                 Modifier
                     .fillMaxWidth()
+                    .heightIn(min = MinTouchTargetSize)
                     .clickable(onClick = onToggleClick),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -117,6 +121,7 @@ private fun AddLineItemRow(
         modifier =
             modifier
                 .fillMaxWidth()
+                .heightIn(min = MinTouchTargetSize)
                 .clickable(onClick = onClick)
                 .padding(top = Spacing.small),
         verticalAlignment = Alignment.CenterVertically,

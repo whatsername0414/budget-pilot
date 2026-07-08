@@ -6,6 +6,7 @@ import com.budgetpilot.core.domain.Result
 import com.budgetpilot.core.domain.ai.ApiKeyStatusProvider
 import com.budgetpilot.core.domain.repository.UserPreferencesRepository
 import com.budgetpilot.core.presentation.toUiText
+import com.budgetpilot.feature.settings.presentation.demo.DemoDataSeeder
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
+    private val demoDataSeeder: DemoDataSeeder,
     apiKeyStatusProvider: ApiKeyStatusProvider,
 ) : ViewModel() {
     private val _state = MutableStateFlow(SettingsState(isApiKeyConfigured = apiKeyStatusProvider.isApiKeyConfigured()))
@@ -33,6 +35,8 @@ class SettingsViewModel(
             is SettingsAction.OnCloudAiToggle -> toggleCloudAi(action.enabled)
             is SettingsAction.OnPrivateModeToggle -> togglePrivateMode(action.enabled)
             is SettingsAction.OnDemoModeToggle -> toggleDemoMode(action.enabled)
+            is SettingsAction.OnDynamicColorToggle -> toggleDynamicColor(action.enabled)
+            SettingsAction.OnLoadDemoDataClick -> loadDemoData()
         }
     }
 
@@ -42,14 +46,16 @@ class SettingsViewModel(
                 userPreferencesRepository.cloudAiEnabled,
                 userPreferencesRepository.privateModeEnabled,
                 userPreferencesRepository.demoModeEnabled,
-            ) { cloudAiEnabled, privateModeEnabled, demoModeEnabled ->
-                Triple(cloudAiEnabled, privateModeEnabled, demoModeEnabled)
-            }.collect { (cloudAiEnabled, privateModeEnabled, demoModeEnabled) ->
+                userPreferencesRepository.dynamicColorEnabled,
+            ) { cloudAiEnabled, privateModeEnabled, demoModeEnabled, dynamicColorEnabled ->
+                SettingsPreferencesSnapshot(cloudAiEnabled, privateModeEnabled, demoModeEnabled, dynamicColorEnabled)
+            }.collect { snapshot ->
                 _state.update {
                     it.copy(
-                        cloudAiEnabled = cloudAiEnabled,
-                        privateModeEnabled = privateModeEnabled,
-                        demoModeEnabled = demoModeEnabled,
+                        cloudAiEnabled = snapshot.cloudAiEnabled,
+                        privateModeEnabled = snapshot.privateModeEnabled,
+                        demoModeEnabled = snapshot.demoModeEnabled,
+                        dynamicColorEnabled = snapshot.dynamicColorEnabled,
                         isLoading = false,
                     )
                 }
@@ -83,4 +89,33 @@ class SettingsViewModel(
             }
         }
     }
+
+    private fun toggleDynamicColor(enabled: Boolean) {
+        viewModelScope.launch {
+            val result = userPreferencesRepository.setDynamicColorEnabled(enabled)
+            if (result is Result.Error) {
+                _events.send(SettingsEvent.ShowError(result.error.toUiText()))
+            }
+        }
+    }
+
+    private fun loadDemoData() {
+        viewModelScope.launch {
+            _state.update { it.copy(isSeedingDemoData = true) }
+            val result = demoDataSeeder.seed()
+            _state.update { it.copy(isSeedingDemoData = false) }
+            if (result is Result.Error) {
+                _events.send(SettingsEvent.ShowError(result.error.toUiText()))
+            } else {
+                _events.send(SettingsEvent.DemoDataLoaded)
+            }
+        }
+    }
 }
+
+private data class SettingsPreferencesSnapshot(
+    val cloudAiEnabled: Boolean,
+    val privateModeEnabled: Boolean,
+    val demoModeEnabled: Boolean,
+    val dynamicColorEnabled: Boolean,
+)

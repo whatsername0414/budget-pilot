@@ -12,9 +12,9 @@ import com.budgetpilot.feature.capture.domain.CloudAiPolicy
 import com.budgetpilot.feature.capture.domain.ConnectivityObserver
 import com.budgetpilot.feature.capture.domain.ExtractionCache
 import com.budgetpilot.feature.capture.domain.ExtractionRouter
-import com.budgetpilot.feature.capture.domain.PhReceiptParser
 import com.budgetpilot.feature.capture.domain.ReceiptExtractor
 import com.budgetpilot.feature.capture.domain.ReceiptImageStore
+import com.budgetpilot.feature.capture.domain.ReceiptParser
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import org.koin.android.ext.koin.androidContext
@@ -39,7 +39,7 @@ val captureDataModule =
         }
         single { TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS) }
         single<OcrLineRecognizer> { MlKitOcrLineRecognizer(get()) }
-        single { PhReceiptParser(clock = get()) }
+        single { ReceiptParser(clock = get()) }
         single<ReceiptExtractor>(ON_DEVICE_EXTRACTOR) { MlKitReceiptExtractor(recognizer = get(), parser = get()) }
         single<CloudAiPolicy> {
             val preferences = get<UserPreferences>()

@@ -78,6 +78,7 @@ class InsightCheckUseCaseTest {
             val stored = result as InsightCheckResult.Stored
             assertThat(stored.insight.message).isEqualTo("You're over budget on Food this month.")
             assertThat(stored.insight.type).isEqualTo(InsightType.BUDGET_EXCEEDED)
+            assertThat(stored.insight.followUpQuestion).isEqualTo("How do I get back under budget for Food this month?")
             assertThat(llmClient.receivedRequests).hasSize(1)
         }
 

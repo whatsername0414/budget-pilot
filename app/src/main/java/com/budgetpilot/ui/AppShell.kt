@@ -45,12 +45,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -75,6 +75,7 @@ import com.budgetpilot.feature.settings.presentation.navigation.SettingsRoute
 import com.budgetpilot.feature.settings.presentation.navigation.settingsGraph
 import com.budgetpilot.navigation.NavIcons
 import com.budgetpilot.navigation.TopLevelDestination
+import com.budgetpilot.navigation.navigateToTopLevel
 
 // design/mockups.html .fab: 60dp square, 20dp corner radius collapsed. Expanded
 // morphs to a full circle (radius = FabSize / 2), per the 2026-07-07 approved
@@ -160,19 +161,17 @@ private fun AppShellNavContent(
         ) {
             homeGraph(
                 onSeeAllExpenses = {
-                    navController.navigate(HistoryRoute) { launchSingleTop = true }
+                    navController.navigateToTopLevel(HistoryRoute)
                 },
                 onSeeBudgets = {
-                    navController.navigate(BudgetsRoute) { launchSingleTop = true }
+                    navController.navigateToTopLevel(BudgetsRoute)
                 },
                 onAddExpense = { navController.navigate(ExpenseEditorRoute()) },
                 onOpenSettings = { navController.navigate(SettingsRoute) },
                 insightSlot = {
                     InsightCardHost(
                         onNavigateToAsk = { prefillQuestion ->
-                            navController.navigate(AskRoute(prefillQuestion = prefillQuestion)) {
-                                launchSingleTop = true
-                            }
+                            navController.navigateToTopLevel(AskRoute(prefillQuestion = prefillQuestion))
                         },
                     )
                 },
@@ -184,10 +183,7 @@ private fun AppShellNavContent(
             captureGraph(
                 navController = navController,
                 onSaveSuccess = { confirmationMessage ->
-                    navController.navigate(HistoryRoute) {
-                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                        launchSingleTop = true
-                    }
+                    navController.navigateToTopLevel(HistoryRoute)
                     navController.getBackStackEntry(HistoryRoute).savedStateHandle[EXPENSE_EDITOR_RESULT_KEY] =
                         confirmationMessage
                 },
@@ -311,13 +307,7 @@ private fun AppBottomBar(navController: NavController) {
             NavigationBarItem(
                 selected = selected,
                 onClick = {
-                    navController.navigate(destination.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigateToTopLevel(destination.route)
                 },
                 icon = {
                     Icon(
@@ -334,6 +324,8 @@ private fun AppBottomBar(navController: NavController) {
                     Text(
                         text = stringResource(destination.labelRes),
                         fontWeight = if (selected) FontWeight.SemiBold else null,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
             )

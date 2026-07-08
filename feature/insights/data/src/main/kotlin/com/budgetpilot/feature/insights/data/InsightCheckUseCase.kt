@@ -48,7 +48,14 @@ class InsightCheckUseCase(
         val useCloudAi = userPreferencesRepository.cloudAiEnabled.first()
         val message = messageComposer.compose(candidate, useCloudAi)
         val insight =
-            Insight(id = 0, type = candidate.type, message = message, month = snapshot.month, createdAt = clock.instant())
+            Insight(
+                id = 0,
+                type = candidate.type,
+                message = message,
+                month = snapshot.month,
+                createdAt = clock.instant(),
+                followUpQuestion = InsightFollowUpQuestions.questionFor(candidate),
+            )
         val savedId = insightStore.save(insight)
         return InsightCheckResult.Stored(insight.copy(id = savedId))
     }

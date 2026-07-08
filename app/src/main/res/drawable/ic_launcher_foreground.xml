@@ -1,30 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ascending bar chart (budget) + paper airplane (pilot) + sparkle (AI), transcribed from
+     budget-pilot-icon.svg. Rect+rx bars became explicit rounded-rect pathData (VectorDrawable has
+     no rx-rect primitive); the airplane's translate/rotate group maps 1:1 onto a VectorDrawable
+     <group>, which composites rotate-then-translate the same way SVG's transform list does. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
-    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
-        <aapt:attr name="android:fillColor">
-            <gradient
-                android:endX="85.84757"
-                android:endY="92.4963"
-                android:startX="42.9492"
-                android:startY="49.59793"
-                android:type="linear">
-                <item
-                    android:color="#44000000"
-                    android:offset="0.0" />
-                <item
-                    android:color="#00000000"
-                    android:offset="1.0" />
-            </gradient>
-        </aapt:attr>
-    </path>
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillType="nonZero"
-        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
-        android:strokeWidth="1"
-        android:strokeColor="#00000000" />
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <!-- Scaled down and centered so every point (the airplane tip is the farthest) sits within
+         the official adaptive-icon safe zone — a circle of radius 0.30556 * viewport centered on
+         the icon, i.e. 156.4 in this 512-unit space. The original SVG was composed for its own
+         rx=117 rounded-square canvas, far more forgiving than that safe-zone guarantee, and both
+         the launcher mask and the splash-screen icon treatment enforce it. -->
+    <group
+        android:pivotX="256"
+        android:pivotY="256"
+        android:scaleX="0.57"
+        android:scaleY="0.57">
+        <path
+            android:fillColor="#34D399"
+            android:pathData="M98.4,329.1L128.2,329.1A18,18 0 0,1 146.2,347.1L146.2,420.8A18,18 0 0,1 128.2,438.8L98.4,438.8A18,18 0 0,1 80.4,420.8L80.4,347.1A18,18 0 0,1 98.4,329.1Z" />
+        <path
+            android:fillColor="#60A5FA"
+            android:pathData="M200.8,256L230.6,256A18,18 0 0,1 248.6,274L248.6,420.8A18,18 0 0,1 230.6,438.8L200.8,438.8A18,18 0 0,1 182.8,420.8L182.8,274A18,18 0 0,1 200.8,256Z" />
+        <path
+            android:fillColor="#A78BFA"
+            android:pathData="M303.2,182.8L333,182.8A18,18 0 0,1 351,200.8L351,420.8A18,18 0 0,1 333,438.8L303.2,438.8A18,18 0 0,1 285.2,420.8L285.2,200.8A18,18 0 0,1 303.2,182.8Z" />
+        <group
+            android:translateX="402"
+            android:translateY="117"
+            android:rotation="-35">
+            <path
+                android:fillColor="#E8EEF9"
+                android:pathData="M69.5,0 L-47.5,-38.4 L-27.4,0 L-47.5,38.4 Z" />
+            <path
+                android:fillColor="#60A5FA"
+                android:pathData="M69.5,0 L-27.4,0 L-47.5,38.4 Z" />
+        </group>
+        <path
+            android:fillColor="#FBBF24"
+            android:pathData="M252.3,65.8 l8.4,20.8 20.8,8.4 -20.8,8.4 -8.4,20.8 -8.4,-20.8 -20.8,-8.4 20.8,-8.4 Z" />
+    </group>
 </vector>

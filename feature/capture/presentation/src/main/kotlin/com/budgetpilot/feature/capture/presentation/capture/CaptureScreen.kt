@@ -51,7 +51,10 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -292,6 +295,8 @@ private fun CaptureTopBar(
             color = CaptureControl,
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
         )
         IconButton(onClick = onTorchToggleClick) {
@@ -427,6 +432,7 @@ private fun ShutterButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val haptic = LocalHapticFeedback.current
+    val shutterContentDescription = stringResource(R.string.cd_take_photo)
 
     Box(
         modifier =
@@ -438,6 +444,7 @@ private fun ShutterButton(
                     scaleY = scale
                 }.clip(CircleShape)
                 .border(width = 4.dp, color = CaptureControl, shape = CircleShape)
+                .semantics { contentDescription = shutterContentDescription }
                 .clickable(
                     interactionSource = interactionSource,
                     indication = null,

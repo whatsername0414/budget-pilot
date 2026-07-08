@@ -5,6 +5,10 @@ plugins {
 
 android {
     namespace = "com.budgetpilot.feature.settings.presentation"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {

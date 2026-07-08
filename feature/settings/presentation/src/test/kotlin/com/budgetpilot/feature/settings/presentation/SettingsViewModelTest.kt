@@ -6,6 +6,10 @@ import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import com.budgetpilot.core.domain.DataError
+import com.budgetpilot.feature.settings.presentation.demo.DemoDataSeeder
+import com.budgetpilot.feature.settings.presentation.fake.FakeBudgetRepository
+import com.budgetpilot.feature.settings.presentation.fake.FakeCategoryRepository
+import com.budgetpilot.feature.settings.presentation.fake.FakeExpenseRepository
 import com.budgetpilot.feature.settings.presentation.fake.FakeUserPreferencesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,6 +20,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.Clock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingsViewModelTest {
@@ -100,6 +105,18 @@ class SettingsViewModelTest {
         }
 
     @Test
+    fun `toggling dynamic color persists the new value via the repository`() =
+        runTest {
+            val preferences = FakeUserPreferencesRepository()
+            val viewModel = viewModel(preferences = preferences)
+
+            viewModel.onAction(SettingsAction.OnDynamicColorToggle(true))
+
+            assertThat(viewModel.state.value.dynamicColorEnabled).isTrue()
+            assertThat(preferences.dynamicColorEnabled.value).isTrue()
+        }
+
+    @Test
     fun `a failed persist emits ShowError and leaves the toggle unchanged`() =
         runTest {
             val preferences =
@@ -129,12 +146,49 @@ class SettingsViewModelTest {
             assertThat(viewModel.state.value.privateModeEnabled).isFalse()
         }
 
+    @Test
+    fun `loading demo data emits DemoDataLoaded and toggles the seeding flag`() =
+        runTest {
+            val viewModel = viewModel(demoDataSeeder = demoDataSeeder())
+
+            viewModel.events.test {
+                viewModel.onAction(SettingsAction.OnLoadDemoDataClick)
+
+                assertThat(awaitItem()).isInstanceOf(SettingsEvent.DemoDataLoaded::class)
+            }
+            assertThat(viewModel.state.value.isSeedingDemoData).isFalse()
+        }
+
+    @Test
+    fun `a failed demo data load emits ShowError`() =
+        runTest {
+            val viewModel =
+                viewModel(demoDataSeeder = demoDataSeeder(expenseFailWith = DataError.Local.DISK_FULL))
+
+            viewModel.events.test {
+                viewModel.onAction(SettingsAction.OnLoadDemoDataClick)
+
+                assertThat(awaitItem()).isInstanceOf(SettingsEvent.ShowError::class)
+            }
+            assertThat(viewModel.state.value.isSeedingDemoData).isFalse()
+        }
+
+    private fun demoDataSeeder(expenseFailWith: DataError.Local? = null): DemoDataSeeder =
+        DemoDataSeeder(
+            expenseRepository = FakeExpenseRepository(failWith = expenseFailWith),
+            budgetRepository = FakeBudgetRepository(),
+            categoryRepository = FakeCategoryRepository(),
+            clock = Clock.systemDefaultZone(),
+        )
+
     private fun viewModel(
         preferences: FakeUserPreferencesRepository = FakeUserPreferencesRepository(),
         apiKeyConfigured: Boolean = false,
+        demoDataSeeder: DemoDataSeeder = demoDataSeeder(),
     ): SettingsViewModel =
         SettingsViewModel(
             userPreferencesRepository = preferences,
+            demoDataSeeder = demoDataSeeder,
             apiKeyStatusProvider = { apiKeyConfigured },
         )
 }

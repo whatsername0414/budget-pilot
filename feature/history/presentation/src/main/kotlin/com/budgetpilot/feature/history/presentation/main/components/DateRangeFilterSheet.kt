@@ -54,7 +54,9 @@ fun DateRangeFilterSheet(
                             .padding(horizontal = Spacing.medium, vertical = Spacing.extraSmall),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    RadioButton(selected = selected, onClick = { onPresetSelect(preset) })
+                    // Row already carries the click via .selectable(); a second click target on
+                    // the RadioButton itself would make TalkBack stop on this row twice.
+                    RadioButton(selected = selected, onClick = null)
                     Text(
                         text = preset.label,
                         style = MaterialTheme.typography.bodyLarge,

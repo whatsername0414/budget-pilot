@@ -62,7 +62,7 @@ class InsightViewModel(
     private fun askMore() {
         val insight = currentInsight ?: return
         viewModelScope.launch {
-            _events.send(InsightEvent.NavigateToAsk(prefillQuestionFor(insight.type)))
+            _events.send(InsightEvent.NavigateToAsk(insight.followUpQuestion ?: prefillQuestionFor(insight.type)))
         }
     }
 
@@ -85,10 +85,10 @@ class InsightViewModel(
 }
 
 /**
- * The persisted [Insight] only keeps the composed message (category/expense detail isn't
- * retained past P5.2's use case), so the follow-up question is a generic per-type prompt rather
- * than the category-specific wording in DESIGN-SPEC.md §11's example — an accepted deviation
- * (CLAUDE.md §10).
+ * Fallback for insights persisted before [Insight.followUpQuestion] existed (that field is
+ * null for them) — a generic per-type prompt with no category/merchant/amount detail. Every
+ * newly created insight instead gets a grounded question from
+ * [com.budgetpilot.feature.insights.data.InsightFollowUpQuestions].
  */
 internal fun prefillQuestionFor(type: InsightType): String =
     when (type) {

@@ -4,8 +4,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.budgetpilot.core.domain.Result
 import com.budgetpilot.feature.capture.domain.ExtractionError
-import com.budgetpilot.feature.capture.domain.PhReceiptParser
 import com.budgetpilot.feature.capture.domain.ReceiptImage
+import com.budgetpilot.feature.capture.domain.ReceiptParser
 import com.budgetpilot.feature.capture.domain.model.OcrLine
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
@@ -15,7 +15,7 @@ import java.time.ZoneOffset
 
 class MlKitReceiptExtractorTest {
     private val clock = Clock.fixed(Instant.parse("2026-07-07T12:00:00Z"), ZoneOffset.UTC)
-    private val parser = PhReceiptParser(clock)
+    private val parser = ReceiptParser(clock)
 
     @Test
     fun `hands recognized OCR lines off to the parser and returns its result`() =

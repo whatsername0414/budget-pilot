@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.budgetpilot.core.designsystem.components.LoadingSkeleton
 import com.budgetpilot.core.designsystem.icons.categoryIcon
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
@@ -51,6 +53,12 @@ import java.time.YearMonth
 private val HeaderIconSize = 40.dp
 private val HeaderIconRadius = 12.dp
 private val HeaderRowGap = 12.dp
+private val TitleSkeletonWidth = 120.dp
+private val TitleSkeletonHeight = 20.dp
+private val SubtitleSkeletonWidth = 90.dp
+private val SubtitleSkeletonHeight = 16.dp
+private val AmountFieldSkeletonHeight = 56.dp
+private val KeypadSkeletonHeight = 200.dp
 
 private val QuickAmounts =
     listOf(
@@ -105,6 +113,10 @@ private fun BudgetEditorContent(
                 .fillMaxWidth()
                 .padding(horizontal = Spacing.medium, vertical = Spacing.small),
     ) {
+        if (state.isLoading) {
+            BudgetEditorLoadingSkeleton()
+            return@Column
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(HeaderRowGap),
@@ -157,6 +169,27 @@ private fun BudgetEditorContent(
 
     if (state.isRemoveConfirmVisible) {
         RemoveBudgetDialog(categoryName = state.categoryName, monthLabel = state.monthLabel, onAction = onAction)
+    }
+}
+
+@Composable
+private fun BudgetEditorLoadingSkeleton(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(Spacing.medium),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HeaderRowGap)) {
+            LoadingSkeleton(
+                shape = RoundedCornerShape(HeaderIconRadius),
+                modifier = Modifier.size(HeaderIconSize),
+            )
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.extraSmall)) {
+                LoadingSkeleton(modifier = Modifier.width(TitleSkeletonWidth).height(TitleSkeletonHeight))
+                LoadingSkeleton(modifier = Modifier.width(SubtitleSkeletonWidth).height(SubtitleSkeletonHeight))
+            }
+        }
+        LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(AmountFieldSkeletonHeight))
+        LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(KeypadSkeletonHeight))
     }
 }
 
@@ -255,6 +288,16 @@ private fun RemoveBudgetDialog(
         title = { Text(stringResource(R.string.remove_budget_dialog_title)) },
         text = { Text(stringResource(R.string.remove_budget_dialog_text, categoryName, monthLabel)) },
     )
+}
+
+@Preview
+@Composable
+private fun BudgetEditorContentLoadingPreview() {
+    BudgetPilotTheme {
+        Surface {
+            BudgetEditorContent(state = BudgetEditorState(isLoading = true), onAction = {})
+        }
+    }
 }
 
 @Preview

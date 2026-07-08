@@ -82,7 +82,26 @@ class InsightViewModelTest {
         }
 
     @Test
-    fun `ask more emits a navigate event carrying a prefill question for the insight's type`() =
+    fun `ask more emits a navigate event carrying the insight's stored follow-up question`() =
+        runTest {
+            val insight =
+                insightOf(
+                    id = 3,
+                    type = InsightType.CATEGORY_SPIKE,
+                    message = "Transport spend up",
+                    followUpQuestion = "Why is my Transport spending up this month compared to recent months?",
+                )
+            val store = FakeInsightStore(latestUndismissed = insight)
+            val viewModel = insightViewModel(store)
+
+            viewModel.events.test {
+                viewModel.onAction(InsightAction.OnAskMoreClick)
+                assertThat(awaitItem()).isEqualTo(InsightEvent.NavigateToAsk(insight.followUpQuestion!!))
+            }
+        }
+
+    @Test
+    fun `ask more falls back to a generic per-type question when no follow-up question was persisted`() =
         runTest {
             val insight = insightOf(id = 3, type = InsightType.CATEGORY_SPIKE, message = "Transport spend up")
             val store = FakeInsightStore(latestUndismissed = insight)
@@ -98,7 +117,16 @@ class InsightViewModelTest {
         id: Long,
         type: InsightType,
         message: String,
-    ): Insight = Insight(id = id, type = type, message = message, month = "2026-07", createdAt = fixedClock.instant())
+        followUpQuestion: String? = null,
+    ): Insight =
+        Insight(
+            id = id,
+            type = type,
+            message = message,
+            month = "2026-07",
+            createdAt = fixedClock.instant(),
+            followUpQuestion = followUpQuestion,
+        )
 
     private fun insightViewModel(store: FakeInsightStore): InsightViewModel {
         val useCase =

@@ -4,4 +4,12 @@
     <style name="Theme.BudgetPilot" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">#0F172A</item>
     </style>
+
+    <!-- MainActivity-only theme (not the application theme) per the SplashScreen API's own
+         guidance; postSplashScreenTheme hands off to Theme.BudgetPilot once content is ready. -->
+    <style name="Theme.BudgetPilot.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#101A33</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.BudgetPilot</item>
+    </style>
 </resources>

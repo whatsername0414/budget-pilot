@@ -9,6 +9,9 @@ data class SettingsState(
     val cloudAiEnabled: Boolean = true,
     val isApiKeyConfigured: Boolean = false,
     val demoModeEnabled: Boolean = false,
+    val dynamicColorEnabled: Boolean = false,
     val isLoading: Boolean = true,
     val error: UiText? = null,
+    val isDemoDataSeedVisible: Boolean = BuildConfig.DEBUG,
+    val isSeedingDemoData: Boolean = false,
 )
