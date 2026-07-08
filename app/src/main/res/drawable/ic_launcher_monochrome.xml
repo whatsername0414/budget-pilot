@@ -1,43 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Ascending bar chart (budget) + paper airplane (pilot) + sparkle (AI), transcribed from
-     budget-pilot-icon.svg. Rect+rx bars became explicit rounded-rect pathData (VectorDrawable has
-     no rx-rect primitive); the airplane's translate/rotate group maps 1:1 onto a VectorDrawable
-     <group>, which composites rotate-then-translate the same way SVG's transform list does. -->
+<!-- Themed-icon layer: same shapes as ic_launcher_foreground.xml (incl. its safe-zone scale),
+     flattened to a single color — Android tints monochrome icons at runtime, so per-shape color
+     no longer applies here. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="512"
     android:viewportHeight="512">
-    <!-- Scaled down and centered so the airplane tip and sparkle clear an adaptive-icon circular
-         mask's safe zone — the original SVG was composed for its own rx=117 rounded-square canvas,
-         which is far more forgiving than Android's circular mask option. -->
     <group
         android:pivotX="256"
         android:pivotY="256"
         android:scaleX="0.72"
         android:scaleY="0.72">
         <path
-            android:fillColor="#34D399"
+            android:fillColor="#FFFFFF"
             android:pathData="M98.4,329.1L128.2,329.1A18,18 0 0,1 146.2,347.1L146.2,420.8A18,18 0 0,1 128.2,438.8L98.4,438.8A18,18 0 0,1 80.4,420.8L80.4,347.1A18,18 0 0,1 98.4,329.1Z" />
         <path
-            android:fillColor="#60A5FA"
+            android:fillColor="#FFFFFF"
             android:pathData="M200.8,256L230.6,256A18,18 0 0,1 248.6,274L248.6,420.8A18,18 0 0,1 230.6,438.8L200.8,438.8A18,18 0 0,1 182.8,420.8L182.8,274A18,18 0 0,1 200.8,256Z" />
         <path
-            android:fillColor="#A78BFA"
+            android:fillColor="#FFFFFF"
             android:pathData="M303.2,182.8L333,182.8A18,18 0 0,1 351,200.8L351,420.8A18,18 0 0,1 333,438.8L303.2,438.8A18,18 0 0,1 285.2,420.8L285.2,200.8A18,18 0 0,1 303.2,182.8Z" />
         <group
             android:translateX="402"
             android:translateY="117"
             android:rotation="-35">
             <path
-                android:fillColor="#E8EEF9"
+                android:fillColor="#FFFFFF"
                 android:pathData="M69.5,0 L-47.5,-38.4 L-27.4,0 L-47.5,38.4 Z" />
-            <path
-                android:fillColor="#60A5FA"
-                android:pathData="M69.5,0 L-27.4,0 L-47.5,38.4 Z" />
         </group>
         <path
-            android:fillColor="#FBBF24"
+            android:fillColor="#FFFFFF"
             android:pathData="M252.3,65.8 l8.4,20.8 20.8,8.4 -20.8,8.4 -8.4,20.8 -8.4,-20.8 -20.8,-8.4 20.8,-8.4 Z" />
     </group>
 </vector>

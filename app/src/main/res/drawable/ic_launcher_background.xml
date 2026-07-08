@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Brand blue (PLAN.md §4.1 light "primary" #1E40AF) — the launcher icon is a
-     static brand mark independent of the in-app dark-only theme. -->
+<!-- Background from budget-pilot-icon.svg (its rx corner-radius is dropped — the adaptive-icon
+     mask handles rounding, and Android needs a full-bleed square background). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
+    android:viewportWidth="512"
+    android:viewportHeight="512">
     <path
-        android:fillColor="#1E40AF"
-        android:pathData="M0,0h108v108h-108z" />
+        android:fillColor="#101A33"
+        android:pathData="M0,0h512v512h-512z" />
 </vector>
