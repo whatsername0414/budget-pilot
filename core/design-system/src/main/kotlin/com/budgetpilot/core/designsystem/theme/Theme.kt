@@ -38,6 +38,10 @@ private val AppColorScheme: ColorScheme =
 object BudgetPilotTheme {
     val extendedColors: ExtendedColors
         @Composable get() = currentExtendedColors.value
+
+    /** Whether the system "Remove animations" accessibility setting is on. */
+    val reducedMotionEnabled: Boolean
+        @Composable get() = currentReducedMotionEnabled.value
 }
 
 /**
@@ -47,6 +51,7 @@ object BudgetPilotTheme {
 @Composable
 fun BudgetPilotTheme(content: @Composable () -> Unit) {
     SideEffect { currentExtendedColors.value = AppExtendedColors }
+    ObserveReducedMotionSetting()
 
     MaterialTheme(
         colorScheme = AppColorScheme,

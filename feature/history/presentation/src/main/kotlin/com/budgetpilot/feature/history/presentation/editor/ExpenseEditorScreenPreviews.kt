@@ -30,6 +30,17 @@ private fun ExpenseEditorScreenAddPreview() {
 
 @Preview
 @Composable
+private fun ExpenseEditorScreenLoadingPreview() {
+    BudgetPilotTheme {
+        ExpenseEditorContent(
+            state = ExpenseEditorState(mode = ExpenseEditorMode.EDIT, isLoading = true),
+            onAction = {},
+        )
+    }
+}
+
+@Preview
+@Composable
 private fun ExpenseEditorScreenEditPreview() {
     BudgetPilotTheme {
         ExpenseEditorContent(

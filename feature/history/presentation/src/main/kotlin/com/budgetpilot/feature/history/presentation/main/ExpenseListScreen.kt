@@ -45,6 +45,7 @@ import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.components.AppCard
 import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.components.EmptyState
+import com.budgetpilot.core.designsystem.components.ErrorState
 import com.budgetpilot.core.designsystem.components.LoadingSkeleton
 import com.budgetpilot.core.designsystem.icons.StateIcons
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
@@ -53,6 +54,7 @@ import com.budgetpilot.core.domain.model.Category
 import com.budgetpilot.core.domain.model.ExpenseSource
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
+import com.budgetpilot.core.presentation.UiText
 import com.budgetpilot.feature.history.presentation.R
 import com.budgetpilot.feature.history.presentation.main.components.DateRangeFilterSheet
 import com.budgetpilot.feature.history.presentation.main.components.ExpenseFilterChipRow
@@ -159,6 +161,12 @@ fun ExpenseListContent(
             Box(modifier = Modifier.fillMaxSize()) {
                 when {
                     state.isLoading -> LoadingListSkeleton(modifier = Modifier.align(Alignment.TopCenter))
+                    state.error != null ->
+                        ErrorState(
+                            message = state.error.asString(),
+                            onRetry = { onAction(ExpenseListAction.OnRetryClick) },
+                            modifier = Modifier.align(Alignment.Center),
+                        )
                     state.isEmpty && state.hasActiveFilter ->
                         EmptyState(
                             icon = Icons.Filled.Info,
@@ -387,6 +395,21 @@ private fun ExpenseListScreenLoadingPreview() {
     BudgetPilotTheme {
         ExpenseListContent(
             state = ExpenseListState(isLoading = true),
+            onAction = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ExpenseListScreenErrorPreview() {
+    BudgetPilotTheme {
+        ExpenseListContent(
+            state =
+                ExpenseListState(
+                    isLoading = false,
+                    error = UiText.DynamicString("Something unexpected happened. Please try again."),
+                ),
             onAction = {},
         )
     }

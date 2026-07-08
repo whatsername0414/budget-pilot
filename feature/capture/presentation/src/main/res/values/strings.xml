@@ -5,6 +5,7 @@
     <string name="cd_close">Close</string>
     <string name="cd_toggle_flash">Toggle flash</string>
     <string name="cd_choose_from_gallery">Choose from gallery</string>
+    <string name="cd_take_photo">Take photo</string>
     <string name="permission_denied_title">Camera access needed</string>
     <string name="permission_denied_description">Budget Pilot needs camera access to scan your receipts. You can still add one using a photo from your gallery.</string>
     <string name="action_open_settings">Open settings</string>

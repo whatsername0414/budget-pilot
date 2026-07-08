@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.budgetpilot.core.designsystem.components.AppCard
 import com.budgetpilot.core.designsystem.components.AppTopBar
+import com.budgetpilot.core.designsystem.components.LoadingSkeleton
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.presentation.ObserveAsEvents
@@ -41,6 +42,8 @@ import java.util.Locale
 private val SettingsSectionGap = 14.dp
 private val SettingsCardContentPadding = PaddingValues(horizontal = Spacing.medium, vertical = Spacing.extraSmall)
 private val ApiKeyChipVerticalPadding = 3.dp
+private val SettingsSkeletonRowHeight = 40.dp
+private const val AI_PRIVACY_CARD_ROW_COUNT = 3
 
 @Composable
 fun SettingsScreen(
@@ -102,7 +105,7 @@ fun SettingsContent(
             Spacer(modifier = Modifier.height(SettingsSectionGap))
             SectionLabel(stringResource(R.string.settings_section_demo))
             Spacer(modifier = Modifier.height(SettingsSectionGap))
-            DemoCard(demoModeEnabled = state.demoModeEnabled, onAction = onAction)
+            DemoCard(demoModeEnabled = state.demoModeEnabled, isLoading = state.isLoading, onAction = onAction)
 
             Spacer(modifier = Modifier.height(SettingsSectionGap))
             SectionLabel(stringResource(R.string.settings_section_about))
@@ -112,6 +115,8 @@ fun SettingsContent(
     }
 }
 
+private val SettingsSkeletonRowShape = RoundedCornerShape(6.dp)
+
 @Composable
 private fun AiPrivacyCard(
     state: SettingsState,
@@ -119,15 +124,24 @@ private fun AiPrivacyCard(
     modifier: Modifier = Modifier,
 ) {
     AppCard(modifier = modifier.fillMaxWidth(), contentPadding = SettingsCardContentPadding) {
+        if (state.isLoading) {
+            repeat(AI_PRIVACY_CARD_ROW_COUNT) { index ->
+                if (index != 0) HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
+                LoadingSkeleton(
+                    shape = SettingsSkeletonRowShape,
+                    modifier = Modifier.fillMaxWidth().height(SettingsSkeletonRowHeight),
+                )
+            }
+            return@AppCard
+        }
         SettingRow(
             title = stringResource(R.string.settings_private_mode_title),
             description = stringResource(R.string.settings_private_mode_description),
             onClick = { onAction(SettingsAction.OnPrivateModeToggle(!state.privateModeEnabled)) },
             trailingContent = {
-                Switch(
-                    checked = state.privateModeEnabled,
-                    onCheckedChange = { enabled -> onAction(SettingsAction.OnPrivateModeToggle(enabled)) },
-                )
+                // Row already carries the click via SettingRow's onClick; a second click target
+                // on the Switch itself would make TalkBack stop on this row twice.
+                Switch(checked = state.privateModeEnabled, onCheckedChange = null)
             },
         )
         HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
@@ -145,7 +159,7 @@ private fun AiPrivacyCard(
                 Switch(
                     checked = state.cloudAiEnabled,
                     enabled = !state.privateModeEnabled,
-                    onCheckedChange = { enabled -> onAction(SettingsAction.OnCloudAiToggle(enabled)) },
+                    onCheckedChange = null,
                 )
             },
         )
@@ -162,19 +176,24 @@ private fun AiPrivacyCard(
 @Composable
 private fun DemoCard(
     demoModeEnabled: Boolean,
+    isLoading: Boolean,
     onAction: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AppCard(modifier = modifier.fillMaxWidth(), contentPadding = SettingsCardContentPadding) {
+        if (isLoading) {
+            LoadingSkeleton(
+                shape = SettingsSkeletonRowShape,
+                modifier = Modifier.fillMaxWidth().height(SettingsSkeletonRowHeight),
+            )
+            return@AppCard
+        }
         SettingRow(
             title = stringResource(R.string.settings_demo_mode_title),
             description = stringResource(R.string.settings_demo_mode_description),
             onClick = { onAction(SettingsAction.OnDemoModeToggle(!demoModeEnabled)) },
             trailingContent = {
-                Switch(
-                    checked = demoModeEnabled,
-                    onCheckedChange = { enabled -> onAction(SettingsAction.OnDemoModeToggle(enabled)) },
-                )
+                Switch(checked = demoModeEnabled, onCheckedChange = null)
             },
         )
     }
