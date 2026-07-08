@@ -18,6 +18,16 @@ local.properties
 # Claude Code
 .claude/
 
+# Internal planning docs (local only)
+/CLAUDE.md
+/DECISION-LOG.md
+/DESIGN-SPEC.md
+/PLAN.md
+/PROMPTS.md
+/design/
+/docs/
+/skills-lock.json
+
 # Signing
 *.keystore
 *.jks
