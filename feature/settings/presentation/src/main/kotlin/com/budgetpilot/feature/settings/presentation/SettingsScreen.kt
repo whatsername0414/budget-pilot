@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -64,6 +65,10 @@ fun SettingsScreen(
             is SettingsEvent.ShowError -> {
                 scope.launch { snackbarHostState.showSnackbar(message = event.message.asString(context)) }
             }
+            SettingsEvent.DemoDataLoaded -> {
+                val message = context.getString(R.string.settings_load_demo_data_success)
+                scope.launch { snackbarHostState.showSnackbar(message = message) }
+            }
         }
     }
 
@@ -107,7 +112,13 @@ fun SettingsContent(
             Spacer(modifier = Modifier.height(SettingsSectionGap))
             SectionLabel(stringResource(R.string.settings_section_demo))
             Spacer(modifier = Modifier.height(SettingsSectionGap))
-            DemoCard(demoModeEnabled = state.demoModeEnabled, isLoading = state.isLoading, onAction = onAction)
+            DemoCard(
+                demoModeEnabled = state.demoModeEnabled,
+                isLoading = state.isLoading,
+                onAction = onAction,
+                isDemoDataSeedVisible = state.isDemoDataSeedVisible,
+                isSeedingDemoData = state.isSeedingDemoData,
+            )
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 Spacer(modifier = Modifier.height(SettingsSectionGap))
@@ -192,6 +203,8 @@ private fun DemoCard(
     isLoading: Boolean,
     onAction: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
+    isDemoDataSeedVisible: Boolean = false,
+    isSeedingDemoData: Boolean = false,
 ) {
     AppCard(modifier = modifier.fillMaxWidth(), contentPadding = SettingsCardContentPadding) {
         if (isLoading) {
@@ -209,6 +222,30 @@ private fun DemoCard(
                 Switch(checked = demoModeEnabled, onCheckedChange = null)
             },
         )
+        if (isDemoDataSeedVisible) {
+            HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
+            SettingRow(
+                title = stringResource(R.string.settings_load_demo_data_title),
+                description = stringResource(R.string.settings_load_demo_data_description),
+                trailingContent = {
+                    Button(
+                        onClick = { onAction(SettingsAction.OnLoadDemoDataClick) },
+                        enabled = !isSeedingDemoData,
+                    ) {
+                        Text(
+                            text =
+                                stringResource(
+                                    if (isSeedingDemoData) {
+                                        R.string.settings_load_demo_data_action_loading
+                                    } else {
+                                        R.string.settings_load_demo_data_action
+                                    },
+                                ),
+                        )
+                    }
+                },
+            )
+        }
     }
 }
 

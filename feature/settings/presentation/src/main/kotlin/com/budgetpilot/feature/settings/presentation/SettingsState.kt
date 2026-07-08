@@ -12,4 +12,6 @@ data class SettingsState(
     val dynamicColorEnabled: Boolean = false,
     val isLoading: Boolean = true,
     val error: UiText? = null,
+    val isDemoDataSeedVisible: Boolean = BuildConfig.DEBUG,
+    val isSeedingDemoData: Boolean = false,
 )

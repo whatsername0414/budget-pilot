@@ -6,4 +6,6 @@ sealed interface SettingsEvent {
     data class ShowError(
         val message: UiText,
     ) : SettingsEvent
+
+    data object DemoDataLoaded : SettingsEvent
 }

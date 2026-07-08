@@ -39,7 +39,9 @@ chat-wrapper demo.
   over-budget category, an unusually large expense); an LLM call (with a
   template fallback) only phrases it. At most one insight, never spammy.
   Its "Ask more" button drops you into Ask with a question grounded in that
-  same insight's actual numbers.
+  same insight's actual numbers:
+
+  ![Insight card leading into a grounded Ask question](assets/demo/insight-card.gif)
 - **Budgets & history** — monthly per-category budgets, a filterable expense
   history, and simple charts (horizontal bar by category, a 6-month line
   trend).
@@ -199,6 +201,12 @@ the tool calls above are simplified from what a live Gemini call actually
 sends — the real `query_expenses` call carries a category, a resolved date
 range, and an aggregation mode, as shown in the tools table above.)
 
+This is that same trace, live against a real Gemini call and real local data —
+`resolve_date_range` turning "this month" into concrete dates, then
+`query_expenses` aggregating the actual seeded receipts:
+
+![Ask with reasoning trace](assets/demo/ask-trace.gif)
+
 ## On-device vs. cloud
 
 Every receipt (and the Q&A agent) runs through one of two paths, and the
@@ -317,7 +325,12 @@ normally on hardware or a less bleeding-edge AVD.
 4. Build and run. Without a key, extraction and Ask calls fail gracefully
    with a "no API key" state; on-device OCR extraction, manual entry,
    budgets, history, and charts all work with no key at all.
-5. Useful Gradle tasks:
+5. On a debug build, Settings → Demo → **Load demo data** seeds ~2 months of
+   realistic expenses, budgets, and a guaranteed over-budget insight in one
+   tap — the fastest way to get the app into a demoable state (and how the
+   screenshots and GIFs in this README were produced). The row is gated
+   behind `BuildConfig.DEBUG` and never renders in a release build.
+6. Useful Gradle tasks:
 
    ```
    ./gradlew test                 # unit tests, all modules

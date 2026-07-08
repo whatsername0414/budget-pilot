@@ -6,6 +6,7 @@ import com.budgetpilot.core.domain.Result
 import com.budgetpilot.core.domain.ai.ApiKeyStatusProvider
 import com.budgetpilot.core.domain.repository.UserPreferencesRepository
 import com.budgetpilot.core.presentation.toUiText
+import com.budgetpilot.feature.settings.presentation.demo.DemoDataSeeder
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val userPreferencesRepository: UserPreferencesRepository,
+    private val demoDataSeeder: DemoDataSeeder,
     apiKeyStatusProvider: ApiKeyStatusProvider,
 ) : ViewModel() {
     private val _state = MutableStateFlow(SettingsState(isApiKeyConfigured = apiKeyStatusProvider.isApiKeyConfigured()))
@@ -34,6 +36,7 @@ class SettingsViewModel(
             is SettingsAction.OnPrivateModeToggle -> togglePrivateMode(action.enabled)
             is SettingsAction.OnDemoModeToggle -> toggleDemoMode(action.enabled)
             is SettingsAction.OnDynamicColorToggle -> toggleDynamicColor(action.enabled)
+            SettingsAction.OnLoadDemoDataClick -> loadDemoData()
         }
     }
 
@@ -92,6 +95,19 @@ class SettingsViewModel(
             val result = userPreferencesRepository.setDynamicColorEnabled(enabled)
             if (result is Result.Error) {
                 _events.send(SettingsEvent.ShowError(result.error.toUiText()))
+            }
+        }
+    }
+
+    private fun loadDemoData() {
+        viewModelScope.launch {
+            _state.update { it.copy(isSeedingDemoData = true) }
+            val result = demoDataSeeder.seed()
+            _state.update { it.copy(isSeedingDemoData = false) }
+            if (result is Result.Error) {
+                _events.send(SettingsEvent.ShowError(result.error.toUiText()))
+            } else {
+                _events.send(SettingsEvent.DemoDataLoaded)
             }
         }
     }

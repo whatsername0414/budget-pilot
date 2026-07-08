@@ -16,6 +16,11 @@
     <string name="settings_section_demo">Demo</string>
     <string name="settings_demo_mode_title">Demo mode</string>
     <string name="settings_demo_mode_description">Demo mode — canned AI answers, no network.</string>
+    <string name="settings_load_demo_data_title">Load demo data</string>
+    <string name="settings_load_demo_data_description">Debug builds only. Seeds ~2 months of sample expenses, budgets, and a ready insight for screenshots and demos.</string>
+    <string name="settings_load_demo_data_action">Load</string>
+    <string name="settings_load_demo_data_action_loading">Loading…</string>
+    <string name="settings_load_demo_data_success">Demo data loaded</string>
     <string name="settings_section_appearance">Appearance</string>
     <string name="settings_dynamic_color_title">Use wallpaper colors</string>
     <string name="settings_dynamic_color_description">Material You: tint the app using colors from your wallpaper instead of the brand palette.</string>
