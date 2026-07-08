@@ -25,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -58,6 +59,7 @@ fun SettingsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val resources = LocalResources.current
     val appVersion = remember(context) { context.appVersionName() }
 
     ObserveAsEvents(viewModel.events) { event ->
@@ -66,7 +68,7 @@ fun SettingsScreen(
                 scope.launch { snackbarHostState.showSnackbar(message = event.message.asString(context)) }
             }
             SettingsEvent.DemoDataLoaded -> {
-                val message = context.getString(R.string.settings_load_demo_data_success)
+                val message = resources.getString(R.string.settings_load_demo_data_success)
                 scope.launch { snackbarHostState.showSnackbar(message = message) }
             }
         }

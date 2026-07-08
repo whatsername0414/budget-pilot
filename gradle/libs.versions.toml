@@ -6,7 +6,7 @@ ksp = "2.3.9"
 
 # AndroidX core / Compose
 coreKtx = "1.19.0"
-coreSplashscreen = "1.0.1"
+coreSplashscreen = "1.2.0"
 lifecycleRuntimeKtx = "2.11.0"
 activityCompose = "1.13.0"
 composeBom = "2026.06.01"

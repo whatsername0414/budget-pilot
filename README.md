@@ -294,7 +294,7 @@ Roughly, by layer:
 
 | Layer | Tooling | What's actually covered |
 |---|---|---|
-| Domain (pure Kotlin) | JUnit 5 + AssertK | `AgentLoop` (happy path, multi-tool sequences, the twice-in-a-row tool-failure abort, unknown-tool hallucination, max-iteration bailout, malformed output, deterministic trace durations), every agent tool including `resolve_date_range`'s full date grammar, `Money`/`BudgetMath`, `InsightRuleEngine`, `PhReceiptParser` (table-driven over 9 fixture receipts). |
+| Domain (pure Kotlin) | JUnit 5 + AssertK | `AgentLoop` (happy path, multi-tool sequences, the twice-in-a-row tool-failure abort, unknown-tool hallucination, max-iteration bailout, malformed output, deterministic trace durations), every agent tool including `resolve_date_range`'s full date grammar, `Money`/`BudgetMath`, `InsightRuleEngine`, `ReceiptParser` (table-driven over 9 fixture receipts). |
 | Data | JUnit 5 + Ktor `MockEngine` / in-memory Room | `KtorGeminiLlmClient`'s retry/backoff behavior and `retryDelay`-hint precedence, DAOs, repositories, the extraction cache, the extraction router. |
 | Presentation | JUnit 5 + Turbine + AssertK + fakes | Every ViewModel: state transitions, one-shot events, and error-path mapping. |
 | UI (instrumented) | Compose `ComposeTestRule` + robot pattern, JUnit 4 | Three critical flows: expense list, capture confirm, and Ask (question → answer, trace expander, error states). |
