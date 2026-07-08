@@ -18,6 +18,7 @@ import com.budgetpilot.feature.capture.domain.ReceiptExtractor
 import com.budgetpilot.feature.capture.domain.ReceiptImage
 import com.budgetpilot.feature.capture.domain.model.Confidence
 import com.budgetpilot.feature.capture.domain.model.ExtractedReceipt
+import com.budgetpilot.feature.capture.domain.model.LineItem
 import com.budgetpilot.feature.capture.domain.model.ReceiptType
 import com.budgetpilot.feature.capture.presentation.R
 import com.budgetpilot.feature.capture.presentation.toUiText
@@ -81,7 +82,65 @@ class ConfirmExpenseViewModel(
                 }
             ConfirmExpenseAction.OnLineItemsToggleClick ->
                 _state.update { it.copy(isLineItemsExpanded = !it.isLineItemsExpanded) }
+            ConfirmExpenseAction.OnAddLineItemClick -> openLineItemSheet(editingIndex = null)
+            is ConfirmExpenseAction.OnEditLineItemClick -> openLineItemSheet(editingIndex = action.index)
+            is ConfirmExpenseAction.OnLineItemDescriptionChange ->
+                _state.update { it.copy(lineItemDraftDescription = action.description) }
+            is ConfirmExpenseAction.OnLineItemPriceChange ->
+                _state.update { it.copy(lineItemDraftPriceText = action.priceText) }
+            ConfirmExpenseAction.OnSaveLineItemClick -> saveLineItem()
+            ConfirmExpenseAction.OnRemoveLineItemClick -> removeLineItem()
+            ConfirmExpenseAction.OnDismissLineItemSheet ->
+                _state.update { it.copy(isLineItemSheetVisible = false, editingLineItemIndex = null) }
             ConfirmExpenseAction.OnSaveClick -> save()
+        }
+    }
+
+    private fun openLineItemSheet(editingIndex: Int?) {
+        val item = editingIndex?.let { _state.value.lineItems.getOrNull(it) }
+        _state.update {
+            it.copy(
+                isLineItemSheetVisible = true,
+                editingLineItemIndex = editingIndex,
+                lineItemDraftDescription = item?.description.orEmpty(),
+                lineItemDraftPriceText = item?.amount?.toEditableText().orEmpty(),
+            )
+        }
+    }
+
+    private fun saveLineItem() {
+        val current = _state.value
+        val price = current.parsedLineItemDraftPrice
+        if (!current.isLineItemDraftValid || price == null) return
+
+        val newItem = LineItem(description = current.lineItemDraftDescription.trim(), amount = price)
+        val updatedItems =
+            current.editingLineItemIndex
+                ?.let { index -> current.lineItems.toMutableList().apply { set(index, newItem) } }
+                ?: current.lineItems + newItem
+
+        _state.update {
+            it.copy(
+                lineItems = updatedItems,
+                lineItemsConfidence = Confidence.HIGH,
+                isLineItemSheetVisible = false,
+                editingLineItemIndex = null,
+            )
+        }
+    }
+
+    private fun removeLineItem() {
+        val current = _state.value
+        val index = current.editingLineItemIndex ?: return
+        val updatedItems = current.lineItems.toMutableList().apply { removeAt(index) }
+
+        _state.update {
+            it.copy(
+                lineItems = updatedItems,
+                lineItemsConfidence = Confidence.HIGH,
+                isLineItemSheetVisible = false,
+                editingLineItemIndex = null,
+            )
         }
     }
 

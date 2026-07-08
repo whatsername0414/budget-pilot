@@ -34,6 +34,10 @@ data class ConfirmExpenseState(
     val lineItems: List<LineItem> = emptyList(),
     val lineItemsConfidence: Confidence = Confidence.HIGH,
     val isLineItemsExpanded: Boolean = false,
+    val isLineItemSheetVisible: Boolean = false,
+    val editingLineItemIndex: Int? = null,
+    val lineItemDraftDescription: String = "",
+    val lineItemDraftPriceText: String = "",
     val categories: List<Category> = emptyList(),
     val suggestedCategoryName: String? = null,
     val selectedCategoryId: Long? = null,
@@ -50,6 +54,15 @@ data class ConfirmExpenseState(
 
     val displayAmount: Money
         get() = parsedAmount ?: Money.ZERO
+
+    val parsedLineItemDraftPrice: Money?
+        get() = lineItemDraftPriceText.toMoneyOrNull()
+
+    val isLineItemDraftValid: Boolean
+        get() {
+            val price = parsedLineItemDraftPrice
+            return lineItemDraftDescription.isNotBlank() && price != null && price > Money.ZERO
+        }
 
     val isValid: Boolean
         get() {

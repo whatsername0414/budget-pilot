@@ -48,4 +48,12 @@
         <item quantity="one">%1$d line item</item>
         <item quantity="other">%1$d line items</item>
     </plurals>
+    <string name="action_add_item">Add item</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_save">Save</string>
+    <string name="cd_edit_line_item">Edit %1$s</string>
+    <string name="line_item_editor_title_add">Add item</string>
+    <string name="line_item_editor_title_edit">Edit item</string>
+    <string name="label_item_name">Item</string>
+    <string name="label_item_price">Price</string>
 </resources>
