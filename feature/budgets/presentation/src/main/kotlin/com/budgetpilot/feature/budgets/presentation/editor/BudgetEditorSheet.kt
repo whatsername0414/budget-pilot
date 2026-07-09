@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,9 +48,9 @@ import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
 import com.budgetpilot.core.presentation.UiText
+import com.budgetpilot.core.presentation.money.MoneyInputVisualTransformation
 import com.budgetpilot.core.presentation.money.PesoFormatter
 import com.budgetpilot.feature.budgets.presentation.R
-import com.budgetpilot.feature.budgets.presentation.editor.components.AmountKeypad
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import java.time.YearMonth
@@ -58,7 +63,6 @@ private val TitleSkeletonHeight = 20.dp
 private val SubtitleSkeletonWidth = 90.dp
 private val SubtitleSkeletonHeight = 16.dp
 private val AmountFieldSkeletonHeight = 56.dp
-private val KeypadSkeletonHeight = 200.dp
 
 private val QuickAmounts =
     listOf(
@@ -150,10 +154,14 @@ private fun BudgetEditorContent(
             }
         }
         Spacer(Modifier.height(Spacing.medium))
-        BudgetAmountSection(state = state)
+        BudgetAmountSection(state = state, onAction = onAction)
         Spacer(Modifier.height(Spacing.medium))
-        Row(horizontalArrangement = Arrangement.spacedBy(Spacing.small)) {
-            QuickAmounts.forEach { amount ->
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.small),
+            contentPadding = PaddingValues(vertical = Spacing.extraSmall),
+        ) {
+            items(items = QuickAmounts) { amount ->
                 FilterChip(
                     selected = state.parsedAmount == amount,
                     onClick = { onAction(BudgetEditorAction.OnQuickAmountSelect(amount)) },
@@ -161,8 +169,6 @@ private fun BudgetEditorContent(
                 )
             }
         }
-        Spacer(Modifier.height(Spacing.medium))
-        AmountKeypad(onKeyPress = { onAction(BudgetEditorAction.OnAmountKeyPress(it)) })
         Spacer(Modifier.height(Spacing.medium))
         BudgetEditorActionsRow(state = state, onAction = onAction)
     }
@@ -189,28 +195,35 @@ private fun BudgetEditorLoadingSkeleton(modifier: Modifier = Modifier) {
             }
         }
         LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(AmountFieldSkeletonHeight))
-        LoadingSkeleton(modifier = Modifier.fillMaxWidth().height(KeypadSkeletonHeight))
     }
 }
 
 @Composable
 private fun BudgetAmountSection(
     state: BudgetEditorState,
+    onAction: (BudgetEditorAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         OutlinedTextField(
-            value = PesoFormatter.format(state.displayAmount),
-            onValueChange = {},
+            value = state.amountText,
+            onValueChange = { onAction(BudgetEditorAction.OnAmountTextChange(it)) },
             modifier = Modifier.fillMaxWidth(),
-            readOnly = true,
             singleLine = true,
             label = { Text(stringResource(R.string.budget_editor_amount_label)) },
+            leadingIcon = {
+                Text(
+                    text = stringResource(R.string.amount_currency_symbol),
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold),
+                )
+            },
             textStyle =
                 MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.SemiBold,
                     fontFeatureSettings = "tnum",
                 ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            visualTransformation = MoneyInputVisualTransformation,
             isError = state.amountError != null,
             colors =
                 OutlinedTextFieldDefaults.colors(

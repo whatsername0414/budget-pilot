@@ -3,8 +3,8 @@ package com.budgetpilot.feature.history.presentation.editor
 import java.time.LocalDate
 
 sealed interface ExpenseEditorAction {
-    data class OnAmountKeyPress(
-        val key: String,
+    data class OnAmountTextChange(
+        val text: String,
     ) : ExpenseEditorAction
 
     data class OnMerchantChange(

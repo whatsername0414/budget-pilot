@@ -15,7 +15,6 @@ import com.budgetpilot.core.domain.repository.ExpenseRepository
 import com.budgetpilot.core.presentation.UiText
 import com.budgetpilot.core.presentation.money.PesoFormatter
 import com.budgetpilot.core.presentation.toUiText
-import com.budgetpilot.feature.history.presentation.editor.components.AmountKeypadKeys
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -60,7 +59,7 @@ class ExpenseEditorViewModel(
 
     fun onAction(action: ExpenseEditorAction) {
         when (action) {
-            is ExpenseEditorAction.OnAmountKeyPress -> onAmountKeyPress(action.key)
+            is ExpenseEditorAction.OnAmountTextChange -> onAmountTextChange(action.text)
             is ExpenseEditorAction.OnMerchantChange -> onMerchantChange(action.merchant)
             ExpenseEditorAction.OnMerchantFieldBlur -> {
                 if (_state.value.merchant.isBlank()) {
@@ -123,19 +122,10 @@ class ExpenseEditorViewModel(
         }
     }
 
-    private fun onAmountKeyPress(key: String) {
-        val current = _state.value.amountText
-        val updated =
-            when (key) {
-                AmountKeypadKeys.BACKSPACE -> current.dropLast(1)
-                "." -> if (current.contains(".")) current else current.ifEmpty { "0" } + "."
-                else -> {
-                    val fractionDigits = current.substringAfter(".", missingDelimiterValue = "")
-                    if (current.contains(".") && fractionDigits.length >= 2) current else current + key
-                }
-            }
-        _state.update { it.copy(amountText = updated, amountError = null) }
-        savedStateHandle[KEY_AMOUNT] = updated
+    private fun onAmountTextChange(text: String) {
+        val sanitized = text.sanitizeAmountInput()
+        _state.update { it.copy(amountText = sanitized, amountError = null) }
+        savedStateHandle[KEY_AMOUNT] = sanitized
     }
 
     private fun onMerchantChange(merchant: String) {
@@ -272,4 +262,13 @@ private fun Money.toEditableText(): String {
     val whole = centavos / 100
     val fraction = (centavos % 100).let { if (it < 0) -it else it }
     return "$whole.${fraction.toString().padStart(2, '0')}"
+}
+
+private fun String.sanitizeAmountInput(): String {
+    val digitsAndDot = filter { it.isDigit() || it == '.' }
+    val firstDotIndex = digitsAndDot.indexOf('.')
+    if (firstDotIndex == -1) return digitsAndDot
+    val wholePart = digitsAndDot.substring(0, firstDotIndex)
+    val fractionPart = digitsAndDot.substring(firstDotIndex + 1).replace(".", "").take(2)
+    return "$wholePart.$fractionPart"
 }

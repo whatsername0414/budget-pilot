@@ -13,7 +13,6 @@ import com.budgetpilot.core.domain.repository.CategoryRepository
 import com.budgetpilot.core.presentation.UiText
 import com.budgetpilot.core.presentation.money.PesoFormatter
 import com.budgetpilot.core.presentation.toUiText
-import com.budgetpilot.feature.budgets.presentation.editor.components.AmountKeypadKeys
 import com.budgetpilot.feature.budgets.presentation.main.toMonthString
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,7 +49,7 @@ class BudgetEditorViewModel(
 
     fun onAction(action: BudgetEditorAction) {
         when (action) {
-            is BudgetEditorAction.OnAmountKeyPress -> onAmountKeyPress(action.key)
+            is BudgetEditorAction.OnAmountTextChange -> onAmountTextChange(action.text)
             is BudgetEditorAction.OnQuickAmountSelect ->
                 _state.update { it.copy(amountText = action.amount.toEditableText(), amountError = null) }
             BudgetEditorAction.OnSaveClick -> save()
@@ -96,18 +95,8 @@ class BudgetEditorViewModel(
         }
     }
 
-    private fun onAmountKeyPress(key: String) {
-        val current = _state.value.amountText
-        val updated =
-            when (key) {
-                AmountKeypadKeys.BACKSPACE -> current.dropLast(1)
-                "." -> if (current.contains(".")) current else current.ifEmpty { "0" } + "."
-                else -> {
-                    val fractionDigits = current.substringAfter(".", missingDelimiterValue = "")
-                    if (current.contains(".") && fractionDigits.length >= 2) current else current + key
-                }
-            }
-        _state.update { it.copy(amountText = updated, amountError = null) }
+    private fun onAmountTextChange(text: String) {
+        _state.update { it.copy(amountText = text.sanitizeAmountInput(), amountError = null) }
     }
 
     private fun save() {
@@ -167,4 +156,13 @@ private fun Money.toEditableText(): String {
     val whole = centavos / 100
     val fraction = (centavos % 100).let { if (it < 0) -it else it }
     return "$whole.${fraction.toString().padStart(2, '0')}"
+}
+
+private fun String.sanitizeAmountInput(): String {
+    val digitsAndDot = filter { it.isDigit() || it == '.' }
+    val firstDotIndex = digitsAndDot.indexOf('.')
+    if (firstDotIndex == -1) return digitsAndDot
+    val wholePart = digitsAndDot.substring(0, firstDotIndex)
+    val fractionPart = digitsAndDot.substring(firstDotIndex + 1).replace(".", "").take(2)
+    return "$wholePart.$fractionPart"
 }
