@@ -9,11 +9,12 @@ import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * Flattens a tool call's JSON args and result into "key: value" prose for the reasoning trace UI.
- * Generic rather than per-tool-specific: every read-only tool (P4.2) already returns flat,
+ * Generic rather than per-tool-specific: every read-only tool already returns flat,
  * display-ready field names and plain-decimal peso strings, so no per-tool phrasing is needed.
  * [TraceStep.ToolInvocation.resultSummary] is itself already a stringified JSON element (from
- * [AgentLoop]'s trace recording), so it's re-parsed here before flattening; a result that isn't
- * JSON (e.g. an "Error: ..." summary) is passed through unchanged.
+ * [com.budgetpilot.core.ai.domain.AgentLoop]'s trace recording),
+ * so it's reparsed here before flattening; a result that isn't JSON (e.g. an "Error: ..." summary)
+ * is passed through unchanged.
  */
 internal fun TraceStep.ToolInvocation.toAskTraceStepUi(): AskTraceStepUi =
     AskTraceStepUi(
