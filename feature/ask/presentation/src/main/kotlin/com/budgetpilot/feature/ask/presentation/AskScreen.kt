@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -59,7 +61,18 @@ fun AskContent(
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = { AppTopBar(title = stringResource(R.string.ask_top_bar_title)) },
+        topBar = {
+            AppTopBar(
+                title = stringResource(R.string.ask_top_bar_title),
+                actions = {
+                    if (state.turns.isNotEmpty()) {
+                        TextButton(onClick = { onAction(AskAction.OnClearClick) }) {
+                            Text(stringResource(R.string.action_clear))
+                        }
+                    }
+                },
+            )
+        },
         bottomBar = {
             AskInputBar(
                 questionInput = state.questionInput,

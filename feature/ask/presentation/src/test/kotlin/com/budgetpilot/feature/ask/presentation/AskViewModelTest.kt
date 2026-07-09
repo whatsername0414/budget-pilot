@@ -3,6 +3,7 @@ package com.budgetpilot.feature.ask.presentation
 import androidx.lifecycle.SavedStateHandle
 import assertk.assertThat
 import assertk.assertions.hasSize
+import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
 import com.budgetpilot.core.ai.data.FakeLlmClient
@@ -245,6 +246,28 @@ class AskViewModelTest {
             assertThat(turns[0].phase).isEqualTo(AskTurnPhase.RUNNING)
             assertThat(turns[1].phase).isEqualTo(AskTurnPhase.ANSWERED)
             assertThat(turns[1].answerText).isEqualTo("Second answer")
+        }
+
+    @Test
+    fun `clear resets the conversation and cancels an in-flight run`() =
+        runTest {
+            val llm = HangOnFirstCallLlmClient(subsequentResponse = LlmResponse.Text("Unused"))
+            val viewModel = askViewModel(llm)
+
+            viewModel.onAction(AskAction.OnQuestionChange("Am I over budget?"))
+            viewModel.onAction(AskAction.OnSendClick)
+            assertThat(
+                viewModel.state.value.turns
+                    .single()
+                    .phase,
+            ).isEqualTo(AskTurnPhase.RUNNING)
+
+            viewModel.onAction(AskAction.OnClearClick)
+            advanceUntilIdle()
+
+            assertThat(llm.firstCallCancelled).isTrue()
+            assertThat(viewModel.state.value.turns).isEmpty()
+            assertThat(viewModel.state.value.questionInput).isEqualTo("")
         }
 
     @Test

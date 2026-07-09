@@ -40,7 +40,14 @@ class AskViewModel(
             is AskAction.OnToggleTraceExpanded -> toggleTraceExpanded(action.turnId)
             is AskAction.OnRetryClick -> retry(action.turnId)
             AskAction.OnOpenSettingsClick -> viewModelScope.launch { _events.send(AskEvent.NavigateToSettings) }
+            AskAction.OnClearClick -> clear()
         }
+    }
+
+    private fun clear() {
+        activeRun?.cancel()
+        activeRun = null
+        _state.value = AskState()
     }
 
     private fun ask(question: String) {
