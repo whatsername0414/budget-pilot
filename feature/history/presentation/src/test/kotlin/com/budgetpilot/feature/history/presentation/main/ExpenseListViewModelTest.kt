@@ -107,45 +107,6 @@ class ExpenseListViewModelTest {
         }
 
     @Test
-    fun `deleting an expense then undo restores it`() =
-        runTest {
-            val expenseRepository =
-                FakeExpenseRepository(seed = listOf(expense(1, "Jollibee", categoryId = 1)))
-            val viewModel = ExpenseListViewModel(expenseRepository, FakeCategoryRepository())
-
-            viewModel.state.test {
-                awaitItem()
-
-                viewModel.onAction(ExpenseListAction.OnDeleteExpense(expenseId = 1))
-                val afterDelete = awaitItem()
-                assertThat(afterDelete.dayGroups).hasSize(0)
-
-                viewModel.onAction(ExpenseListAction.OnUndoDeleteClick)
-                val afterUndo = awaitItem()
-                assertThat(
-                    afterUndo.dayGroups
-                        .first()
-                        .expenses
-                        .map { it.merchant },
-                ).contains("Jollibee")
-            }
-        }
-
-    @Test
-    fun `delete then undo emits the undo snackbar event`() =
-        runTest {
-            val expenseRepository =
-                FakeExpenseRepository(seed = listOf(expense(1, "Jollibee", categoryId = 1)))
-            val viewModel = ExpenseListViewModel(expenseRepository, FakeCategoryRepository())
-
-            viewModel.events.test {
-                viewModel.onAction(ExpenseListAction.OnDeleteExpense(expenseId = 1))
-                val event = awaitItem()
-                assertThat(event).isInstanceOf(ExpenseListEvent.ShowUndoDeleteSnackbar::class)
-            }
-        }
-
-    @Test
     fun `load failure emits an error event and sets state error`() =
         runTest {
             val expenseRepository =

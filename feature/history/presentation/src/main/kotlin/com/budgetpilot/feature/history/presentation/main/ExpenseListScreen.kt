@@ -13,20 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,7 +29,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -83,7 +75,6 @@ fun ExpenseListScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val resources = LocalResources.current
     val currentOnConfirmationMessageDismiss by rememberUpdatedState(onConfirmationMessageDismiss)
 
     ObserveAsEvents(viewModel.events) { event ->
@@ -92,19 +83,6 @@ fun ExpenseListScreen(
             is ExpenseListEvent.ShowError -> {
                 scope.launch {
                     snackbarHostState.showSnackbar(message = event.message.asString(context))
-                }
-            }
-            is ExpenseListEvent.ShowUndoDeleteSnackbar -> {
-                scope.launch {
-                    val result =
-                        snackbarHostState.showSnackbar(
-                            message = resources.getString(R.string.expense_deleted_message, event.merchant),
-                            actionLabel = resources.getString(R.string.action_undo),
-                            duration = SnackbarDuration.Short,
-                        )
-                    if (result == SnackbarResult.ActionPerformed) {
-                        viewModel.onAction(ExpenseListAction.OnUndoDeleteClick)
-                    }
                 }
             }
         }
@@ -187,7 +165,6 @@ fun ExpenseListContent(
                         ExpenseDayList(
                             dayGroups = state.dayGroups,
                             onExpenseClick = { onAction(ExpenseListAction.OnExpenseClick(it)) },
-                            onExpenseDelete = { onAction(ExpenseListAction.OnDeleteExpense(it)) },
                         )
                 }
             }
@@ -228,7 +205,6 @@ private fun LoadingListSkeleton(modifier: Modifier = Modifier) {
 private fun ExpenseDayList(
     dayGroups: List<ExpenseDayGroupUi>,
     onExpenseClick: (Long) -> Unit,
-    onExpenseDelete: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -242,13 +218,12 @@ private fun ExpenseDayList(
             }
             item(key = "card_${dayGroup.date}") {
                 AppCard(
-                    contentPadding = PaddingValues(horizontal = Spacing.medium, vertical = DayCardVerticalPadding),
+                    contentPadding = PaddingValues(horizontal = Spacing.small, vertical = DayCardVerticalPadding),
                 ) {
                     dayGroup.expenses.forEach { expense ->
-                        SwipeableExpenseRow(
+                        ExpenseRow(
                             expense = expense,
                             onClick = { onExpenseClick(expense.id) },
-                            onDelete = { onExpenseDelete(expense.id) },
                         )
                     }
                 }
@@ -277,54 +252,6 @@ private fun DayGroupHeader(
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SwipeableExpenseRow(
-    expense: ExpenseUi,
-    onClick: () -> Unit,
-    onDelete: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val dismissState =
-        rememberSwipeToDismissBoxState(
-            confirmValueChange = { value ->
-                if (value != SwipeToDismissBoxValue.Settled) {
-                    onDelete()
-                }
-                true
-            },
-        )
-
-    SwipeToDismissBox(
-        state = dismissState,
-        modifier = modifier,
-        backgroundContent = {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.error)
-                        .padding(horizontal = Spacing.medium),
-                contentAlignment = Alignment.CenterEnd,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = stringResource(R.string.cd_delete_expense),
-                    tint = MaterialTheme.colorScheme.onError,
-                )
-            }
-        },
-    ) {
-        Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
-            ExpenseRow(
-                expense = expense,
-                onClick = onClick,
-                modifier = Modifier.padding(horizontal = Spacing.medium),
-            )
-        }
     }
 }
 
