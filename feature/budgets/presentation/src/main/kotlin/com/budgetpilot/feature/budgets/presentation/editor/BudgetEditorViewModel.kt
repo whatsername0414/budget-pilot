@@ -13,7 +13,7 @@ import com.budgetpilot.core.domain.repository.CategoryRepository
 import com.budgetpilot.core.presentation.UiText
 import com.budgetpilot.core.presentation.money.PesoFormatter
 import com.budgetpilot.core.presentation.toUiText
-import com.budgetpilot.feature.budgets.presentation.main.toMonthString
+import com.budgetpilot.feature.budgets.presentation.budgets.toMonthString
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
