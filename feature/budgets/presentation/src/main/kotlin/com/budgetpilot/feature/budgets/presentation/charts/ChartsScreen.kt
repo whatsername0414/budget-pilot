@@ -27,11 +27,11 @@ import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.feature.budgets.presentation.R
+import com.budgetpilot.feature.budgets.presentation.budgets.components.MonthSelector
 import com.budgetpilot.feature.budgets.presentation.charts.components.CategorySpendChart
 import com.budgetpilot.feature.budgets.presentation.charts.components.MonthlyTrendChart
 import com.budgetpilot.feature.budgets.presentation.charts.model.CategorySpendUi
 import com.budgetpilot.feature.budgets.presentation.charts.model.MonthlyTrendPointUi
-import com.budgetpilot.feature.budgets.presentation.main.components.MonthSelector
 import org.koin.androidx.compose.koinViewModel
 import java.time.YearMonth
 
