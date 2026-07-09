@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -157,7 +158,13 @@ private fun AppShellNavContent(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(innerPadding),
+                    .padding(innerPadding)
+                    // Without this, a descendant screen's imePadding()/Scaffold safeDrawing
+                    // insets measure the IME from the true screen bottom, unaware that
+                    // innerPadding.bottom (the bottom nav bar's height) was already manually
+                    // reserved above — the two stack instead of the IME padding replacing it,
+                    // leaving a bottom-nav-bar-sized gap above the keyboard.
+                    .consumeWindowInsets(innerPadding),
         ) {
             homeGraph(
                 onSeeAllExpenses = {
