@@ -23,12 +23,6 @@ sealed interface ExpenseListAction {
         val expenseId: Long,
     ) : ExpenseListAction
 
-    data class OnDeleteExpense(
-        val expenseId: Long,
-    ) : ExpenseListAction
-
-    data object OnUndoDeleteClick : ExpenseListAction
-
     data object OnAddExpenseClick : ExpenseListAction
 
     data object OnRetryClick : ExpenseListAction

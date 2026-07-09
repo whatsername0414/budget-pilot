@@ -54,8 +54,9 @@ fun ExpenseRow(
             modifier
                 .fillMaxWidth()
                 .heightIn(min = 60.dp)
+                .clip(RoundedCornerShape(8.dp))
                 .clickable(onClick = onClick)
-                .padding(vertical = ExpenseRowVerticalPadding),
+                .padding(horizontal = Spacing.small, vertical = ExpenseRowVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(ExpenseRowItemGap),
     ) {

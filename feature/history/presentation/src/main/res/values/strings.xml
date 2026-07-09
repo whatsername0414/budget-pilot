@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="history_top_bar_title">History</string>
-    <string name="expense_deleted_message">%1$s deleted</string>
-    <string name="action_undo">Undo</string>
     <string name="expense_empty_no_matches_title">No matches for that</string>
     <string name="expense_empty_no_expenses_title">No expenses yet</string>
     <string name="expense_empty_no_expenses_description">Add your first expense to start tracking your budget.</string>

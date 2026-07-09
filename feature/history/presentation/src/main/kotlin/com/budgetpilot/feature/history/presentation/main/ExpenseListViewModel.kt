@@ -3,10 +3,7 @@ package com.budgetpilot.feature.history.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.budgetpilot.core.domain.DataError
-import com.budgetpilot.core.domain.model.Expense
 import com.budgetpilot.core.domain.model.ExpenseFilter
-import com.budgetpilot.core.domain.onFailure
-import com.budgetpilot.core.domain.onSuccess
 import com.budgetpilot.core.domain.repository.CategoryRepository
 import com.budgetpilot.core.domain.repository.ExpenseRepository
 import com.budgetpilot.core.presentation.toUiText
@@ -35,9 +32,6 @@ class ExpenseListViewModel(
 
     private val filterParams = MutableStateFlow(FilterParams())
 
-    private var expensesById: Map<Long, Expense> = emptyMap()
-    private var pendingUndoExpense: Expense? = null
-
     init {
         observeExpenses()
     }
@@ -51,8 +45,6 @@ class ExpenseListViewModel(
             is ExpenseListAction.OnDateRangePresetSelect -> onDateRangePresetSelect(action.preset)
             is ExpenseListAction.OnExpenseClick -> navigateToEditor(action.expenseId)
             ExpenseListAction.OnAddExpenseClick -> navigateToEditor(expenseId = null)
-            is ExpenseListAction.OnDeleteExpense -> deleteExpense(action.expenseId)
-            ExpenseListAction.OnUndoDeleteClick -> undoDelete()
             ExpenseListAction.OnRetryClick -> filterParams.update { it.copy(retryTick = it.retryTick + 1) }
         }
     }
@@ -97,7 +89,6 @@ class ExpenseListViewModel(
                     ) { expenses, categories -> expenses to categories }
                 }.catch { emitLoadError() }
                 .collect { (expenses, categories) ->
-                    expensesById = expenses.associateBy { it.id }
                     val categoriesById = categories.associateBy { it.id }
                     _state.update {
                         it.copy(
@@ -115,32 +106,6 @@ class ExpenseListViewModel(
         val message = DataError.Local.UNKNOWN.toUiText()
         _state.update { it.copy(isLoading = false, error = message) }
         _events.send(ExpenseListEvent.ShowError(message))
-    }
-
-    private fun deleteExpense(expenseId: Long) {
-        val expense = expensesById[expenseId] ?: return
-        viewModelScope.launch {
-            expenseRepository
-                .deleteExpense(expense)
-                .onSuccess {
-                    pendingUndoExpense = expense
-                    _events.send(ExpenseListEvent.ShowUndoDeleteSnackbar(expense.merchant))
-                }.onFailure { error ->
-                    _events.send(ExpenseListEvent.ShowError(error.toUiText()))
-                }
-        }
-    }
-
-    private fun undoDelete() {
-        val expense = pendingUndoExpense ?: return
-        pendingUndoExpense = null
-        viewModelScope.launch {
-            expenseRepository
-                .addExpense(expense)
-                .onFailure { error ->
-                    _events.send(ExpenseListEvent.ShowError(error.toUiText()))
-                }
-        }
     }
 
     private data class FilterParams(
