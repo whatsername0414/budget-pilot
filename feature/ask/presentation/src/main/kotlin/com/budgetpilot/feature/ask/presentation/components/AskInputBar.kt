@@ -3,6 +3,7 @@ package com.budgetpilot.feature.ask.presentation.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +39,10 @@ fun AskInputBar(
     onSendClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(modifier = modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.background) {
+    // Scaffold's bottomBar slot is placed flush with the screen edge regardless of the
+    // keyboard (only its own contentWindowInsets affects the *content* padding) — this
+    // is what actually pushes the bar above the IME.
+    Surface(modifier = modifier.fillMaxWidth().imePadding(), color = MaterialTheme.colorScheme.background) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(Spacing.medium),
             horizontalArrangement = Arrangement.spacedBy(Spacing.small),

@@ -26,6 +26,7 @@
     <string name="error_ask_generic">Something interrupted that answer. Give it another try.</string>
     <string name="action_retry">Retry</string>
     <string name="action_open_settings">Open settings</string>
+    <string name="action_clear">Clear</string>
     <string name="cd_error_icon">Error</string>
     <string name="cd_warning_icon">Warning</string>
     <string name="cd_sparkle_icon">Thinking</string>

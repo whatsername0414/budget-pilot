@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.test.assertDoesNotExist
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -61,6 +62,11 @@ class AskRobot(
             composeTestRule.onNodeWithText("Retry").performClick()
         }
 
+    fun clickClear() =
+        apply {
+            composeTestRule.onNodeWithText("Clear").performClick()
+        }
+
     fun assertAnswerShown(answerText: String) =
         apply {
             composeTestRule.onNodeWithText(answerText, substring = true).assertIsDisplayed()
@@ -76,6 +82,11 @@ class AskRobot(
             composeTestRule.onNodeWithText("Retry").assertIsDisplayed()
         }
 
+    fun assertClearNotVisible() =
+        apply {
+            composeTestRule.onNodeWithText("Clear").assertDoesNotExist()
+        }
+
     private fun AskState.reduce(action: AskAction): AskState =
         when (action) {
             is AskAction.OnQuestionChange -> copy(questionInput = action.text)
@@ -86,6 +97,7 @@ class AskRobot(
                             if (turn.id == action.turnId) turn.copy(isTraceExpanded = !turn.isTraceExpanded) else turn
                         },
                 )
+            AskAction.OnClearClick -> AskState()
             else -> this
         }
 }

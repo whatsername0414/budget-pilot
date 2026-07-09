@@ -3,8 +3,8 @@ package com.budgetpilot.feature.budgets.presentation.editor
 import com.budgetpilot.core.domain.money.Money
 
 sealed interface BudgetEditorAction {
-    data class OnAmountKeyPress(
-        val key: String,
+    data class OnAmountTextChange(
+        val text: String,
     ) : BudgetEditorAction
 
     data class OnQuickAmountSelect(

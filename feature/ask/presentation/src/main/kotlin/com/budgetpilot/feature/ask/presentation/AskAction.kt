@@ -20,4 +20,6 @@ sealed interface AskAction {
     ) : AskAction
 
     data object OnOpenSettingsClick : AskAction
+
+    data object OnClearClick : AskAction
 }

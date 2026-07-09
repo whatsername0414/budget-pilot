@@ -2,6 +2,7 @@ package com.budgetpilot.feature.home.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -52,7 +53,6 @@ import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
-import com.budgetpilot.feature.home.presentation.R
 import com.budgetpilot.feature.home.presentation.components.HomeExpenseRow
 import com.budgetpilot.feature.home.presentation.model.HomeBudgetUi
 import com.budgetpilot.feature.home.presentation.model.HomeCategoryUi
@@ -66,7 +66,7 @@ fun HomeScreen(
     onAddExpense: () -> Unit,
     onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
-    insightSlot: @Composable () -> Unit = {},
+    insightSlot: @Composable (Modifier) -> Unit = {},
     viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -89,7 +89,7 @@ fun HomeContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
-    insightSlot: @Composable () -> Unit = {},
+    insightSlot: @Composable (Modifier) -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier,
@@ -146,7 +146,7 @@ private fun HomeLoadedContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
-    insightSlot: @Composable () -> Unit = {},
+    insightSlot: @Composable (Modifier) -> Unit = {},
 ) {
     Column(
         modifier =
@@ -154,13 +154,13 @@ private fun HomeLoadedContent(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(Spacing.medium),
-        verticalArrangement = Arrangement.spacedBy(Spacing.medium),
     ) {
         HomeHeroCard(state = state)
 
-        insightSlot()
+        insightSlot(Modifier.padding(top = 24.dp))
 
         if (state.isEmpty) {
+            Spacer(modifier = Modifier.padding(Spacing.small))
             EmptyState(
                 icon = StateIcons.Receipt,
                 title = stringResource(R.string.home_empty_title),
@@ -169,6 +169,7 @@ private fun HomeLoadedContent(
                 onAction = { onAction(HomeAction.OnAddExpenseClick) },
             )
         } else {
+            Spacer(modifier = Modifier.padding(Spacing.small))
             SectionHeader(
                 title = stringResource(R.string.home_section_top_categories),
                 action = {
@@ -185,6 +186,7 @@ private fun HomeLoadedContent(
             }
 
             if (state.worstBudgets.isNotEmpty()) {
+                Spacer(modifier = Modifier.padding(Spacing.small))
                 SectionHeader(
                     title = stringResource(R.string.home_section_budgets),
                     action = {
@@ -201,6 +203,7 @@ private fun HomeLoadedContent(
                 }
             }
 
+            Spacer(modifier = Modifier.padding(Spacing.small))
             SectionHeader(
                 title = stringResource(R.string.home_section_recent_expenses),
                 action = {
@@ -238,7 +241,7 @@ private fun HomeHeroCard(
         Spacer(Modifier.height(Spacing.small))
         AmountText(amount = state.totalSpent, style = MaterialTheme.typography.displaySmall)
         Spacer(Modifier.height(Spacing.small))
-        Row {
+        Row(horizontalArrangement = spacedBy(2.dp)) {
             Text(
                 text = stringResource(R.string.home_hero_of),
                 style = MaterialTheme.typography.bodySmall,

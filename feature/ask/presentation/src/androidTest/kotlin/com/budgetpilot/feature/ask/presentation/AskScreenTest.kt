@@ -78,4 +78,22 @@ class AskScreenTest {
 
         assertThat(robot.dispatchedActions).contains(AskAction.OnRetryClick(turnId = 3L))
     }
+
+    @Test
+    fun clearButton_clearsConversation_andHidesItself() {
+        val answeredTurn =
+            AskTurn(
+                id = 4L,
+                question = "How much did I spend on food last month?",
+                phase = AskTurnPhase.ANSWERED,
+                answerText = "You spent ₱1,200.00 on Food last month.",
+            )
+
+        robot
+            .setContent(state = AskState(turns = listOf(answeredTurn)))
+            .clickClear()
+            .assertClearNotVisible()
+
+        assertThat(robot.dispatchedActions).contains(AskAction.OnClearClick)
+    }
 }

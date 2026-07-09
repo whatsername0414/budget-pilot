@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -44,7 +46,7 @@ import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
 private val SettingsSectionGap = 14.dp
-private val SettingsCardContentPadding = PaddingValues(horizontal = Spacing.medium, vertical = Spacing.extraSmall)
+private val SettingsCardContentPadding = PaddingValues(horizontal = Spacing.small, vertical = Spacing.extraSmall)
 private val ApiKeyChipVerticalPadding = 3.dp
 private val SettingsSkeletonRowHeight = 40.dp
 private const val AI_PRIVACY_CARD_ROW_COUNT = 3
@@ -105,7 +107,14 @@ fun SettingsContent(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding).padding(horizontal = Spacing.medium)) {
+        Column(
+            modifier =
+                Modifier
+                    .padding(innerPadding)
+                    .padding(horizontal = Spacing.medium)
+                    .padding(bottom = Spacing.large)
+                    .verticalScroll(rememberScrollState()),
+        ) {
             Spacer(modifier = Modifier.height(Spacing.extraSmall))
             SectionLabel(stringResource(R.string.settings_section_ai_privacy))
             Spacer(modifier = Modifier.height(SettingsSectionGap))

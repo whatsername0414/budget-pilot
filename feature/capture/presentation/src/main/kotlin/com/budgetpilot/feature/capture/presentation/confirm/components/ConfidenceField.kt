@@ -1,10 +1,7 @@
 package com.budgetpilot.feature.capture.presentation.confirm.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Warning
@@ -17,20 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 import com.budgetpilot.feature.capture.domain.model.Confidence
-
-private val ConfidenceBorderWidth = 2.dp
-
-/** Rarely-varied [OutlinedTextField] knobs, grouped to keep [ConfidenceField]'s own parameter list short. */
-data class ConfidenceFieldOptions(
-    val readOnly: Boolean = false,
-    val textStyle: TextStyle? = null,
-    val keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    val interactionSource: MutableInteractionSource? = null,
-)
 
 /**
  * Outlined field that highlights MEDIUM/LOW-confidence extracted values with a
@@ -54,10 +39,7 @@ fun ConfidenceField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .let { if (isLowConfidence) it.border(BorderStroke(ConfidenceBorderWidth, warning), shape) else it },
+        modifier = modifier.fillMaxWidth(),
         label = { Text(label) },
         readOnly = options.readOnly,
         singleLine = true,

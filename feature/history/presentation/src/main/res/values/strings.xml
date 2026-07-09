@@ -15,6 +15,8 @@
     <string name="label_note_optional">Note (optional)</string>
     <string name="label_date">Date</string>
     <string name="label_amount">AMOUNT</string>
+    <string name="amount_currency_symbol">₱</string>
+    <string name="amount_placeholder">0.00</string>
     <string name="expense_editor_title_add">Add expense</string>
     <string name="expense_editor_title_edit">Edit expense</string>
     <string name="cd_dismiss">Dismiss</string>

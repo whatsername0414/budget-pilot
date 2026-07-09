@@ -1,26 +1,29 @@
 package com.budgetpilot.feature.history.presentation.editor
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +34,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,23 +47,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.components.CategoryChip
 import com.budgetpilot.core.designsystem.components.LoadingSkeleton
 import com.budgetpilot.core.designsystem.icons.categoryIcon
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.model.Category
-import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.ObserveAsEvents
+import com.budgetpilot.core.presentation.money.MoneyInputVisualTransformation
 import com.budgetpilot.feature.history.presentation.R
-import com.budgetpilot.feature.history.presentation.editor.components.AmountKeypad
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.time.Instant
@@ -73,8 +77,6 @@ private val AmountHeroLineHeight = 52.sp
 private val AmountHeroSkeletonHeight = 76.dp
 private val CategoryChipRowHeight = 36.dp
 private val TextFieldHeight = 56.dp
-private val KeypadTopPadding = 10.dp
-private val KeypadBottomPadding = 6.dp
 
 @Composable
 fun ExpenseEditorScreen(
@@ -133,7 +135,6 @@ fun ExpenseEditorContent(
                 Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
-            verticalArrangement = Arrangement.SpaceBetween,
         ) {
             if (state.isLoading) {
                 ExpenseEditorLoadingSkeleton(
@@ -152,25 +153,6 @@ fun ExpenseEditorContent(
                             .fillMaxWidth()
                             .padding(horizontal = Spacing.medium),
                 )
-
-                Column(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surface),
-                ) {
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                    AmountKeypad(
-                        onKeyPress = { onAction(ExpenseEditorAction.OnAmountKeyPress(it)) },
-                        modifier =
-                            Modifier.padding(
-                                start = Spacing.medium,
-                                end = Spacing.medium,
-                                top = KeypadTopPadding,
-                                bottom = KeypadBottomPadding,
-                            ),
-                    )
-                }
             }
         }
     }
@@ -208,7 +190,11 @@ private fun ExpenseEditorForm(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(Spacing.medium),
     ) {
-        AmountHero(amount = state.displayAmount, error = state.amountError?.asString())
+        AmountHero(
+            amountText = state.amountText,
+            error = state.amountError?.asString(),
+            onAmountTextChange = { onAction(ExpenseEditorAction.OnAmountTextChange(it)) },
+        )
 
         CategoryChipRow(
             categories = state.categories,
@@ -231,7 +217,6 @@ private fun ExpenseEditorForm(
                         }
                     },
             label = { Text(stringResource(R.string.label_merchant)) },
-            trailingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = null) },
             isError = state.merchantError != null,
             supportingText = { state.merchantError?.let { Text(it.asString()) } },
             singleLine = true,
@@ -319,6 +304,7 @@ private fun ExpenseEditorTopBar(
     onDelete: () -> Unit,
 ) {
     TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
         title = {
             Text(
                 if (mode == ExpenseEditorMode.ADD) {
@@ -352,8 +338,9 @@ private fun ExpenseEditorTopBar(
 
 @Composable
 private fun AmountHero(
-    amount: Money,
+    amountText: String,
     error: String?,
+    onAmountTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -365,15 +352,39 @@ private fun AmountHero(
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        AmountText(
-            amount = amount,
-            style =
-                MaterialTheme.typography.displaySmall.copy(
-                    fontSize = AmountHeroFontSize,
-                    lineHeight = AmountHeroLineHeight,
-                ),
-            color = if (error != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
-        )
+        val amountColor = if (error != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+        val amountTextStyle =
+            MaterialTheme.typography.displaySmall.copy(
+                fontSize = AmountHeroFontSize,
+                lineHeight = AmountHeroLineHeight,
+                fontFeatureSettings = "tnum",
+                color = amountColor,
+            )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = stringResource(R.string.amount_currency_symbol), style = amountTextStyle)
+            BasicTextField(
+                modifier = Modifier.width(IntrinsicSize.Min),
+                value = amountText,
+                onValueChange = onAmountTextChange,
+                textStyle = amountTextStyle,
+                singleLine = true,
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                visualTransformation = MoneyInputVisualTransformation,
+                decorationBox = { innerTextField ->
+                    Box {
+                        if (amountText.isEmpty()) {
+                            Text(
+                                text = stringResource(R.string.amount_placeholder),
+                                style = amountTextStyle,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        innerTextField()
+                    }
+                },
+            )
+        }
         if (error != null) {
             Text(
                 text = error,

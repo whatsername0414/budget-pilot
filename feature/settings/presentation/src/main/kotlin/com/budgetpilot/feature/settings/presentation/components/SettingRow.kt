@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -16,13 +17,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
 
 private const val DISABLED_ALPHA = 0.38f
 private val SettingRowContentGap = 14.dp
-private val SettingRowVerticalPadding = 14.dp
+private val SettingRowVerticalPadding = 12.dp
+private val SettingRowHorizontalPadding = 8.dp
 private val SettingRowTextGap = 2.dp
 
 /**
@@ -49,9 +52,11 @@ fun SettingRow(
         modifier =
             modifier
                 .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .clip(RoundedCornerShape(8.dp))
                 .then(if (onClick != null && enabled) Modifier.clickable(onClick = onClick) else Modifier)
                 .alpha(if (enabled) 1f else DISABLED_ALPHA)
-                .padding(vertical = SettingRowVerticalPadding),
+                .padding(horizontal = SettingRowHorizontalPadding, vertical = SettingRowVerticalPadding),
         verticalAlignment = verticalAlignment,
     ) {
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(SettingRowTextGap)) {
