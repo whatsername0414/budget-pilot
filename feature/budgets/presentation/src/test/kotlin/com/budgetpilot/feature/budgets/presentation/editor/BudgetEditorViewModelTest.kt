@@ -8,9 +8,9 @@ import assertk.assertions.isNotNull
 import com.budgetpilot.core.domain.Result
 import com.budgetpilot.core.domain.model.Budget
 import com.budgetpilot.core.domain.money.Money
+import com.budgetpilot.feature.budgets.presentation.budgets.toMonthString
 import com.budgetpilot.feature.budgets.presentation.fake.FakeBudgetRepository
 import com.budgetpilot.feature.budgets.presentation.fake.FakeCategoryRepository
-import com.budgetpilot.feature.budgets.presentation.main.toMonthString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
