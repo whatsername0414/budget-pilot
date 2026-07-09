@@ -1,6 +1,7 @@
 package com.budgetpilot.feature.home.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.budgetpilot.feature.home.presentation.HomeScreen
@@ -10,7 +11,7 @@ fun NavGraphBuilder.homeGraph(
     onSeeBudgets: () -> Unit,
     onAddExpense: () -> Unit,
     onOpenSettings: () -> Unit,
-    insightSlot: @Composable () -> Unit = {},
+    insightSlot: @Composable (Modifier) -> Unit = {},
 ) {
     composable<HomeRoute> {
         HomeScreen(

@@ -175,8 +175,9 @@ private fun AppShellNavContent(
                 },
                 onAddExpense = { navController.navigate(ExpenseEditorRoute()) },
                 onOpenSettings = { navController.navigate(SettingsRoute) },
-                insightSlot = {
+                insightSlot = { modifier ->
                     InsightCardHost(
+                        modifier = modifier,
                         onNavigateToAsk = { prefillQuestion ->
                             navController.navigateToTopLevel(AskRoute(prefillQuestion = prefillQuestion))
                         },
