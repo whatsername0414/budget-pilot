@@ -25,8 +25,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.components.AppTopBar
+import com.budgetpilot.feature.budgets.presentation.budgets.BudgetListScreen
 import com.budgetpilot.feature.budgets.presentation.charts.ChartsScreen
-import com.budgetpilot.feature.budgets.presentation.main.BudgetListScreen
 
 // This screen owns the single AppTopBar ("Budgets") above the tab row; the two
 // tabs (BudgetListScreen/ChartsScreen) render their content only, no top bar of

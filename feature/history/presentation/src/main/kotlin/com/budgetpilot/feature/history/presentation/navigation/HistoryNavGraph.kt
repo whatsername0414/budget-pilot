@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.budgetpilot.feature.history.presentation.editor.ExpenseEditorScreen
-import com.budgetpilot.feature.history.presentation.main.ExpenseListScreen
+import com.budgetpilot.feature.history.presentation.expenses.ExpenseListScreen
 
 /**
  * Also used by [com.budgetpilot.feature.capture.presentation.navigation.captureGraph]'s

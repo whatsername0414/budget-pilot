@@ -1,0 +1,13 @@
+package com.budgetpilot.feature.budgets.presentation.budgets
+
+import com.budgetpilot.core.presentation.UiText
+
+sealed interface BudgetListEvent {
+    data class ShowSnackbar(
+        val message: String,
+    ) : BudgetListEvent
+
+    data class ShowError(
+        val message: UiText,
+    ) : BudgetListEvent
+}

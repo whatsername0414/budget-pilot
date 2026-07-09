@@ -1,0 +1,323 @@
+package com.budgetpilot.feature.budgets.presentation.budgets
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.budgetpilot.core.designsystem.components.AmountText
+import com.budgetpilot.core.designsystem.components.AppCard
+import com.budgetpilot.core.designsystem.components.BudgetProgressBar
+import com.budgetpilot.core.designsystem.components.EmptyState
+import com.budgetpilot.core.designsystem.components.ErrorState
+import com.budgetpilot.core.designsystem.components.LoadingSkeleton
+import com.budgetpilot.core.designsystem.icons.categoryIcon
+import com.budgetpilot.core.designsystem.theme.Spacing
+import com.budgetpilot.core.designsystem.theme.categoryColor
+import com.budgetpilot.core.domain.money.Money
+import com.budgetpilot.core.presentation.ObserveAsEvents
+import com.budgetpilot.feature.budgets.presentation.R
+import com.budgetpilot.feature.budgets.presentation.budgets.components.MonthSelector
+import com.budgetpilot.feature.budgets.presentation.budgets.components.dashedBorder
+import com.budgetpilot.feature.budgets.presentation.budgets.model.BudgetCategoryUi
+import com.budgetpilot.feature.budgets.presentation.budgets.model.UnbudgetedCategoryUi
+import com.budgetpilot.feature.budgets.presentation.editor.BudgetEditorSheet
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+
+@Composable
+fun BudgetListScreen(
+    modifier: Modifier = Modifier,
+    viewModel: BudgetListViewModel = koinViewModel(),
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is BudgetListEvent.ShowSnackbar -> scope.launch { snackbarHostState.showSnackbar(event.message) }
+            is BudgetListEvent.ShowError ->
+                scope.launch { snackbarHostState.showSnackbar(event.message.asString(context)) }
+        }
+    }
+
+    BudgetListContent(
+        state = state,
+        onAction = viewModel::onAction,
+        modifier = modifier,
+        snackbarHostState = snackbarHostState,
+    )
+
+    val editingCategoryId = state.editingCategoryId
+    if (editingCategoryId != null) {
+        BudgetEditorSheet(
+            categoryId = editingCategoryId,
+            month = state.month,
+            onDismiss = { confirmationMessage ->
+                viewModel.onAction(BudgetListAction.OnDismissEditor)
+                if (confirmationMessage != null) {
+                    scope.launch { snackbarHostState.showSnackbar(confirmationMessage) }
+                }
+            },
+            onError = { message -> scope.launch { snackbarHostState.showSnackbar(message.asString(context)) } },
+        )
+    }
+}
+
+@Composable
+fun BudgetListContent(
+    state: BudgetListState,
+    onAction: (BudgetListAction) -> Unit,
+    modifier: Modifier = Modifier,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+) {
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            MonthSelector(
+                monthLabel = state.monthLabel,
+                onPreviousClick = { onAction(BudgetListAction.OnPreviousMonthClick) },
+                onNextClick = { onAction(BudgetListAction.OnNextMonthClick) },
+                isNextEnabled = state.canGoToNextMonth,
+                modifier = Modifier.padding(horizontal = Spacing.medium, vertical = Spacing.small),
+            )
+
+            when {
+                state.isLoading -> LoadingBudgetsSkeleton()
+                state.error != null && state.budgetedCategories.isEmpty() && state.unbudgetedCategories.isEmpty() ->
+                    ErrorState(
+                        message = state.error.asString(),
+                        onRetry = { onAction(BudgetListAction.OnRetryClick) },
+                    )
+                else ->
+                    BudgetListLoadedContent(
+                        state = state,
+                        onAction = onAction,
+                    )
+            }
+        }
+        SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
+    }
+}
+
+@Composable
+private fun LoadingBudgetsSkeleton(modifier: Modifier = Modifier) {
+    Column(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(Spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(Spacing.small),
+    ) {
+        repeat(3) {
+            LoadingSkeleton(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(88.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun BudgetListLoadedContent(
+    state: BudgetListState,
+    onAction: (BudgetListAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.fillMaxSize()) {
+        BudgetSummaryCard(
+            budgeted = state.totalBudgeted,
+            spent = state.totalSpent,
+            remaining = state.totalRemaining,
+            modifier = Modifier.padding(horizontal = Spacing.medium),
+        )
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(horizontal = Spacing.medium, vertical = Spacing.small),
+            verticalArrangement = Arrangement.spacedBy(Spacing.small),
+        ) {
+            if (state.hasNoBudgets) {
+                item {
+                    EmptyState(
+                        icon = Icons.Filled.Info,
+                        title = stringResource(R.string.budgets_empty_title),
+                        description = stringResource(R.string.budgets_empty_description),
+                    )
+                }
+            } else {
+                items(items = state.budgetedCategories, key = { it.categoryId }) { category ->
+                    BudgetCategoryCard(
+                        category = category,
+                        isReadOnly = state.isReadOnly,
+                        onEditClick = { onAction(BudgetListAction.OnEditBudgetClick(category.categoryId)) },
+                    )
+                }
+            }
+            items(items = state.unbudgetedCategories, key = { it.categoryId }) { category ->
+                UnbudgetedCategoryRow(
+                    category = category,
+                    isReadOnly = state.isReadOnly,
+                    onSetBudgetClick = { onAction(BudgetListAction.OnEditBudgetClick(category.categoryId)) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun BudgetSummaryCard(
+    budgeted: Money,
+    spent: Money,
+    remaining: Money,
+    modifier: Modifier = Modifier,
+) {
+    AppCard(modifier = modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            SummaryColumn(label = stringResource(R.string.summary_budgeted), amount = budgeted)
+            SummaryColumn(label = stringResource(R.string.summary_spent), amount = spent)
+            SummaryColumn(
+                label = stringResource(R.string.summary_left),
+                amount = remaining,
+                color =
+                    if (remaining < Money.ZERO) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.tertiary
+                    },
+            )
+        }
+    }
+}
+
+@Composable
+private fun SummaryColumn(
+    label: String,
+    amount: Money,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = label.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        AmountText(amount = amount, style = MaterialTheme.typography.titleMedium, color = color)
+    }
+}
+
+@Composable
+private fun BudgetCategoryCard(
+    category: BudgetCategoryUi,
+    isReadOnly: Boolean,
+    onEditClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AppCard(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = category.name,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.weight(1f),
+            )
+            if (!isReadOnly) {
+                IconButton(onClick = onEditClick) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = stringResource(R.string.cd_edit_budget, category.name),
+                    )
+                }
+            }
+        }
+        Spacer(Modifier.height(Spacing.extraSmall))
+        BudgetProgressBar(spent = category.spent, budget = category.budget)
+    }
+}
+
+private val UnbudgetedRowIconSize = 40.dp
+private val UnbudgetedRowIconRadius = 12.dp
+private val UnbudgetedRowItemGap = 12.dp
+
+@Composable
+private fun UnbudgetedCategoryRow(
+    category: UnbudgetedCategoryUi,
+    isReadOnly: Boolean,
+    onSetBudgetClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val color = categoryColor(category.colorKey)
+    Row(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .dashedBorder(color = MaterialTheme.colorScheme.outline)
+                .padding(Spacing.medium),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(UnbudgetedRowItemGap),
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .size(UnbudgetedRowIconSize)
+                    .clip(RoundedCornerShape(UnbudgetedRowIconRadius))
+                    .background(color.copy(alpha = 0.15f)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                imageVector = categoryIcon(category.iconKey),
+                contentDescription = null,
+                tint = color,
+                modifier = Modifier.size(20.dp),
+            )
+        }
+        Text(
+            text = stringResource(R.string.unbudgeted_category_label, category.name),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.weight(1f),
+        )
+        if (!isReadOnly) {
+            TextButton(onClick = onSetBudgetClick) {
+                Text(stringResource(R.string.action_set_budget))
+            }
+        }
+    }
+}
