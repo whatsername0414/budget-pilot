@@ -16,6 +16,12 @@ genuinely agentic AI integration on solid modern Android foundations, not a
 chat-wrapper demo.
 
 <p align="center">
+  <a href="https://github.com/maceljonray/budget-pilot/releases/latest/download/app-release.apk">
+    <img src="https://img.shields.io/badge/Download-APK-3DDC84?logo=android&logoColor=white" alt="Download the latest APK">
+  </a>
+</p>
+
+<p align="center">
   <img src="assets/demo/hero.gif" width="260" alt="Capturing a receipt, confirming the extracted data, and seeing it land in the expense history">
 </p>
 
@@ -324,6 +330,13 @@ Roughly, by layer:
 
 ## Setup
 
+> [!TIP]
+> Don't want to build from source? Grab the
+> [latest release APK](https://github.com/maceljonray/budget-pilot/releases/latest)
+> and sideload it — no Gemini key needed to explore the app (see step 4
+> below), and that build has **Load demo data** enabled so it's populated
+> in one tap.
+
 1. Clone the repo and open it in a recent Android Studio that supports AGP
    9.2.1 / Kotlin 2.2.21 / JDK 21.
 2. Get a **free** Gemini API key from [Google AI Studio](https://aistudio.google.com/).
@@ -345,8 +358,11 @@ Roughly, by layer:
 5. On a debug build, Settings → Demo → **Load demo data** seeds ~2 months of
    realistic expenses, budgets, and a guaranteed over-budget insight in one
    tap — the fastest way to get the app into a demoable state (and how the
-   screenshots and GIFs in this README were produced). The row is gated
-   behind `BuildConfig.DEBUG` and never renders in a release build.
+   screenshots and GIFs in this README were produced). The row is normally
+   gated behind `BuildConfig.DEBUG` and doesn't render in a release build
+   you compile yourself; it's enabled as a one-off in the
+   [downloadable release APK](https://github.com/maceljonray/budget-pilot/releases/latest)
+   above so visitors without a dev setup can still see the app populated.
 6. Useful Gradle tasks:
 
    ```
