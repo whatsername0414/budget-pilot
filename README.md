@@ -16,8 +16,8 @@ genuinely agentic AI integration on solid modern Android foundations, not a
 chat-wrapper demo.
 
 <p align="center">
-  <a href="https://github.com/maceljonray/budget-pilot/releases/latest/download/app-release.apk">
-    <img src="https://img.shields.io/badge/Download-APK-3DDC84?logo=android&logoColor=white" alt="Download the latest APK">
+  <a href="https://github.com/maceljonray/budget-pilot/releases/download/v1.0.0/app-release.apk">
+    <img src="https://img.shields.io/badge/Download-APK%20v1.0.0-3DDC84?logo=android&logoColor=white" alt="Download the v1.0.0 APK">
   </a>
 </p>
 
@@ -332,7 +332,7 @@ Roughly, by layer:
 
 > [!TIP]
 > Don't want to build from source? Grab the
-> [latest release APK](https://github.com/maceljonray/budget-pilot/releases/latest)
+> [v1.0.0 release APK](https://github.com/maceljonray/budget-pilot/releases/tag/v1.0.0)
 > and sideload it — no Gemini key needed to explore the app (see step 4
 > below), and that build has **Load demo data** enabled so it's populated
 > in one tap.
@@ -361,7 +361,7 @@ Roughly, by layer:
    screenshots and GIFs in this README were produced). The row is normally
    gated behind `BuildConfig.DEBUG` and doesn't render in a release build
    you compile yourself; it's enabled as a one-off in the
-   [downloadable release APK](https://github.com/maceljonray/budget-pilot/releases/latest)
+   [downloadable v1.0.0 release APK](https://github.com/maceljonray/budget-pilot/releases/tag/v1.0.0)
    above so visitors without a dev setup can still see the app populated.
 6. Useful Gradle tasks:
 
