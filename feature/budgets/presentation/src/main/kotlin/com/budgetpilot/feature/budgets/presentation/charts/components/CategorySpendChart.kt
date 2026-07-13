@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,13 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.components.AmountText
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.core.designsystem.theme.Shapes
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.designsystem.theme.categoryColor
 import com.budgetpilot.core.domain.money.Money
 import com.budgetpilot.core.presentation.money.PesoFormatter
 import com.budgetpilot.feature.budgets.presentation.charts.model.CategorySpendUi
 
-private val BarShape = RoundedCornerShape(4.dp)
 private val CategoryLabelWidth = 96.dp
 private val CategoryValueWidth = 74.dp
 private val CategorySpendRowGap = 10.dp
@@ -84,12 +83,12 @@ private fun CategorySpendRow(
                 Modifier
                     .weight(1f)
                     .height(20.dp)
-                    .clip(BarShape)
+                    .clip(Shapes.extraSmall)
                     .background(MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.08f)),
         ) {
             Surface(
                 color = categoryColor(category.colorKey),
-                shape = BarShape,
+                shape = Shapes.extraSmall,
                 modifier =
                     Modifier
                         .fillMaxWidth(category.fraction.coerceIn(0f, 1f))

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
@@ -20,13 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.core.designsystem.theme.Shapes
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.feature.ask.presentation.AskErrorUi
 import com.budgetpilot.feature.ask.presentation.R
-
-private val ErrorCardShape = RoundedCornerShape(16.dp)
 
 /** Ask errors always render in-conversation, never as toasts (DESIGN-SPEC.md §10). */
 @Composable
@@ -52,7 +49,7 @@ fun AskErrorCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = ErrorCardShape,
+        shape = Shapes.large,
         colors = CardDefaults.cardColors(containerColor = containerColor, contentColor = contentColor),
     ) {
         Column(modifier = Modifier.padding(Spacing.medium)) {

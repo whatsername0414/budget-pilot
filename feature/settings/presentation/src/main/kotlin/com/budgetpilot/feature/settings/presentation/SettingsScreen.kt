@@ -36,6 +36,7 @@ import com.budgetpilot.core.designsystem.components.AppCard
 import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.components.LoadingSkeleton
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.core.designsystem.theme.Shapes
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.presentation.ObserveAsEvents
 import com.budgetpilot.feature.settings.presentation.R
@@ -150,8 +151,6 @@ fun SettingsContent(
     }
 }
 
-private val SettingsSkeletonRowShape = RoundedCornerShape(6.dp)
-
 @Composable
 private fun AiPrivacyCard(
     state: SettingsState,
@@ -163,7 +162,7 @@ private fun AiPrivacyCard(
             repeat(AI_PRIVACY_CARD_ROW_COUNT) { index ->
                 if (index != 0) HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outlineVariant)
                 LoadingSkeleton(
-                    shape = SettingsSkeletonRowShape,
+                    shape = Shapes.small,
                     modifier = Modifier.fillMaxWidth().height(SettingsSkeletonRowHeight),
                 )
             }
@@ -220,7 +219,7 @@ private fun DemoCard(
     AppCard(modifier = modifier.fillMaxWidth(), contentPadding = SettingsCardContentPadding) {
         if (isLoading) {
             LoadingSkeleton(
-                shape = SettingsSkeletonRowShape,
+                shape = Shapes.small,
                 modifier = Modifier.fillMaxWidth().height(SettingsSkeletonRowHeight),
             )
             return@AppCard

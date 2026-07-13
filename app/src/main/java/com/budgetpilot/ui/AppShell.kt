@@ -58,6 +58,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.budgetpilot.R
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.core.designsystem.theme.Shapes
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.feature.ask.presentation.navigation.AskRoute
 import com.budgetpilot.feature.ask.presentation.navigation.askGraph
@@ -84,7 +85,6 @@ import com.budgetpilot.navigation.navigateToTopLevel
 private val FabSize = 60.dp
 private val FabCollapsedCornerRadius = 20.dp
 private val FabIconSize = 26.dp
-private val SpeedDialOptionShape = RoundedCornerShape(percent = 50)
 
 // Scrim alpha matches Material's modal-scrim guidance (~32%) — dims the screen
 // behind the expanded dial without hiding it entirely.
@@ -284,7 +284,7 @@ private fun SpeedDialOption(
 ) {
     Surface(
         onClick = onClick,
-        shape = SpeedDialOptionShape,
+        shape = Shapes.pill,
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = Spacing.extraSmall,

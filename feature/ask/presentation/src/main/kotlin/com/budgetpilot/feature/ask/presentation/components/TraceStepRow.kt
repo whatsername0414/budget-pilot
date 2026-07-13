@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
@@ -28,13 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.core.designsystem.theme.Shapes
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.feature.ask.presentation.R
 import kotlin.math.roundToInt
 
 private val StepDotSize = 22.dp
 private val CompletedDotIconSize = 13.dp
-private val ToolNamePillShape = RoundedCornerShape(4.dp)
 private val ToolNamePillHorizontalPadding = 5.dp
 private val ToolNamePillVerticalPadding = 1.dp
 private const val TOOL_NAME_PILL_BACKGROUND_ALPHA = 0.10f
@@ -83,7 +82,7 @@ fun TraceStepRow(
                     ),
                 modifier =
                     Modifier
-                        .background(color = pillBackground, shape = ToolNamePillShape)
+                        .background(color = pillBackground, shape = Shapes.extraSmall)
                         .padding(horizontal = ToolNamePillHorizontalPadding, vertical = ToolNamePillVerticalPadding),
             )
             Text(

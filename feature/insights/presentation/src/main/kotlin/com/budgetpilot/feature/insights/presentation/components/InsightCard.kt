@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
@@ -28,10 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.icons.StateIcons
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.core.designsystem.theme.Shapes
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.feature.insights.presentation.R
 
-private val InsightCardShape = RoundedCornerShape(16.dp)
 private val InsightCardVerticalPadding = 14.dp
 private val InsightSparkleSize = 20.dp
 private val InsightDismissIconSize = 16.dp
@@ -50,7 +49,7 @@ fun InsightCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = InsightCardShape,
+        shape = Shapes.large,
         colors =
             CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,

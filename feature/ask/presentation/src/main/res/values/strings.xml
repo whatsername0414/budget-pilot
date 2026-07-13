@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ask_top_bar_title">Ask</string>
+    <string name="ask_disclaimer">Disclaimer: this uses a free-tier AI and doesn\'t remember earlier questions, each one is answered on its own.</string>
     <string name="ask_input_placeholder">Ask about your spending…</string>
     <string name="cd_send">Send</string>
     <string name="ask_empty_title">Ask anything about your spending</string>

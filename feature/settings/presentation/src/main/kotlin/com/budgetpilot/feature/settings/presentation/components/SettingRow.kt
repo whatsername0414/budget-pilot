@@ -53,8 +53,7 @@ fun SettingRow(
             modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .then(if (onClick != null && enabled) Modifier.clickable(onClick = onClick) else Modifier)
+                .then(if (onClick != null && enabled) Modifier.clickable(enabled = true, interactionSource = null, indication = null, onClick = onClick) else Modifier)
                 .alpha(if (enabled) 1f else DISABLED_ALPHA)
                 .padding(horizontal = SettingRowHorizontalPadding, vertical = SettingRowVerticalPadding),
         verticalAlignment = verticalAlignment,

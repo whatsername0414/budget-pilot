@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +24,7 @@ import com.budgetpilot.core.designsystem.components.AppTopBar
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.core.presentation.ObserveAsEvents
 import com.budgetpilot.feature.ask.presentation.components.AskAnswerCard
+import com.budgetpilot.feature.ask.presentation.components.AskDisclaimerBanner
 import com.budgetpilot.feature.ask.presentation.components.AskEmptyState
 import com.budgetpilot.feature.ask.presentation.components.AskErrorCard
 import com.budgetpilot.feature.ask.presentation.components.AskFollowUpChips
@@ -82,14 +84,19 @@ fun AskContent(
             )
         },
     ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-            if (state.turns.isEmpty()) {
-                AskEmptyState(
-                    onSuggestionClick = { onAction(AskAction.OnSuggestionClick(it)) },
-                    modifier = Modifier.align(Alignment.Center),
-                )
-            } else {
-                AskConversationList(state = state, onAction = onAction)
+        Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+            AskDisclaimerBanner(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.medium, vertical = Spacing.small),
+            )
+            Box(modifier = Modifier.weight(1f).fillMaxSize()) {
+                if (state.turns.isEmpty()) {
+                    AskEmptyState(
+                        onSuggestionClick = { onAction(AskAction.OnSuggestionClick(it)) },
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                } else {
+                    AskConversationList(state = state, onAction = onAction)
+                }
             }
         }
     }

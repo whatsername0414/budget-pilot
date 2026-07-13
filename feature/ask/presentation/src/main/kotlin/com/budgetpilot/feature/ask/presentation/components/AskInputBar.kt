@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.FilledIconButton
@@ -24,10 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.budgetpilot.core.designsystem.theme.BudgetPilotTheme
+import com.budgetpilot.core.designsystem.theme.Shapes
 import com.budgetpilot.core.designsystem.theme.Spacing
 import com.budgetpilot.feature.ask.presentation.R
 
-private val InputFieldShape = RoundedCornerShape(26.dp)
 private val SendButtonSize = 48.dp
 
 /** Pinned question input + circular send button, both disabled during a run (DESIGN-SPEC.md §10). */
@@ -55,7 +54,7 @@ fun AskInputBar(
                 placeholder = { Text(stringResource(R.string.ask_input_placeholder)) },
                 enabled = !isSending,
                 singleLine = true,
-                shape = InputFieldShape,
+                shape = Shapes.extraLarge,
                 colors =
                     OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surface,
